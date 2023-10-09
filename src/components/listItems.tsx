@@ -4,9 +4,14 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ListSubheader from "@mui/material/ListSubheader";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import AssignmentIcon from "@mui/icons-material/Assignment";
 import { Link } from "react-router-dom";
-import { Grading, LibraryBooks, NoteAlt } from "@mui/icons-material";
+import {
+  Grading,
+  LibraryBooks,
+  NoteAlt,
+  Publish,
+  Task,
+} from "@mui/icons-material";
 
 export const mainListItems = (
   <React.Fragment>
@@ -51,39 +56,22 @@ export const mainListItems = (
 export const secondaryListItems = (
   <React.Fragment>
     <ListSubheader component="div" inset>
-      Saved reports
+      Management
     </ListSubheader>
-    <Link
-      to="/current-month"
-      style={{ textDecoration: "none", color: "inherit" }}
-    >
+    <Link to="/tasks" style={{ textDecoration: "none", color: "inherit" }}>
       <ListItemButton>
         <ListItemIcon>
-          <AssignmentIcon />
+          <Task />
         </ListItemIcon>
-        <ListItemText primary="Current month" />
+        <ListItemText primary="Tasks" />
       </ListItemButton>
     </Link>
-    <Link
-      to="/last-quarter"
-      style={{ textDecoration: "none", color: "inherit" }}
-    >
+    <Link to="/submit" style={{ textDecoration: "none", color: "inherit" }}>
       <ListItemButton>
         <ListItemIcon>
-          <AssignmentIcon />
+          <Publish />
         </ListItemIcon>
-        <ListItemText primary="Last quarter" />
-      </ListItemButton>
-    </Link>
-    <Link
-      to="/year-end-sale"
-      style={{ textDecoration: "none", color: "inherit" }}
-    >
-      <ListItemButton>
-        <ListItemIcon>
-          <AssignmentIcon />
-        </ListItemIcon>
-        <ListItemText primary="Year-end sale" />
+        <ListItemText primary="Submit" />
       </ListItemButton>
     </Link>
   </React.Fragment>
