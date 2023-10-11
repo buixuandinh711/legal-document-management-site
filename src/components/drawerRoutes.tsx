@@ -3,7 +3,6 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ListSubheader from "@mui/material/ListSubheader";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import { Link } from "react-router-dom";
 import {
   Grading,
@@ -15,14 +14,6 @@ import {
 
 export const mainListItems = (
   <React.Fragment>
-    <Link to="/dashboard" style={{ textDecoration: "none", color: "inherit" }}>
-      <ListItemButton>
-        <ListItemIcon>
-          <DashboardIcon />
-        </ListItemIcon>
-        <ListItemText primary="Dashboard" />
-      </ListItemButton>
-    </Link>
     <Link to="/drafting" style={{ textDecoration: "none", color: "inherit" }}>
       <ListItemButton>
         <ListItemIcon>

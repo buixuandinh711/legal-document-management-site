@@ -4,6 +4,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "src/components/Layout";
 import "./main.css";
+import DraftTask from "src/pages/DraftTask";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -14,10 +15,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             path="/"
             element={<Typography variant="h1">Root</Typography>}
           />
-          <Route
-            path="/about"
-            element={<Typography variant="h1">About</Typography>}
-          />
+          <Route path="/drafting" element={<DraftTask />} />
           <Route
             path="*"
             element={<Typography variant="h1">404 Not Found</Typography>}

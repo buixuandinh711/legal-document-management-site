@@ -15,14 +15,15 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { mainListItems, secondaryListItems } from "src/components/listItems";
+import { mainListItems, secondaryListItems } from "src/components/drawerRoutes";
 import { AccountCircle } from "@mui/icons-material";
+import BasicBreadcrumbs from "src/components/Breadcrumb";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const [auth, setAuth] = React.useState(true);
+  const [auth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -39,12 +40,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <CssBaseline />
         <AppBar
           position="fixed"
-          sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          sx={{
+            zIndex: (theme) => theme.zIndex.drawer + 1,
+            width: "calc(100% - 250px)",
+            borderRadius: 4,
+          }}
         >
           <Toolbar>
-            <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-              LegalDocs
-            </Typography>
             {auth && (
               <div>
                 <IconButton
@@ -87,10 +89,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             [`& .MuiDrawer-paper`]: {
               width: 240,
               boxSizing: "border-box",
+              borderRadius: 4,
             },
           }}
         >
-          <Toolbar />
+          <Toolbar>
+            <Typography variant="h5" component="div" sx={{}}>
+              LegalDocs
+            </Typography>
+          </Toolbar>
+
           <Box sx={{ overflow: "auto" }}>
             <List>{mainListItems}</List>
             <Divider />
@@ -110,12 +118,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            {children}
-            <Typography variant="body2" color="text.secondary" align="center">
+          <BasicBreadcrumbs />
+          <Container maxWidth="lg" sx={{ mt: 8 }}>
+            <Box sx={{ minHeight: "100vh" }}>{children}</Box>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              align="center"
+              sx={{ pt: 4, pb: 4 }}
+            >
               {"Copyright © "}
               <Link color="inherit" href="https://mui.com/">
-                Your Website
+                Legal Document Management
               </Link>{" "}
               {new Date().getFullYear()}
               {"."}
