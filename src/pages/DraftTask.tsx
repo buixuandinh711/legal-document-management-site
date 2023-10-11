@@ -1,78 +1,129 @@
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import * as React from "react";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import { Typography } from "@mui/material";
+import { grey } from "@mui/material/colors";
 
-const columns: GridColDef[] = [
-  { field: "assignedDate", headerName: "Assigned Date", width: 200 },
-  { field: "name", headerName: "Name", width: 350 },
-  { field: "assigner", headerName: "Assigner", width: 150 },
-  { field: "dueDate", headerName: "Due Date", width: 200 },
-  { field: "status", headerName: "Status", width: 100 },
+interface Column {
+  id: "name" | "assignedDate" | "assigner" | "dueDate" | "status";
+  label: string;
+  minWidth?: number;
+  align?: "right";
+}
+
+const columns: readonly Column[] = [
+  { id: "name", label: "Name", minWidth: 250 },
+  { id: "assignedDate", label: "Assigned Date", minWidth: 170 },
+  { id: "assigner", label: "Assigner", minWidth: 170 },
+  { id: "dueDate", label: "Due Date", minWidth: 170 },
+  { id: "status", label: "Status", minWidth: 170 },
 ];
+
+interface Data {
+  name: string;
+  assignedDate: string; // Use the appropriate data type for dates
+  assigner: string;
+  dueDate: string;
+  status: string;
+}
+
+function createData(
+  name: string,
+  assignedDate: string,
+  assigner: string,
+  dueDate: string,
+  status: string
+): Data {
+  return { name, assignedDate, assigner, dueDate, status };
+}
 
 const rows = [
-  {
-    id: 1,
-    assignedDate: "2023-10-11",
-    name: "Task 1",
-    assigner: "John Doe",
-    dueDate: "2023-10-15",
-    status: "Incomplete",
-  },
-  {
-    id: 2,
-    assignedDate: "2023-10-12",
-    name: "Task 2",
-    assigner: "Jane Smith",
-    dueDate: "2023-10-18",
-    status: "Complete",
-  },
-  {
-    id: 3,
-    assignedDate: "2023-10-12",
-    name: "Task 2",
-    assigner: "Jane Smith",
-    dueDate: "2023-10-18",
-    status: "Complete",
-  },
-  {
-    id: 4,
-    assignedDate: "2023-10-12",
-    name: "Task 2",
-    assigner: "Jane Smith",
-    dueDate: "2023-10-18",
-    status: "Complete",
-  },
-  {
-    id: 5,
-    assignedDate: "2023-10-12",
-    name: "Task 2",
-    assigner: "Jane Smith",
-    dueDate: "2023-10-18",
-    status: "Complete",
-  },
-  {
-    id: 6,
-    assignedDate: "2023-10-12",
-    name: "Task 2",
-    assigner: "Jane Smith",
-    dueDate: "2023-10-18",
-    status: "Complete",
-  },
+  createData("Task 1", "2023-10-15", "John Doe", "2023-10-30", "In Progress"),
+  createData("Task 2", "2023-10-16", "Jane Smith", "2023-11-15", "Pending"),
+  // Add more tasks as needed
 ];
 
-export default function DraftTask() {
+export default function StickyHeadTable() {
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
   return (
-    <div style={{ height: 400, width: "100%" }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
-          },
-        }}
-        pageSizeOptions={[5, 10]}
-        sx={{ backgroundColor: "#ffffff", px: 2, py: 1, borderRadius: 4 }}
+    <Paper sx={{ width: "100%", overflow: "hidden", borderRadius: 4, p: 2 }}>
+      <Typography
+        sx={{pl: 2}}
+        variant="h6"
+        id="tableTitle"
+        component="div"
+        fontWeight={600}
+        fontSize={25}
+      >
+        Your tasks
+      </Typography>
+      <TableContainer sx={{ maxHeight: 440 }}>
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead>
+            <TableRow>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.id}
+                  align={column.align}
+                  sx={{
+                    minWidth: column.minWidth,
+                    fontWeight: 600,
+                    color: grey[600],
+                  }}
+                >
+                  {column.label}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => {
+                return (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
+                    {columns.map((column) => {
+                      const value = row[column.id];
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          {value}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
-    </div>
+    </Paper>
   );
 }

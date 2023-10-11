@@ -56,7 +56,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             top: 8,
           }}
         >
-          <Toolbar>
+          <Toolbar sx={{display: "flex", justifyContent: "right"}}>
             {auth && (
               <div>
                 <IconButton
