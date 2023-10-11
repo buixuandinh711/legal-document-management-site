@@ -9,11 +9,11 @@ import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import {
   Divider,
-  Drawer,
   IconButton,
   List,
   Menu,
   MenuItem,
+  Paper,
 } from "@mui/material";
 import { mainListItems, secondaryListItems } from "src/components/drawerRoutes";
 import { AccountCircle } from "@mui/icons-material";
@@ -36,14 +36,24 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Box sx={{ display: "flex" }}>
+      <Box
+        sx={{
+          display: "flex",
+          backgroundColor: (theme) =>
+            theme.palette.mode === "light"
+              ? theme.palette.grey[100]
+              : theme.palette.grey[900],
+        }}
+      >
         <CssBaseline />
         <AppBar
           position="fixed"
           sx={{
             zIndex: (theme) => theme.zIndex.drawer + 1,
-            width: "calc(100% - 250px)",
+            width: "calc(100% - 264px)",
             borderRadius: 4,
+            right: 8,
+            top: 8,
           }}
         >
           <Toolbar>
@@ -81,16 +91,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             )}
           </Toolbar>
         </AppBar>
-        <Drawer
-          variant="permanent"
+        <Paper
           sx={{
             width: 240,
             flexShrink: 0,
-            [`& .MuiDrawer-paper`]: {
-              width: 240,
-              boxSizing: "border-box",
-              borderRadius: 4,
-            },
+            borderRadius: 4,
+            position: "fixed",
+            left: 8,
+            top: 8,
+            bottom: 8,
           }}
         >
           <Toolbar>
@@ -98,23 +107,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               LegalDocs
             </Typography>
           </Toolbar>
-
           <Box sx={{ overflow: "auto" }}>
             <List>{mainListItems}</List>
             <Divider />
             <List>{secondaryListItems}</List>
           </Box>
-        </Drawer>
+        </Paper>
         <Box
           component="main"
           sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === "light"
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: "100vh",
-            // overflow: "auto",
+            width: "calc(100% - 264px)",
+            ml: "256px",
           }}
         >
           <Toolbar />
