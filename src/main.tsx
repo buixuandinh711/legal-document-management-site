@@ -8,20 +8,20 @@ import DraftTask from "src/pages/DraftTask";
 import TaskDetail from "src/pages/TaskDetail";
 import ManageDoc from "src/pages/ManageDoc";
 import DocumentDetail from "src/pages/DocumentDetail";
+import Login from "src/pages/Login";
+import NotFound from "src/pages/NotFound";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <Layout>
-        <Routes>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Layout />}>
+          <Route path="" element={<Typography variant="h1">Root</Typography>} />
+          <Route path="drafting" element={<DraftTask />} />
+          <Route path="manage-doc" element={<ManageDoc />} />
           <Route
-            path="/"
-            element={<Typography variant="h1">Root</Typography>}
-          />
-          <Route path="/drafting" element={<DraftTask />} />
-          <Route path="/manage-doc" element={<ManageDoc />} />
-          <Route
-            path="/doc-detail"
+            path="doc-detail"
             element={
               <DocumentDetail
                 documentDetail={{
@@ -36,7 +36,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             }
           />
           <Route
-            path="/detail"
+            path="detail"
             element={
               <TaskDetail
                 task={{
@@ -49,12 +49,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               />
             }
           />
-          <Route
-            path="*"
-            element={<Typography variant="h1">404 Not Found</Typography>}
-          />
-        </Routes>
-      </Layout>
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </BrowserRouter>
   </React.StrictMode>
 );

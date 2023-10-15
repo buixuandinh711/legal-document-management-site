@@ -18,11 +18,12 @@ import {
 import { mainListItems, secondaryListItems } from "src/components/drawerRoutes";
 import { AccountCircle } from "@mui/icons-material";
 import BasicBreadcrumbs from "src/components/Breadcrumb";
+import { Navigate, Outlet } from "react-router-dom";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout() {
   const [auth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -33,6 +34,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  if (!auth) {
+    return <Navigate to="/login" />;
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -56,8 +61,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             top: 8,
           }}
         >
-          <Toolbar sx={{display: "flex", justifyContent: "right"
-        }}>
+          <Toolbar sx={{ display: "flex", justifyContent: "right" }}>
             {auth && (
               <div>
                 <IconButton
@@ -124,7 +128,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <Toolbar />
           <BasicBreadcrumbs />
           <Container maxWidth="lg" sx={{ mt: 8 }}>
-            <Box sx={{ minHeight: "100vh" }}>{children}</Box>
+            <Box sx={{ minHeight: "100vh" }}>
+              <Outlet />
+            </Box>
             <Typography
               variant="body2"
               color="text.secondary"
