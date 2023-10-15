@@ -31,7 +31,7 @@ export const mainListItems = (
       </ListItemButton>
     </Link>
     <Link
-      to="/manage-document"
+      to="/manage-doc"
       style={{ textDecoration: "none", color: "inherit" }}
     >
       <ListItemButton>

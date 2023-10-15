@@ -13,45 +13,42 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface Column {
-  id: "name" | "assignedDate" | "assigner" | "dueDate" | "status";
+  id: "lastUpdated" | "draftName" | "documentName" | "documentNo";
   label: string;
   minWidth?: number;
   align?: "right";
 }
 
 const columns: readonly Column[] = [
-  { id: "name", label: "Name", minWidth: 250 },
-  { id: "assignedDate", label: "Assigned Date", minWidth: 170 },
-  { id: "assigner", label: "Assigner", minWidth: 170 },
-  { id: "dueDate", label: "Due Date", minWidth: 170 },
-  { id: "status", label: "Status", minWidth: 170 },
+  { id: "lastUpdated", label: "Last Updated", minWidth: 170 },
+  { id: "draftName", label: "Draft Name", minWidth: 250 },
+  { id: "documentName", label: "Document Name", minWidth: 250 },
+  { id: "documentNo", label: "Document No", minWidth: 170 },
 ];
 
 interface Data {
-  name: string;
-  assignedDate: string; // Use the appropriate data type for dates
-  assigner: string;
-  dueDate: string;
-  status: string;
+  lastUpdated: string;
+  draftName: string;
+  documentName: string;
+  documentNo: string;
 }
 
 function createData(
-  name: string,
-  assignedDate: string,
-  assigner: string,
-  dueDate: string,
-  status: string
+  lastUpdated: string,
+  draftName: string,
+  documentName: string,
+  documentNo: string
 ): Data {
-  return { name, assignedDate, assigner, dueDate, status };
+  return { lastUpdated, draftName, documentName, documentNo };
 }
 
 const rows = [
-  createData("Task 1", "2023-10-15", "John Doe", "2023-10-30", "In Progress"),
-  createData("Task 2", "2023-10-16", "Jane Smith", "2023-11-15", "Pending"),
-  // Add more tasks as needed
+  createData("2023-10-15", "Draft 1", "Document 1", "001"),
+  createData("2023-10-16", "Draft 2", "Document 2", "002"),
+  // Add more rows as needed
 ];
 
-export default function DraftTask() {
+export default function ManageDoc() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const navigate = useNavigate();
@@ -66,7 +63,7 @@ export default function DraftTask() {
         fontWeight={600}
         fontSize={25}
       >
-        Your tasks
+        Your Documents
       </Typography>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
@@ -96,9 +93,9 @@ export default function DraftTask() {
                     hover
                     role="checkbox"
                     tabIndex={-1}
-                    key={row.name}
+                    key={row.documentNo} // Assuming documentNo is unique
                     onClick={() => {
-                      navigate("/detail");
+                      navigate("/doc-detail");
                     }}
                     sx={{ cursor: "pointer" }}
                   >
