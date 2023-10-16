@@ -1,26 +1,47 @@
-import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import * as yup from "yup";
+import { useFormik } from "formik";
+
+const validationSchema = yup.object({
+  username: yup
+    .string()
+    .min(6, "Username should be in range 6-30 characters")
+    .max(30, "Username should be in range 6-30 characters")
+    .matches(
+      /^[a-zA-Z0-9_]{6,30}$/,
+      "Username should contain only letters, numbers, and underscores"
+    )
+    .required("Username is required"),
+  password: yup
+    .string()
+    .min(8, "Password should be of minimum 8 characters length")
+    .matches(
+      /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+      "Password should contain at least one letter and one digit"
+    )
+    .required("Password is required"),
+});
 
 export default function Login() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
 
   return (
     <Container component="main" maxWidth="xs">
@@ -39,16 +60,26 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={formik.handleSubmit}
+          noValidate
+          sx={{ mt: 1 }}
+        >
           <TextField
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
             autoFocus
+            value={formik.values.username}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.username && Boolean(formik.errors.username)}
+            helperText={formik.touched.username && formik.errors.username}
           />
           <TextField
             margin="normal"
@@ -59,10 +90,11 @@ export default function Login() {
             type="password"
             id="password"
             autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
           />
           <Button
             type="submit"
@@ -76,11 +108,6 @@ export default function Login() {
             <Grid item xs>
               <Link href="#" variant="body2">
                 Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
           </Grid>
