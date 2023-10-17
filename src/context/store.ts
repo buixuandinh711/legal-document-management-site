@@ -1,13 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "./slices/apiSlice";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { positionSlice } from "src/context/slices/positionSlice";
 
 const store = configureStore({
   reducer: {
+    position: positionSlice.reducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiSlice.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
 });
 
 export default store;

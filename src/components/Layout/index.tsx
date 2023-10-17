@@ -13,6 +13,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useUserQuery } from "src/context/slices/apiSlice";
 import Loading from "src/pages/Loading";
 import LayoutUser from "src/components/Layout/LayoutUser";
+import SelectPosition from "src/components/Layout/SelectPosition";
 
 const defaultTheme = createTheme();
 
@@ -50,6 +51,7 @@ export default function Layout() {
           }}
         >
           <Toolbar sx={{ display: "flex", justifyContent: "right" }}>
+            <SelectPosition positions={userQuery.data.positions} />
             <LayoutUser officerName={userQuery.data.officerName} />
           </Toolbar>
         </AppBar>
