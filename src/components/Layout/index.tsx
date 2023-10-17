@@ -1,4 +1,3 @@
-import * as React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -7,37 +6,28 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
-import {
-  Divider,
-  IconButton,
-  List,
-  Menu,
-  MenuItem,
-  Paper,
-} from "@mui/material";
+import { Divider, List, Paper } from "@mui/material";
 import { mainListItems, secondaryListItems } from "src/components/drawerRoutes";
-import { AccountCircle } from "@mui/icons-material";
 import BasicBreadcrumbs from "src/components/Breadcrumb";
 import { Navigate, Outlet } from "react-router-dom";
+import { useUserQuery } from "src/context/slices/apiSlice";
+import Loading from "src/pages/Loading";
+import LayoutUser from "src/components/Layout/LayoutUser";
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function Layout() {
-  const [auth] = React.useState(true);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const userQuery = useUserQuery({});
 
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  if (userQuery.isLoading) {
+    return <Loading />;
+  }
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  if (!auth) {
+  if (!userQuery.isSuccess) {
     return <Navigate to="/login" />;
   }
+
+  console.log(userQuery.data);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -45,9 +35,7 @@ export default function Layout() {
         sx={{
           display: "flex",
           backgroundColor: (theme) =>
-            theme.palette.mode === "light"
-              ? theme.palette.grey[100]
-              : theme.palette.grey[900],
+            theme.palette.mode === "light" ? theme.palette.grey[100] : theme.palette.grey[900],
         }}
       >
         <CssBaseline />
@@ -62,38 +50,7 @@ export default function Layout() {
           }}
         >
           <Toolbar sx={{ display: "flex", justifyContent: "right" }}>
-            {auth && (
-              <div>
-                <IconButton
-                  size="large"
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  color="inherit"
-                >
-                  <AccountCircle />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
-                </Menu>
-              </div>
-            )}
+            <LayoutUser officerName={userQuery.data.officerName} />
           </Toolbar>
         </AppBar>
         <Paper
@@ -131,12 +88,7 @@ export default function Layout() {
             <Box sx={{ minHeight: "100vh" }}>
               <Outlet />
             </Box>
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              align="center"
-              sx={{ pt: 4, pb: 4 }}
-            >
+            <Typography variant="body2" color="text.secondary" align="center" sx={{ pt: 4, pb: 4 }}>
               {"Copyright © "}
               <Link color="inherit" href="https://mui.com/">
                 Legal Document Management

@@ -9,7 +9,14 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import * as yup from "yup";
-import { useFormik } from "formik";
+import { FormikHelpers, useFormik } from "formik";
+import { useLoginMutation } from "src/context/slices/apiSlice";
+import { useNavigate } from "react-router-dom";
+
+interface LoginFormValues {
+  username: string;
+  password: string;
+}
 
 const validationSchema = yup.object({
   username: yup
@@ -23,23 +30,36 @@ const validationSchema = yup.object({
     .required("Username is required"),
   password: yup
     .string()
-    .min(8, "Password should be of minimum 8 characters length")
+    .min(6, "Password should be of minimum 6 characters length")
     .matches(
-      /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+      /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,}$/,
       "Password should contain at least one letter and one digit"
     )
     .required("Password is required"),
 });
 
 export default function Login() {
+  const [login] = useLoginMutation();
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       username: "",
       password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (
+      values: LoginFormValues,
+      { setSubmitting }: FormikHelpers<LoginFormValues>
+    ) => {
+      setSubmitting(false);
+      try {
+        await login(values).unwrap();
+        console.log("Login success");
+        navigate("/", { replace: true });
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
 
@@ -60,12 +80,7 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box
-          component="form"
-          onSubmit={formik.handleSubmit}
-          noValidate
-          sx={{ mt: 1 }}
-        >
+        <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
@@ -96,12 +111,7 @@ export default function Login() {
             error={formik.touched.password && Boolean(formik.errors.password)}
             helperText={formik.touched.password && formik.errors.password}
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign In
           </Button>
           <Grid container>
@@ -113,12 +123,7 @@ export default function Login() {
           </Grid>
         </Box>
       </Box>
-      <Typography
-        variant="body2"
-        color="text.secondary"
-        align="center"
-        sx={{ pt: 4, pb: 4 }}
-      >
+      <Typography variant="body2" color="text.secondary" align="center" sx={{ pt: 4, pb: 4 }}>
         {"Copyright © "}
         <Link color="inherit" href="https://mui.com/">
           Legal Document Management
