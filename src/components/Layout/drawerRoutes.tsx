@@ -4,13 +4,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ListSubheader from "@mui/material/ListSubheader";
 import { Link } from "react-router-dom";
-import {
-  Grading,
-  LibraryBooks,
-  NoteAlt,
-  Publish,
-  Task,
-} from "@mui/icons-material";
+import { Grading, LibraryBooks, NoteAlt, Publish, Task } from "@mui/icons-material";
 
 export const mainListItems = (
   <React.Fragment>
@@ -19,7 +13,7 @@ export const mainListItems = (
         <ListItemIcon>
           <NoteAlt />
         </ListItemIcon>
-        <ListItemText primary="Drafting" />
+        <ListItemText primary="Drafting Task" />
       </ListItemButton>
     </Link>
     <Link to="/reviewing" style={{ textDecoration: "none", color: "inherit" }}>
@@ -27,18 +21,15 @@ export const mainListItems = (
         <ListItemIcon>
           <Grading />
         </ListItemIcon>
-        <ListItemText primary="Reviewing" />
+        <ListItemText primary="Reviewing Task" />
       </ListItemButton>
     </Link>
-    <Link
-      to="/manage-doc"
-      style={{ textDecoration: "none", color: "inherit" }}
-    >
+    <Link to="/manage-draft" style={{ textDecoration: "none", color: "inherit" }}>
       <ListItemButton>
         <ListItemIcon>
           <LibraryBooks />
         </ListItemIcon>
-        <ListItemText primary="Manage Docs" />
+        <ListItemText primary="Your Drafts" />
       </ListItemButton>
     </Link>
   </React.Fragment>
@@ -49,20 +40,20 @@ export const secondaryListItems = (
     <ListSubheader component="div" inset>
       Management
     </ListSubheader>
-    <Link to="/tasks" style={{ textDecoration: "none", color: "inherit" }}>
+    <Link to="/manage-task" style={{ textDecoration: "none", color: "inherit" }}>
       <ListItemButton>
         <ListItemIcon>
           <Task />
         </ListItemIcon>
-        <ListItemText primary="Tasks" />
+        <ListItemText primary="Assigning Task" />
       </ListItemButton>
     </Link>
-    <Link to="/submit" style={{ textDecoration: "none", color: "inherit" }}>
+    <Link to="/submit-doc" style={{ textDecoration: "none", color: "inherit" }}>
       <ListItemButton>
         <ListItemIcon>
           <Publish />
         </ListItemIcon>
-        <ListItemText primary="Submit" />
+        <ListItemText primary="Submit Document" />
       </ListItemButton>
     </Link>
   </React.Fragment>

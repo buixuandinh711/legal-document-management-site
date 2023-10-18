@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import { Divider, List, Paper } from "@mui/material";
-import { mainListItems, secondaryListItems } from "src/components/drawerRoutes";
+import { mainListItems, secondaryListItems } from "src/components/Layout/drawerRoutes";
 import BasicBreadcrumbs from "src/components/Breadcrumb";
 import { Navigate, Outlet } from "react-router-dom";
 import { useUserQuery } from "src/context/slices/apiSlice";

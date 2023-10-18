@@ -7,10 +7,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Add } from "@mui/icons-material";
 
 interface Column {
   id: "lastUpdated" | "draftName" | "documentName" | "documentNo";
@@ -48,23 +49,36 @@ const rows = [
   // Add more rows as needed
 ];
 
-export default function ManageDoc() {
+export default function ManageDraft() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const navigate = useNavigate();
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden", borderRadius: 4, p: 2 }}>
-      <Typography
-        sx={{ pl: 2 }}
-        variant="h6"
-        id="tableTitle"
-        component="div"
-        fontWeight={600}
-        fontSize={25}
-      >
-        Your Documents
-      </Typography>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Typography
+          sx={{ pl: 2 }}
+          variant="h6"
+          id="tableTitle"
+          component="div"
+          fontWeight={600}
+          fontSize={25}
+        >
+          Your Documents
+        </Typography>
+        <Button
+          variant="contained"
+          startIcon={<Add />}
+          size="small"
+          sx={{ "& .MuiButton-startIcon": { mr: 0 } }}
+          onClick={() => {
+            navigate("/create-draft");
+          }}
+        >
+          New
+        </Button>
+      </Box>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -85,31 +99,29 @@ export default function ManageDoc() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={row.documentNo} // Assuming documentNo is unique
-                    onClick={() => {
-                      navigate("/doc-detail");
-                    }}
-                    sx={{ cursor: "pointer" }}
-                  >
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
+            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+              return (
+                <TableRow
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={row.documentNo} // Assuming documentNo is unique
+                  onClick={() => {
+                    navigate("/draft-detail");
+                  }}
+                  sx={{ cursor: "pointer" }}
+                >
+                  {columns.map((column) => {
+                    const value = row[column.id];
+                    return (
+                      <TableCell key={column.id} align={column.align}>
+                        {value}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>

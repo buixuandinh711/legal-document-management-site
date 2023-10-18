@@ -1,8 +1,8 @@
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { useState } from "react";
-import { Box, Chip } from "@mui/material";
+import { ChangeEvent, useRef } from "react";
+import { Box, Chip, Typography } from "@mui/material";
 import { AttachFile } from "@mui/icons-material";
 
 const VisuallyHiddenInput = styled("input")({
@@ -17,31 +17,57 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-export default function InputFileUpload() {
-  const [attached, setAttachment] = useState(true);
+export default function InputFileUpload({
+  file,
+  removeFile,
+  onChange,
+}: {
+  file: File | null;
+  removeFile: () => void;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+}) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   return (
     <Box sx={{ mt: 1 }}>
-      {attached ? (
+      {file !== null ? (
         <Chip
-          label="Luat Bao Hien Xa Hoi"
+          label={file.name}
           icon={<AttachFile />}
           variant="outlined"
+          sx={{ maxWidth: 300 }}
           onDelete={() => {
-            setAttachment(false);
+            if (fileInputRef.current) {
+              fileInputRef.current.files = null;
+            }
+            removeFile();
           }}
         />
       ) : (
-        <Button
-          component="label"
-          variant="contained"
-          startIcon={<CloudUploadIcon />}
-          onClick={() => setAttachment(true)}
-        >
-          Upload file
-          <VisuallyHiddenInput type="file" />
-        </Button>
+        <Box sx={{ display: "flex", justifyContent: "left", alignItems: "center" }}>
+          <Button
+            variant="contained"
+            component="span"
+            startIcon={<CloudUploadIcon />}
+            onClick={() => {
+              if (fileInputRef.current) {
+                fileInputRef.current.click();
+              }
+            }}
+          >
+            Upload file
+          </Button>
+          <Typography variant="subtitle1"  sx={{ ml: 1 }}>
+            Max size: 10MB
+          </Typography>
+        </Box>
       )}
+      <VisuallyHiddenInput
+        ref={fileInputRef}
+        type="file"
+        accept="application/pdf"
+        onChange={onChange}
+      />
     </Box>
   );
 }
