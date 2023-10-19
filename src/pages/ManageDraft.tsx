@@ -12,6 +12,8 @@ import { grey } from "@mui/material/colors";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Add } from "@mui/icons-material";
+import { useDraftsListQuery } from "src/context/slices/apiSlice";
+import { useAppSelector } from "src/context/store";
 
 interface Column {
   id: "lastUpdated" | "draftName" | "documentName" | "documentNo";
@@ -52,7 +54,13 @@ const rows = [
 export default function ManageDraft() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const workingPosition = useAppSelector((state) => state.position);
+  const draftsListQuery = useDraftsListQuery(workingPosition);
+
   const navigate = useNavigate();
+
+  console.log(draftsListQuery.data);
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden", borderRadius: 4, p: 2 }}>

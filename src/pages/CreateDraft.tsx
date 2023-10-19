@@ -45,7 +45,7 @@ export default function CreateDraft() {
         }
 
         await createDraft({
-          divisionId: position.divisionId,
+          divisionOnchainId: position.divisionOnchainId,
           positionIndex: position.positionIndex,
           draftName: values.draftName,
           documentNo: values.documentNo,

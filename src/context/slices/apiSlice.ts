@@ -1,5 +1,28 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { GetUserResponse, Officer } from "src/utils/types";
+import { Officer } from "src/utils/types";
+
+interface GetUserResponse {
+  officer_name: string;
+  positions: {
+    division_onchain_id: string;
+    division_name: string;
+    position_index: number;
+    position_name: string;
+    position_role: number;
+  }[];
+}
+
+interface DraftsListItem {
+  id: number;
+  name: string;
+  drafter_username: string;
+  drafter_name: string;
+  document_name: string;
+  updated_at: {
+    nanos_since_epoch: number;
+    secs_since_epoch: number;
+  };
+}
 
 export const apiSlice = createApi({
   reducerPath: "api",
@@ -21,7 +44,7 @@ export const apiSlice = createApi({
             positionIndex: serverPosition.position_index,
             positionName: serverPosition.position_name,
             positionRole: serverPosition.position_role,
-            divisionId: serverPosition.division_id,
+            divisionOnchainId: serverPosition.division_onchain_id,
             divisionName: serverPosition.division_name,
           })),
         };
@@ -46,7 +69,7 @@ export const apiSlice = createApi({
     createDraft: builder.mutation<
       Record<string, never>,
       {
-        divisionId: number;
+        divisionOnchainId: number;
         positionIndex: number;
         draftName: string;
         documentNo: string;
@@ -56,7 +79,7 @@ export const apiSlice = createApi({
       }
     >({
       query: ({
-        divisionId,
+        divisionOnchainId,
         positionIndex,
         draftName,
         documentNo,
@@ -68,7 +91,7 @@ export const apiSlice = createApi({
         formData.append("doc", documentContent);
 
         const draftInfo = {
-          division_id: divisionId,
+          division_onchain_id: divisionOnchainId,
           position_index: positionIndex,
           name: draftName,
           document_no: documentNo,
@@ -93,8 +116,30 @@ export const apiSlice = createApi({
         method: "GET",
       }),
     }),
+    draftsList: builder.query<
+      DraftsListItem[],
+      { divisionOnchainId: string; positionIndex: number }
+    >({
+      query: ({ divisionOnchainId, positionIndex }) => ({
+        url: "/draft/list",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          division_onchain_id: divisionOnchainId,
+          position_index: positionIndex,
+        }),
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
-export const { useUserQuery, useLoginMutation, useCreateDraftMutation, useDocTypesQuery } =
-  apiSlice;
+export const {
+  useUserQuery,
+  useLoginMutation,
+  useCreateDraftMutation,
+  useDocTypesQuery,
+  useDraftsListQuery,
+} = apiSlice;

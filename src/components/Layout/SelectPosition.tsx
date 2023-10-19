@@ -13,7 +13,7 @@ export default function SelectPosition({ positions }: { positions: Position[] })
   useEffect(() => {
     dispatch(
       switchPosition({
-        divisionId: positions[0].divisionId,
+        divisionOnchainId: positions[0].divisionOnchainId,
         positionIndex: positions[0].positionIndex,
         positionRole: positions[0].positionRole,
       })
@@ -22,12 +22,12 @@ export default function SelectPosition({ positions }: { positions: Position[] })
 
   const handlePositionChange = (event: SelectChangeEvent) => {
     const selectedPosition = positions.find(
-      (p) => `${p.divisionId}/${p.positionIndex}` === event.target.value
+      (p) => `${p.divisionOnchainId}/${p.positionIndex}` === event.target.value
     );
     if (selectedPosition !== undefined) {
       dispatch(
         switchPosition({
-          divisionId: selectedPosition.divisionId,
+          divisionOnchainId: selectedPosition.divisionOnchainId,
           positionIndex: selectedPosition.positionIndex,
           positionRole: selectedPosition.positionRole,
         })
@@ -58,7 +58,11 @@ export default function SelectPosition({ positions }: { positions: Position[] })
         variant="standard"
       >
         <Select
-          value={`${workingPosition.divisionId}/${workingPosition.positionIndex}`}
+          value={
+            workingPosition.divisionOnchainId === "" && workingPosition.positionIndex === 0
+              ? ""
+              : `${workingPosition.divisionOnchainId}/${workingPosition.positionIndex}`
+          }
           onChange={handlePositionChange}
           //   disableUnderline
           sx={{
@@ -67,8 +71,8 @@ export default function SelectPosition({ positions }: { positions: Position[] })
         >
           {positions.map((position) => (
             <MenuItem
-              key={`${position.divisionId}/${position.positionIndex}`}
-              value={`${position.divisionId}/${position.positionIndex}`}
+              key={`${position.divisionOnchainId}/${position.positionIndex}`}
+              value={`${position.divisionOnchainId}/${position.positionIndex}`}
             >
               {`${position.divisionName} - ${position.positionName}`}
             </MenuItem>

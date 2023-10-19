@@ -1,13 +1,13 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface WorkingPosition {
-  divisionId: number;
+  divisionOnchainId: string;
   positionIndex: number;
   positionRole: number;
 }
 
 const initialState: WorkingPosition = {
-  divisionId: 0,
+  divisionOnchainId: "",
   positionIndex: 0,
   positionRole: 0,
 };
@@ -17,7 +17,7 @@ export const positionSlice = createSlice({
   initialState,
   reducers: {
     switchPosition: (state, action: PayloadAction<WorkingPosition>) => {
-      state.divisionId = action.payload.divisionId;
+      state.divisionOnchainId = action.payload.divisionOnchainId;
       state.positionIndex = action.payload.positionIndex;
       state.positionRole = action.payload.positionRole;
     },
