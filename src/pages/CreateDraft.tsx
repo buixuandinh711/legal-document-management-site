@@ -2,6 +2,8 @@ import { Send } from "@mui/icons-material"; // Import the Edit icon
 import { Typography, Paper, Box, Button, InputLabel, TextField, MenuItem } from "@mui/material";
 import { FormikHelpers, useFormik } from "formik";
 import InputFileUpload from "src/components/InputFileUpload";
+import { useCreateDraftMutation, useUserQuery } from "src/context/slices/apiSlice";
+import { useAppSelector } from "src/context/store";
 import * as yup from "yup";
 
 interface CreateTaskFromValues {
@@ -31,6 +33,9 @@ const legalDocumentTypes = [
 ];
 
 export default function CreateDraft() {
+  const [createDraft] = useCreateDraftMutation();
+  const position = useAppSelector((state) => state.position);
+
   const formik = useFormik({
     initialValues: {
       draftName: "",
@@ -45,15 +50,24 @@ export default function CreateDraft() {
       { setSubmitting }: FormikHelpers<CreateTaskFromValues>
     ) => {
       setSubmitting(false);
-      window.alert(JSON.stringify(values));
-      console.log(values);
-      // try {
-      //   await login(values).unwrap();
-      //   console.log("Login success");
-      //   navigate("/", { replace: true });
-      // } catch (error) {
-      //   console.log(error);
-      // }
+      try {
+        if (values.documentContent === null) {
+          return;
+        }
+        
+        await createDraft({
+          divisionId: position.divisionId,
+          positionIndex: position.positionIndex,
+          draftName: values.draftName,
+          documentNo: values.documentNo,
+          documentName: values.documentName,
+          documentType: Number.parseInt(values.documentType),
+          documentContent: values.documentContent,
+        }).unwrap();
+        console.log("Create draft successfully");
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
 

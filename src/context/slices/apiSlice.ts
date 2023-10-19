@@ -43,7 +43,51 @@ export const apiSlice = createApi({
       },
       invalidatesTags: ["User"],
     }),
+    createDraft: builder.mutation<
+      Record<string, never>,
+      {
+        divisionId: number;
+        positionIndex: number;
+        draftName: string;
+        documentNo: string;
+        documentName: string;
+        documentType: number;
+        documentContent: File;
+      }
+    >({
+      query: ({
+        divisionId,
+        positionIndex,
+        draftName,
+        documentNo,
+        documentName,
+        documentType,
+        documentContent,
+      }) => {
+        const formData = new FormData();
+        formData.append("doc", documentContent);
+
+        const draftInfo = {
+          division_id: divisionId,
+          position_index: positionIndex,
+          name: draftName,
+          document_no: documentNo,
+          document_name: documentName,
+          document_type: documentType,
+        };
+        const reqDraftInfo = new Blob([JSON.stringify(draftInfo)], { type: "application/json" });
+        formData.append("info", reqDraftInfo);
+
+        return {
+          url: "/draft/create",
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        };
+      },
+      // invalidatesTags: ["User"],
+    }),
   }),
 });
 
-export const { useUserQuery, useLoginMutation } = apiSlice;
+export const { useUserQuery, useLoginMutation, useCreateDraftMutation } = apiSlice;
