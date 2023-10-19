@@ -2,7 +2,7 @@ import { Send } from "@mui/icons-material"; // Import the Edit icon
 import { Typography, Paper, Box, Button, InputLabel, TextField, MenuItem } from "@mui/material";
 import { FormikHelpers, useFormik } from "formik";
 import InputFileUpload from "src/components/InputFileUpload";
-import { useCreateDraftMutation, useUserQuery } from "src/context/slices/apiSlice";
+import { useCreateDraftMutation, useDocTypesQuery } from "src/context/slices/apiSlice";
 import { useAppSelector } from "src/context/store";
 import * as yup from "yup";
 
@@ -20,21 +20,10 @@ const validationSchema = yup.object({
   documentName: yup.string().required("Docuemnt name is required"),
 });
 
-const legalDocumentTypes = [
-  { id: 1, name: "Hiến pháp" },
-  { id: 2, name: "Bộ luật" },
-  { id: 3, name: "Luật" },
-  { id: 4, name: "Nghị quyết" },
-  { id: 5, name: "Pháp lệnh" },
-  { id: 6, name: "Quyết định" },
-  { id: 7, name: "Nghị định" },
-  { id: 8, name: "Thông tư" },
-  { id: 9, name: "Nghị quyết liên tịch" },
-];
-
 export default function CreateDraft() {
   const [createDraft] = useCreateDraftMutation();
   const position = useAppSelector((state) => state.position);
+  const docTypesQuery = useDocTypesQuery({});
 
   const formik = useFormik({
     initialValues: {
@@ -54,7 +43,7 @@ export default function CreateDraft() {
         if (values.documentContent === null) {
           return;
         }
-        
+
         await createDraft({
           divisionId: position.divisionId,
           positionIndex: position.positionIndex,
@@ -161,11 +150,12 @@ export default function CreateDraft() {
             error={formik.touched.documentType && Boolean(formik.errors.documentType)}
             helperText={formik.touched.documentType && formik.errors.documentType}
           >
-            {legalDocumentTypes.map((type) => (
-              <MenuItem key={type.id} value={`${type.id}`}>
-                {type.name}
-              </MenuItem>
-            ))}
+            {docTypesQuery.isSuccess &&
+              docTypesQuery.data.map((type) => (
+                <MenuItem key={type.id} value={`${type.id}`}>
+                  {type.name}
+                </MenuItem>
+              ))}
           </TextField>
           <Box sx={{ my: 2 }}>
             <InputLabel sx={{ transform: "scale(0.75)", mb: 1 }}>Document Content</InputLabel>

@@ -87,7 +87,14 @@ export const apiSlice = createApi({
       },
       // invalidatesTags: ["User"],
     }),
+    docTypes: builder.query<{ id: number; name: string }[], Record<string, never>>({
+      query: () => ({
+        url: "/doc-types",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useUserQuery, useLoginMutation, useCreateDraftMutation } = apiSlice;
+export const { useUserQuery, useLoginMutation, useCreateDraftMutation, useDocTypesQuery } =
+  apiSlice;
