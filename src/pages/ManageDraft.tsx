@@ -14,42 +14,9 @@ import { useNavigate } from "react-router-dom";
 import { Add } from "@mui/icons-material";
 import { useDraftsListQuery } from "src/context/slices/apiSlice";
 import { useAppSelector } from "src/context/store";
-
-interface Column {
-  id: "lastUpdated" | "draftName" | "documentName" | "documentNo";
-  label: string;
-  minWidth?: number;
-  align?: "right";
-}
-
-const columns: readonly Column[] = [
-  { id: "lastUpdated", label: "Last Updated", minWidth: 170 },
-  { id: "draftName", label: "Draft Name", minWidth: 250 },
-  { id: "documentName", label: "Document Name", minWidth: 250 },
-  { id: "documentNo", label: "Document No", minWidth: 170 },
-];
-
-interface Data {
-  lastUpdated: string;
-  draftName: string;
-  documentName: string;
-  documentNo: string;
-}
-
-function createData(
-  lastUpdated: string,
-  draftName: string,
-  documentName: string,
-  documentNo: string
-): Data {
-  return { lastUpdated, draftName, documentName, documentNo };
-}
-
-const rows = [
-  createData("2023-10-15", "Draft 1", "Document 1", "001"),
-  createData("2023-10-16", "Draft 2", "Document 2", "002"),
-  // Add more rows as needed
-];
+import { convertSecsToDateTime } from "src/utils/utils";
+import ContentLoading from "src/pages/ContentLoading";
+import ContentError from "src/pages/ContentError";
 
 export default function ManageDraft() {
   const [page, setPage] = useState(0);
@@ -60,93 +27,126 @@ export default function ManageDraft() {
 
   const navigate = useNavigate();
 
-  console.log(draftsListQuery.data);
+  if (draftsListQuery.isLoading) {
+    return <ContentLoading />;
+  }
+
+  if (draftsListQuery.isError) {
+    return <ContentError />;
+  }
 
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden", borderRadius: 4, p: 2 }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Typography
-          sx={{ pl: 2 }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-          fontWeight={600}
-          fontSize={25}
-        >
-          Your Documents
-        </Typography>
-        <Button
-          variant="contained"
-          startIcon={<Add />}
-          size="small"
-          sx={{ "& .MuiButton-startIcon": { mr: 0 } }}
-          onClick={() => {
-            navigate("/create-draft");
-          }}
-        >
-          New
-        </Button>
-      </Box>
-      <TableContainer sx={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
+    draftsListQuery.isSuccess && (
+      <Paper sx={{ width: "100%", overflow: "hidden", borderRadius: 4, p: 2 }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <Typography
+            sx={{ pl: 2 }}
+            variant="h6"
+            id="tableTitle"
+            component="div"
+            fontWeight={600}
+            fontSize={25}
+          >
+            Your Drafts
+          </Typography>
+          <Button
+            variant="contained"
+            startIcon={<Add />}
+            size="small"
+            sx={{ "& .MuiButton-startIcon": { mr: 0 } }}
+            onClick={() => {
+              navigate("/draft/create");
+            }}
+          >
+            New
+          </Button>
+        </Box>
+        <TableContainer sx={{ maxHeight: 440 }}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
                 <TableCell
-                  key={column.id}
-                  align={column.align}
+                  align="left"
                   sx={{
-                    minWidth: column.minWidth,
+                    minWidth: "150px",
                     fontWeight: 600,
                     color: grey[600],
                   }}
                 >
-                  {column.label}
+                  Name
                 </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-              return (
-                <TableRow
-                  hover
-                  role="checkbox"
-                  tabIndex={-1}
-                  key={row.documentNo} // Assuming documentNo is unique
-                  onClick={() => {
-                    navigate("/draft-detail");
+                <TableCell
+                  align="left"
+                  sx={{
+                    minWidth: "150px",
+                    fontWeight: 600,
+                    color: grey[600],
                   }}
-                  sx={{ cursor: "pointer" }}
                 >
-                  {columns.map((column) => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {value}
+                  Drafter
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    minWidth: "350px",
+                    fontWeight: 600,
+                    color: grey[600],
+                  }}
+                >
+                  Document
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    minWidth: "200px",
+                    fontWeight: 600,
+                    color: grey[600],
+                  }}
+                >
+                  Last Updated
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {draftsListQuery.data
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => {
+                  return (
+                    <TableRow
+                      hover
+                      key={row.id}
+                      onClick={() => {
+                        navigate(`/draft/${row.id}`);
+                      }}
+                      sx={{ cursor: "pointer" }}
+                    >
+                      <TableCell align="left">{row.name}</TableCell>
+                      <TableCell align="left">{row.drafterName}</TableCell>
+                      <TableCell align="left">{row.documentName}</TableCell>
+                      <TableCell align="left">
+                        {convertSecsToDateTime(row.updatedAt.secsSinceEpoch)}
                       </TableCell>
-                    );
-                  })}
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 15]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={(_event: unknown, newPage: number) => {
-          setPage(newPage);
-        }}
-        onRowsPerPageChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          setRowsPerPage(+event.target.value);
-          setPage(0);
-        }}
-      />
-    </Paper>
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[1, 5, 10, 15]}
+          component="div"
+          count={draftsListQuery.data.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={(_event: unknown, newPage: number) => {
+            setPage(newPage);
+          }}
+          onRowsPerPageChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setRowsPerPage(+event.target.value);
+            setPage(0);
+          }}
+        />
+      </Paper>
+    )
   );
 }

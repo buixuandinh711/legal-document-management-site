@@ -11,9 +11,10 @@ import { mainListItems, secondaryListItems } from "src/components/Layout/drawerR
 import BasicBreadcrumbs from "src/components/Breadcrumb";
 import { Navigate, Outlet } from "react-router-dom";
 import { useUserQuery } from "src/context/slices/apiSlice";
-import Loading from "src/pages/Loading";
-import LayoutUser from "src/components/Layout/LayoutUser";
 import SelectPosition from "src/components/Layout/SelectPosition";
+import FullPageLoading from "src/pages/FullPageLoading";
+import AppbarUser from "src/components/Layout/AppbarUser";
+import Snackbar from "src/components/Snackbar";
 
 const defaultTheme = createTheme();
 
@@ -21,7 +22,7 @@ export default function Layout() {
   const userQuery = useUserQuery({});
 
   if (userQuery.isLoading) {
-    return <Loading />;
+    return <FullPageLoading />;
   }
 
   if (!userQuery.isSuccess) {
@@ -52,7 +53,7 @@ export default function Layout() {
         >
           <Toolbar sx={{ display: "flex", justifyContent: "right" }}>
             <SelectPosition positions={userQuery.data.positions} />
-            <LayoutUser officerName={userQuery.data.officerName} />
+            <AppbarUser officerName={userQuery.data.officerName} />
           </Toolbar>
         </AppBar>
         <Paper
@@ -77,19 +78,31 @@ export default function Layout() {
             <List>{secondaryListItems}</List>
           </Box>
         </Paper>
+        <Snackbar />
         <Box
           component="main"
           sx={{
             width: "calc(100% - 264px)",
             ml: "256px",
+            minHeight: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
           }}
         >
           <Toolbar />
           <BasicBreadcrumbs />
-          <Container maxWidth="lg" sx={{ mt: 8 }}>
-            <Box sx={{ minHeight: "100vh" }}>
-              <Outlet />
-            </Box>
+          <Container
+            maxWidth="lg"
+            sx={{
+              mt: 0,
+              flexGrow: 1,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+            }}
+          >
+            <Outlet />
             <Typography variant="body2" color="text.secondary" align="center" sx={{ pt: 4, pb: 4 }}>
               {"Copyright © "}
               <Link color="inherit" href="https://mui.com/">

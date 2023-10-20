@@ -24,7 +24,7 @@ export const mainListItems = (
         <ListItemText primary="Reviewing Task" />
       </ListItemButton>
     </Link>
-    <Link to="/manage-draft" style={{ textDecoration: "none", color: "inherit" }}>
+    <Link to="/draft" style={{ textDecoration: "none", color: "inherit" }}>
       <ListItemButton>
         <ListItemIcon>
           <LibraryBooks />

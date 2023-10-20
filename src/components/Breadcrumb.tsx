@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 
 export default function BasicBreadcrumbs() {
   return (
-    <Box sx={{ p: 3 }}>
+    <Box sx={{ p: 3, mb: 4}}>
       <MuiBreadcrumbs aria-label="breadcrumb" sx={{}}>
         <Link underline="hover" color="inherit" href="/">
           Home

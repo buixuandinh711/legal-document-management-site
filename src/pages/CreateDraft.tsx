@@ -44,7 +44,7 @@ export default function CreateDraft() {
           return;
         }
 
-        await createDraft({
+        const draftId = await createDraft({
           divisionOnchainId: position.divisionOnchainId,
           positionIndex: position.positionIndex,
           draftName: values.draftName,
@@ -53,7 +53,7 @@ export default function CreateDraft() {
           documentType: Number.parseInt(values.documentType),
           documentContent: values.documentContent,
         }).unwrap();
-        console.log("Create draft successfully");
+        console.log("Create draft successfully", draftId);
       } catch (error) {
         console.log(error);
       }

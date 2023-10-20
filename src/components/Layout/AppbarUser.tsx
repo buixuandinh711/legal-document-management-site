@@ -2,7 +2,7 @@ import { IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { useState } from "react";
 
-export default function LayoutUser({ officerName }: { officerName: string }) {
+export default function AppbarUser({ officerName }: { officerName: string }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   console.log(officerName);

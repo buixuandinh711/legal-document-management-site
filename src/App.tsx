@@ -17,23 +17,9 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route path="" element={<Typography variant="h1">Root</Typography>} />
           <Route path="drafting" element={<DraftTask />} />
-          <Route path="manage-draft" element={<ManageDraft />} />
-          <Route path="create-draft" element={<CreateDraft />} />
-          <Route
-            path="draft-detail"
-            element={
-              <DocumentDetail
-                documentDetail={{
-                  documentNo: "758/QĐ-QLD	",
-                  documentName:
-                    "QUYET DINH VỀ VIỆC CÔNG BỐ DANH MỤC THUỐC, NGUYÊN LIỆU LÀM THUỐC CÓ GIẤY ĐĂNG KÝ LƯU HÀNH ĐƯỢC TIẾP TỤC SỬ DỤNG THEO QUY ĐỊNH TẠI KHOẢN 1 ĐIỀU 3 NGHỊ QUYẾT SỐ 80/2023/QH15 NGÀY 09/01/2023 CỦA QUỐC HỘI (ĐỢT 8)",
-                  draftName: "quy dinh abc",
-                  documentType: "Quyet Dinh",
-                  lastUpdated: "21:11 23/10/2023",
-                }}
-              />
-            }
-          />
+          <Route path="draft" element={<ManageDraft />} />
+          <Route path="draft/create" element={<CreateDraft />} />
+          <Route path="draft/:id" element={<DocumentDetail />} />
           <Route
             path="detail"
             element={

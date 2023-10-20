@@ -15,13 +15,25 @@ interface GetUserResponse {
 interface DraftsListItem {
   id: number;
   name: string;
-  drafter_username: string;
-  drafter_name: string;
-  document_name: string;
-  updated_at: {
-    nanos_since_epoch: number;
-    secs_since_epoch: number;
+  drafterUsername: string;
+  drafterName: string;
+  documentName: string;
+  updatedAt: {
+    nanosSinceEpoch: number;
+    secsSinceEpoch: number;
   };
+}
+
+interface DraftDetail {
+  id: number;
+  name: string;
+  documentNo: string;
+  documentName: string;
+  documentType: string;
+  updatedAt: number;
+  docUri: string;
+  drafterUsername: string;
+  drafterName: string;
 }
 
 export const apiSlice = createApi({
@@ -29,7 +41,7 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_API_HOST,
   }),
-  tagTypes: ["User"],
+  tagTypes: ["User", "Draft"],
   endpoints: (builder) => ({
     user: builder.query<Officer, Record<string, never>>({
       query: () => ({
@@ -69,7 +81,7 @@ export const apiSlice = createApi({
     createDraft: builder.mutation<
       Record<string, never>,
       {
-        divisionOnchainId: number;
+        divisionOnchainId: string;
         positionIndex: number;
         draftName: string;
         documentNo: string;
@@ -108,7 +120,7 @@ export const apiSlice = createApi({
           credentials: "include",
         };
       },
-      // invalidatesTags: ["User"],
+      invalidatesTags: ["Draft"],
     }),
     docTypes: builder.query<{ id: number; name: string }[], Record<string, never>>({
       query: () => ({
@@ -132,6 +144,75 @@ export const apiSlice = createApi({
         }),
         credentials: "include",
       }),
+      transformResponse: (
+        response: {
+          id: number;
+          name: string;
+          drafter_username: string;
+          drafter_name: string;
+          document_name: string;
+          updated_at: {
+            nanos_since_epoch: number;
+            secs_since_epoch: number;
+          };
+        }[]
+      ) => {
+        return response.map((item) => ({
+          ...item,
+          drafterUsername: item.drafter_username,
+          drafterName: item.drafter_name,
+          documentName: item.document_name,
+          updatedAt: {
+            nanosSinceEpoch: item.updated_at.nanos_since_epoch,
+            secsSinceEpoch: item.updated_at.secs_since_epoch,
+          },
+        }));
+      },
+      providesTags: ["User", "Draft"],
+    }),
+    draftDetail: builder.query<
+      DraftDetail,
+      { divisionOnchainId: string; positionIndex: number; draftId: number }
+    >({
+      query: ({ divisionOnchainId, positionIndex, draftId }) => ({
+        url: `/draft/detail/${draftId}`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          division_onchain_id: divisionOnchainId,
+          position_index: positionIndex,
+        }),
+        credentials: "include",
+      }),
+      transformResponse: (response: {
+        id: number;
+        name: string;
+        document_no: string;
+        document_name: string;
+        document_type: string;
+        updated_at: {
+          nanos_since_epoch: number;
+          secs_since_epoch: number;
+        };
+        doc_uri: string;
+        drafter_username: string;
+        drafter_name: string;
+      }) => {
+        return {
+          id: 1,
+          name: response.name,
+          documentNo: response.document_no,
+          documentName: response.document_name,
+          documentType: response.document_type,
+          updatedAt: response.updated_at.secs_since_epoch,
+          docUri: response.doc_uri,
+          drafterUsername: response.drafter_username,
+          drafterName: response.drafter_name,
+        };
+      },
+      providesTags: ["User"],
     }),
   }),
 });
@@ -142,4 +223,5 @@ export const {
   useCreateDraftMutation,
   useDocTypesQuery,
   useDraftsListQuery,
+  useDraftDetailQuery
 } = apiSlice;
