@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import { RingLoader } from "react-spinners";
 
 export default function FullPageLoading() {

@@ -1,10 +1,13 @@
 import { Send } from "@mui/icons-material"; // Import the Edit icon
 import { Typography, Paper, Box, Button, InputLabel, TextField, MenuItem } from "@mui/material";
 import { FormikHelpers, useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
 import InputFileUpload from "src/components/InputFileUpload";
 import { useCreateDraftMutation, useDocTypesQuery } from "src/context/slices/apiSlice";
-import { useAppSelector } from "src/context/store";
+import { openSnackbar } from "src/context/slices/snackbarSlide";
+import { useAppDispatch, useAppSelector } from "src/context/store";
 import * as yup from "yup";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 interface CreateTaskFromValues {
   draftName: string;
@@ -21,9 +24,11 @@ const validationSchema = yup.object({
 });
 
 export default function CreateDraft() {
-  const [createDraft] = useCreateDraftMutation();
+  const [createDraft, createResult] = useCreateDraftMutation();
   const position = useAppSelector((state) => state.position);
+  const dispatch = useAppDispatch();
   const docTypesQuery = useDocTypesQuery({});
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -53,7 +58,9 @@ export default function CreateDraft() {
           documentType: Number.parseInt(values.documentType),
           documentContent: values.documentContent,
         }).unwrap();
-        console.log("Create draft successfully", draftId);
+        dispatch(openSnackbar({ type: "success", message: "Draft created" }));
+        console.log(draftId, draftId.length);
+        navigate(`/draft/${draftId}`);
       } catch (error) {
         console.log(error);
       }
@@ -187,12 +194,24 @@ export default function CreateDraft() {
             justifyContent: "right",
           }}
         >
-          <Button variant="outlined" sx={{ mr: 1, width: "120px" }}>
+          <Button
+            variant="outlined"
+            sx={{ mr: 1, width: "120px" }}
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
             Cancel
           </Button>
-          <Button variant="contained" type="submit" endIcon={<Send />} sx={{ width: "120px" }}>
+          <LoadingButton
+            variant="contained"
+            loading={createResult.isLoading}
+            type="submit"
+            endIcon={<Send />}
+            sx={{ width: "120px" }}
+          >
             Submit
-          </Button>
+          </LoadingButton>
         </Box>
       </Paper>
     </>

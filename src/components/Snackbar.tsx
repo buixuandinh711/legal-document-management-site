@@ -8,12 +8,18 @@ export default function Snackbar() {
   const dispatch = useAppDispatch();
 
   const handleClose = () => {
-    dispatch(closeSnackbar);
+    dispatch(closeSnackbar());
   };
 
   return (
     <MuiSnackbar open={snackbarState.open} autoHideDuration={5000} onClose={handleClose}>
-      <Alert onClose={handleClose} severity={snackbarState.type} sx={{ width: "100%" }}>
+      <Alert
+        elevation={6}
+        variant="filled"
+        onClose={handleClose}
+        severity={snackbarState.type}
+        sx={{ width: "100%" }}
+      >
         {snackbarState.message}
       </Alert>
     </MuiSnackbar>
