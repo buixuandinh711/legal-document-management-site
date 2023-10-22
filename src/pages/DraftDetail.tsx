@@ -45,11 +45,9 @@ export default function TaskDetail() {
       <Paper
         sx={{
           width: "100%",
+          p: 4,
           pt: 2,
-          pb: 4,
-          px: 4,
           borderRadius: 4,
-          backgroundColor: "#fff",
         }}
       >
         <Box

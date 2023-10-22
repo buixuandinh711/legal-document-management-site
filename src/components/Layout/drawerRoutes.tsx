@@ -48,7 +48,7 @@ export const secondaryListItems = (
         <ListItemText primary="Assigning Task" />
       </ListItemButton>
     </Link>
-    <Link to="/submit-doc" style={{ textDecoration: "none", color: "inherit" }}>
+    <Link to="/submit" style={{ textDecoration: "none", color: "inherit" }}>
       <ListItemButton>
         <ListItemIcon>
           <Publish />
