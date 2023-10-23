@@ -20,16 +20,15 @@ import { convertSecsToDateTime } from "src/utils/utils";
 export default function TaskDetail() {
   const [isEditing, setEditing] = useState(false);
   const { id } = useParams();
-  console.log({ id });
 
   const workingPosition = useAppSelector((state) => state.position);
   const draftDetailQuery = useDraftDetailQuery(
     {
       divisionOnchainId: workingPosition.divisionOnchainId,
       positionIndex: workingPosition.positionIndex,
-      draftId: Number.parseInt(id!),
+      draftId: parseInt(id!),
     },
-    { skip: id === undefined || isNaN(Number(id)) }
+    { skip: id === undefined || isNaN(parseInt(id)) }
   );
 
   if (draftDetailQuery.isLoading) {
@@ -157,11 +156,13 @@ export default function TaskDetail() {
             <Box sx={{ my: 2 }}>
               <InputLabel sx={{ transform: "scale(0.75)", mb: 1 }}>Document Content</InputLabel>
               <Chip
-                label={"Constitutional Law.pdf"}
+                label={draftDetailQuery.data.fileName}
                 icon={<AttachFile />}
                 variant="outlined"
                 sx={{ maxWidth: 300, cursor: "pointer" }}
-                onClick={() => {}}
+                onClick={() => {
+                  window.open(draftDetailQuery.data.docUri, "_blank");
+                }}
               />
             </Box>
           </Box>

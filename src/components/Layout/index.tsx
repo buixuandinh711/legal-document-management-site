@@ -19,24 +19,24 @@ import Snackbar from "src/components/Snackbar";
 const defaultTheme = createTheme();
 
 export default function Layout() {
-  // const userQuery = useUserQuery({});
+  const userQuery = useUserQuery({});
 
-  const userQuery = {
-    isSuccess: true,
-    isLoading: false,
-    data: {
-      officerName: "Dinh Xuan Bui",
-      positions: [
-        {
-          divisionOnchainId: "H1",
-          divisionName: "UBND Ha Noi",
-          positionIndex: 0,
-          positionName: "Chu tich UBND",
-          positionRole: 1,
-        },
-      ],
-    },
-  };
+  // const userQuery = {
+  //   isSuccess: true,
+  //   isLoading: false,
+  //   data: {
+  //     officerName: "Dinh Xuan Bui",
+  //     positions: [
+  //       {
+  //         divisionOnchainId: "H1",
+  //         divisionName: "UBND Ha Noi",
+  //         positionIndex: 0,
+  //         positionName: "Chu tich UBND",
+  //         positionRole: 1,
+  //       },
+  //     ],
+  //   },
+  // };
 
   if (userQuery.isLoading) {
     return <FullPageLoading />;

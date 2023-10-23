@@ -24,16 +24,27 @@ interface DraftsListItem {
   };
 }
 
+interface SubmittableDraft {
+  id: number;
+  name: string;
+}
+
 interface DraftDetail {
   id: number;
   name: string;
   documentNo: string;
   documentName: string;
   documentType: string;
+  fileName: string;
   updatedAt: number;
   docUri: string;
   drafterUsername: string;
   drafterName: string;
+}
+
+interface DraftSignature {
+  id: number;
+  signerName: string;
 }
 
 export const apiSlice = createApi({
@@ -158,7 +169,8 @@ export const apiSlice = createApi({
         }[]
       ) => {
         return response.map((item) => ({
-          ...item,
+          id: item.id,
+          name: item.name,
           drafterUsername: item.drafter_username,
           drafterName: item.drafter_name,
           documentName: item.document_name,
@@ -192,6 +204,7 @@ export const apiSlice = createApi({
         document_no: string;
         document_name: string;
         document_type: string;
+        file_name: string;
         updated_at: {
           nanos_since_epoch: number;
           secs_since_epoch: number;
@@ -201,16 +214,69 @@ export const apiSlice = createApi({
         drafter_name: string;
       }) => {
         return {
-          id: 1,
+          id: response.id,
           name: response.name,
           documentNo: response.document_no,
           documentName: response.document_name,
           documentType: response.document_type,
+          fileName: response.file_name,
           updatedAt: response.updated_at.secs_since_epoch,
           docUri: response.doc_uri,
           drafterUsername: response.drafter_username,
           drafterName: response.drafter_name,
         };
+      },
+      providesTags: ["User"],
+    }),
+    submittableDraft: builder.query<
+      SubmittableDraft[],
+      { divisionOnchainId: string; positionIndex: number }
+    >({
+      query: ({ divisionOnchainId, positionIndex }) => ({
+        url: "/draft/submittable",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          division_onchain_id: divisionOnchainId,
+          position_index: positionIndex,
+        }),
+        credentials: "include",
+      }),
+      transformResponse: (
+        response: {
+          id: number;
+          name: string;
+        }[]
+      ) => {
+        return response.map((item) => ({
+          ...item,
+        }));
+      },
+      providesTags: ["User", "Draft"],
+    }),
+    draftSignatures: builder.query<
+      DraftSignature[],
+      { divisionOnchainId: string; positionIndex: number; draftId: number }
+    >({
+      query: ({ divisionOnchainId, positionIndex, draftId }) => ({
+        url: `/draft/signatures/${draftId}`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          division_onchain_id: divisionOnchainId,
+          position_index: positionIndex,
+        }),
+        credentials: "include",
+      }),
+      transformResponse: (response: { id: number; signer_name: string }[]) => {
+        return response.map((rep) => ({
+          id: rep.id,
+          signerName: rep.signer_name,
+        }));
       },
       providesTags: ["User"],
     }),
@@ -223,5 +289,7 @@ export const {
   useCreateDraftMutation,
   useDocTypesQuery,
   useDraftsListQuery,
-  useDraftDetailQuery
+  useDraftDetailQuery,
+  useSubmittableDraftQuery,
+  useDraftSignaturesQuery,
 } = apiSlice;
