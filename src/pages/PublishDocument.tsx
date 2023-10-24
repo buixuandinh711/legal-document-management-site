@@ -1,6 +1,7 @@
 import { Box, Button, MenuItem, TextField, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { useState } from "react";
+import PublishDialog from "src/components/PublishDocument/PublishDialog";
 import PublishDraftContent from "src/components/PublishDocument/PublishDraftContent";
 import PublishDraftDetail from "src/components/PublishDocument/PublishDraftDetail";
 import PublishSigner from "src/components/PublishDocument/PublishSigner";
@@ -16,6 +17,7 @@ export default function PublishDocument() {
     positionIndex: workingPosition.positionIndex,
   });
   const [selectedDraft, setSelectedDraft] = useState<string>("");
+  const [openDialog, setOpenDialog] = useState(false);
 
   if (publishableDraftQuery.isLoading) {
     return <ContentLoading />;
@@ -58,14 +60,21 @@ export default function PublishDocument() {
                 <PublishSigner draftId={selectedDraft} />
               </Box>
               <Box sx={{ mt: 2, display: "flex", justifyContent: "right", gap: 1 }}>
-                <Button variant="outlined">Cancel</Button>
-                <Button variant="contained">Publish</Button>
+                <Button variant="outlined" onClick={() => setSelectedDraft("")}>
+                  Cancel
+                </Button>
+                <Button variant="contained" onClick={() => setOpenDialog(true)}>
+                  Publish
+                </Button>
               </Box>
             </>
           )}
         </Paper>
         {selectedDraft !== "" && !isNaN(parseInt(selectedDraft)) && (
-          <PublishDraftContent draftId={selectedDraft} />
+          <>
+            <PublishDraftContent draftId={selectedDraft} />
+            <PublishDialog open={openDialog} handleClose={() => setOpenDialog(false)} />
+          </>
         )}
       </>
     );

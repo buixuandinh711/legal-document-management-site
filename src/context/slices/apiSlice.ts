@@ -29,6 +29,11 @@ interface PublishableDraft {
   name: string;
 }
 
+interface OfficerPrivateKey {
+  onchainAddress: string;
+  privateKey: string;
+}
+
 interface DraftDetail {
   id: number;
   name: string;
@@ -280,6 +285,30 @@ export const apiSlice = createApi({
       },
       providesTags: ["User"],
     }),
+    privateKey: builder.query<
+      OfficerPrivateKey,
+      { divisionOnchainId: string; positionIndex: number}
+    >({
+      query: ({ divisionOnchainId, positionIndex }) => ({
+        url: `/officer/key`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          division_onchain_id: divisionOnchainId,
+          position_index: positionIndex,
+        }),
+        credentials: "include",
+      }),
+      transformResponse: (response: { onchain_address: string; private_key: string }) => {
+        return {
+          onchainAddress: response.onchain_address,
+          privateKey: response.private_key,
+        };
+      },
+      providesTags: ["User"],
+    }),
   }),
 });
 
@@ -292,4 +321,5 @@ export const {
   useDraftDetailQuery,
   usePublishableDraftQuery,
   useDraftSignaturesQuery,
+  usePrivateKeyQuery,
 } = apiSlice;
