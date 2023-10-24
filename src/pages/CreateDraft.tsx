@@ -210,7 +210,7 @@ export default function CreateDraft() {
             endIcon={<Send />}
             sx={{ width: "120px" }}
           >
-            Submit
+            Publish
           </LoadingButton>
         </Box>
       </Paper>

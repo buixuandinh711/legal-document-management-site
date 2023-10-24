@@ -48,12 +48,12 @@ export const secondaryListItems = (
         <ListItemText primary="Assigning Task" />
       </ListItemButton>
     </Link>
-    <Link to="/submit" style={{ textDecoration: "none", color: "inherit" }}>
+    <Link to="/publish" style={{ textDecoration: "none", color: "inherit" }}>
       <ListItemButton>
         <ListItemIcon>
           <Publish />
         </ListItemIcon>
-        <ListItemText primary="Submit Document" />
+        <ListItemText primary="Publish Document" />
       </ListItemButton>
     </Link>
   </React.Fragment>

@@ -8,7 +8,7 @@ import Login from "src/pages/Login";
 import NotFound from "src/pages/NotFound";
 import Layout from "src/components/Layout";
 import CreateDraft from "src/pages/CreateDraft";
-import SubmitDocument from "src/pages/SubmitDocument";
+import PublishDocument from "src/pages/PublishDocument";
 
 export default function App() {
   return (
@@ -21,7 +21,7 @@ export default function App() {
           <Route path="draft" element={<ManageDraft />} />
           <Route path="draft/create" element={<CreateDraft />} />
           <Route path="draft/:id" element={<DocumentDetail />} />
-          <Route path="submit" element={<SubmitDocument />} />
+          <Route path="publish" element={<PublishDocument />} />
           <Route
             path="detail"
             element={

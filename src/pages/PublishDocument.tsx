@@ -1,33 +1,33 @@
 import { Box, Button, MenuItem, TextField, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { useState } from "react";
-import SubmitDraftContent from "src/components/SubmitDocument/SubmitDraftContent";
-import SubmitDraftDetail from "src/components/SubmitDocument/SubmitDraftDetail";
-import SubmitSigner from "src/components/SubmitDocument/SubmitSigner";
-import { useSubmittableDraftQuery } from "src/context/slices/apiSlice";
+import PublishDraftContent from "src/components/PublishDocument/PublishDraftContent";
+import PublishDraftDetail from "src/components/PublishDocument/PublishDraftDetail";
+import PublishSigner from "src/components/PublishDocument/PublishSigner";
+import { usePublishableDraftQuery } from "src/context/slices/apiSlice";
 import { useAppSelector } from "src/context/store";
 import ContentError from "src/pages/ContentError";
 import ContentLoading from "src/pages/ContentLoading";
 
-export default function SubmitDocument() {
+export default function PublishDocument() {
   const workingPosition = useAppSelector((state) => state.position);
-  const submittableDraftQuery = useSubmittableDraftQuery({
+  const publishableDraftQuery = usePublishableDraftQuery({
     divisionOnchainId: workingPosition.divisionOnchainId,
     positionIndex: workingPosition.positionIndex,
   });
   const [selectedDraft, setSelectedDraft] = useState<string>("");
 
-  if (submittableDraftQuery.isLoading) {
+  if (publishableDraftQuery.isLoading) {
     return <ContentLoading />;
   }
 
-  if (submittableDraftQuery.isSuccess) {
-    const submittableDrafts = submittableDraftQuery.data;
+  if (publishableDraftQuery.isSuccess) {
+    const publishableDrafts = publishableDraftQuery.data;
     return (
       <>
         <Paper sx={{ width: "100%", overflow: "hidden", borderRadius: 4, py: 2, px: 4 }}>
           <Typography variant="h6" id="tableTitle" component="div" fontWeight={600} fontSize={25}>
-            Submit Draft
+            Publish Draft
           </Typography>
           <TextField
             select
@@ -45,7 +45,7 @@ export default function SubmitDocument() {
               },
             }}
           >
-            {submittableDrafts.map((draft) => (
+            {publishableDrafts.map((draft) => (
               <MenuItem key={draft.id} value={`${draft.id}`}>
                 {draft.name}
               </MenuItem>
@@ -54,18 +54,18 @@ export default function SubmitDocument() {
           {selectedDraft !== "" && !isNaN(parseInt(selectedDraft)) && (
             <>
               <Box sx={{ display: "flex", gap: 2, alignItems: "stretch", maxHeight: "450px" }}>
-                <SubmitDraftDetail draftId={selectedDraft} />
-                <SubmitSigner draftId={selectedDraft} />
+                <PublishDraftDetail draftId={selectedDraft} />
+                <PublishSigner draftId={selectedDraft} />
               </Box>
               <Box sx={{ mt: 2, display: "flex", justifyContent: "right", gap: 1 }}>
                 <Button variant="outlined">Cancel</Button>
-                <Button variant="contained">Submit</Button>
+                <Button variant="contained">Publish</Button>
               </Box>
             </>
           )}
         </Paper>
         {selectedDraft !== "" && !isNaN(parseInt(selectedDraft)) && (
-          <SubmitDraftContent draftId={selectedDraft} />
+          <PublishDraftContent draftId={selectedDraft} />
         )}
       </>
     );

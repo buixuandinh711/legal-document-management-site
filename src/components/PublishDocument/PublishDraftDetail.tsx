@@ -6,7 +6,7 @@ import { useAppSelector } from "src/context/store";
 import ContentError from "src/pages/ContentError";
 import ContentLoading from "src/pages/ContentLoading";
 
-export default function SubmitDraftDetail({ draftId }: { draftId: string }) {
+export default function PublishDraftDetail({ draftId }: { draftId: string }) {
   const parsedId = parseInt(draftId)
   const workingPosition = useAppSelector((state) => state.position);
   const draftDetailQuery = useDraftDetailQuery(

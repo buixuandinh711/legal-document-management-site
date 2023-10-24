@@ -189,7 +189,7 @@ export default function TaskDetail() {
             Cancel
           </Button>
           <Button variant="contained" endIcon={<Send />} sx={{ width: "120px" }}>
-            Submit
+            Publish
           </Button>
         </Box>
       </Paper>

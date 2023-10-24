@@ -9,7 +9,7 @@ import { useDraftSignaturesQuery } from "src/context/slices/apiSlice";
 import ContentLoading from "src/pages/ContentLoading";
 import ContentError from "src/pages/ContentError";
 
-export default function SubmitSigner({ draftId }: { draftId: string }) {
+export default function PublishSigner({ draftId }: { draftId: string }) {
   const parsedId = parseInt(draftId);
   const workingPosition = useAppSelector((state) => state.position);
   const draftSignaturesQuery = useDraftSignaturesQuery(

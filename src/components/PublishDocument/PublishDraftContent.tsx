@@ -9,7 +9,7 @@ import { useDraftDetailQuery } from "src/context/slices/apiSlice";
 import ContentLoading from "src/pages/ContentLoading";
 import ContentError from "src/pages/ContentError";
 
-export default function SubmitDraftContent({ draftId }: { draftId: string }) {
+export default function PublishDraftContent({ draftId }: { draftId: string }) {
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
 

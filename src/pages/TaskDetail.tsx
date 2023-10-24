@@ -107,7 +107,7 @@ export default function TaskDetail({ task }: { task: Task }) {
             endIcon={<Send />}
             sx={{ width: "120px" }}
           >
-            Submit
+            Publish
           </Button>
         </Box>
       </Paper>

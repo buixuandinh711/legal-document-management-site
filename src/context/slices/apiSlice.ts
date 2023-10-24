@@ -24,7 +24,7 @@ interface DraftsListItem {
   };
 }
 
-interface SubmittableDraft {
+interface PublishableDraft {
   id: number;
   name: string;
 }
@@ -228,12 +228,12 @@ export const apiSlice = createApi({
       },
       providesTags: ["User"],
     }),
-    submittableDraft: builder.query<
-      SubmittableDraft[],
+    publishableDraft: builder.query<
+      PublishableDraft[],
       { divisionOnchainId: string; positionIndex: number }
     >({
       query: ({ divisionOnchainId, positionIndex }) => ({
-        url: "/draft/submittable",
+        url: "/draft/publishable",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -290,6 +290,6 @@ export const {
   useDocTypesQuery,
   useDraftsListQuery,
   useDraftDetailQuery,
-  useSubmittableDraftQuery,
+  usePublishableDraftQuery,
   useDraftSignaturesQuery,
 } = apiSlice;
