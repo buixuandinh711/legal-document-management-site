@@ -46,8 +46,6 @@ export default function Layout() {
     return <Navigate to="/login" />;
   }
 
-  console.log(userQuery.data);
-
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box

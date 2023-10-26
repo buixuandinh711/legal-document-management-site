@@ -55,7 +55,6 @@ export default function Login() {
       setSubmitting(false);
       try {
         await login(values).unwrap();
-        console.log("Login success");
         navigate("/", { replace: true });
       } catch (error) {
         console.log(error);

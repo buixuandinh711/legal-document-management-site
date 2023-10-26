@@ -5,8 +5,6 @@ import { useState } from "react";
 export default function AppbarUser({ officerName }: { officerName: string }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  console.log(officerName);
-
   return (
     <div>
       <IconButton

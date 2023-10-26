@@ -7,7 +7,7 @@ import ContentError from "src/pages/ContentError";
 import ContentLoading from "src/pages/ContentLoading";
 
 export default function PublishDraftDetail({ draftId }: { draftId: string }) {
-  const parsedId = parseInt(draftId)
+  const parsedId = parseInt(draftId);
   const workingPosition = useAppSelector((state) => state.position);
   const draftDetailQuery = useDraftDetailQuery(
     {
@@ -70,7 +70,6 @@ export default function PublishDraftDetail({ draftId }: { draftId: string }) {
           variant="standard"
           InputProps={{
             readOnly: true,
-            disabled: true,
           }}
           sx={{ my: 2 }}
         />
@@ -81,7 +80,9 @@ export default function PublishDraftDetail({ draftId }: { draftId: string }) {
             icon={<AttachFile />}
             variant="outlined"
             sx={{ maxWidth: 300, cursor: "pointer" }}
-            onClick={() => {}}
+            onClick={() => {
+              window.open(draftDetail.docUri, "_blank");
+            }}
           />
         </Box>
       </Box>

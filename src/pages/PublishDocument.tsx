@@ -73,7 +73,13 @@ export default function PublishDocument() {
         {selectedDraft !== "" && !isNaN(parseInt(selectedDraft)) && (
           <>
             <PublishDraftContent draftId={selectedDraft} />
-            <PublishDialog open={openDialog} handleClose={() => setOpenDialog(false)} />
+            {openDialog && (
+              <PublishDialog
+                key={selectedDraft}
+                open={openDialog}
+                handleClose={() => setOpenDialog(false)}
+              />
+            )}
           </>
         )}
       </>

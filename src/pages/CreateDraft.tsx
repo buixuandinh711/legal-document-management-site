@@ -59,7 +59,6 @@ export default function CreateDraft() {
           documentContent: values.documentContent,
         }).unwrap();
         dispatch(openSnackbar({ type: "success", message: "Draft created" }));
-        console.log(draftId, draftId.length);
         navigate(`/draft/${draftId}`);
       } catch (error) {
         console.log(error);
