@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import { usePrivateKeyQuery } from "src/context/slices/apiSlice";
 import { useAppSelector } from "src/context/store";
-import ContentError from "src/pages/ContentError";
 import { gcm } from "@noble/ciphers/aes";
 import { hexToBytes, utf8ToBytes, bytesToUtf8 } from "@noble/ciphers/utils";
 import { ethers } from "ethers";
@@ -36,9 +35,11 @@ const validationSchema = yup.object({
 const stepLabels = ["Sign Document", "Uploading", "Done"];
 
 export default function PublishDialog({
+  draftId,
   open,
   handleClose,
 }: {
+  draftId: string;
   open: boolean;
   handleClose: () => void;
 }) {
@@ -133,6 +134,7 @@ export default function PublishDialog({
               if (step == 1 && privateKey !== undefined) {
                 return (
                   <SubmitTx
+                    draftId={draftId}
                     privateKey={privateKey}
                     handleSuccessTx={() => {
                       setStep(3);

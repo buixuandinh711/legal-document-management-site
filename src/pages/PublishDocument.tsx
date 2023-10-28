@@ -76,6 +76,7 @@ export default function PublishDocument() {
             {openDialog && (
               <PublishDialog
                 key={selectedDraft}
+                draftId={selectedDraft}
                 open={openDialog}
                 handleClose={() => setOpenDialog(false)}
               />

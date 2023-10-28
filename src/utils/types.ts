@@ -1,3 +1,5 @@
+import { AddressLike, BigNumberish } from "ethers";
+
 export interface Position {
   divisionOnchainId: string;
   divisionName: string;
@@ -37,3 +39,15 @@ export type ErrorResult = {
 };
 
 export type Result<T> = SuccessResult<T> | LoadingResult | ErrorResult | InitialResult;
+
+export type OfficerPosition = {
+  officerAddress: AddressLike;
+  divisionId: string;
+  positionIndex: BigNumberish;
+};
+export type DocumentInfo = {
+  number: string;
+  name: string;
+  divisionId: string;
+  publishedTimestamp: BigNumberish;
+};
