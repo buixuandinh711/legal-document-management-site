@@ -4,7 +4,15 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ListSubheader from "@mui/material/ListSubheader";
 import { Link } from "react-router-dom";
-import { Grading, LibraryBooks, NoteAlt, Publish, Task } from "@mui/icons-material";
+import {
+  AssignmentInd,
+  FactCheck,
+  Grading,
+  LibraryBooks,
+  NoteAlt,
+  Publish,
+  Task,
+} from "@mui/icons-material";
 
 export const mainListItems = (
   <React.Fragment>
@@ -32,6 +40,14 @@ export const mainListItems = (
         <ListItemText primary="Your Drafts" />
       </ListItemButton>
     </Link>
+    <Link to="/published" style={{ textDecoration: "none", color: "inherit" }}>
+      <ListItemButton>
+        <ListItemIcon>
+          <FactCheck />
+        </ListItemIcon>
+        <ListItemText primary="Published Docs" />
+      </ListItemButton>
+    </Link>
   </React.Fragment>
 );
 
@@ -43,9 +59,9 @@ export const secondaryListItems = (
     <Link to="/manage-task" style={{ textDecoration: "none", color: "inherit" }}>
       <ListItemButton>
         <ListItemIcon>
-          <Task />
+          <AssignmentInd />
         </ListItemIcon>
-        <ListItemText primary="Assigning Task" />
+        <ListItemText primary="Assign Task" />
       </ListItemButton>
     </Link>
     <Link to="/publish" style={{ textDecoration: "none", color: "inherit" }}>

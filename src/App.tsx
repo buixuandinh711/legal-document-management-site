@@ -9,6 +9,8 @@ import NotFound from "src/pages/NotFound";
 import Layout from "src/components/Layout";
 import CreateDraft from "src/pages/CreateDraft";
 import PublishDocument from "src/pages/PublishDocument";
+import PublishedDocument from "src/pages/PublishedDocument";
+import PublishedDocDetail from "src/pages/PublishedDocDetail";
 
 export default function App() {
   return (
@@ -22,6 +24,8 @@ export default function App() {
           <Route path="draft/create" element={<CreateDraft />} />
           <Route path="draft/:id" element={<DocumentDetail />} />
           <Route path="publish" element={<PublishDocument />} />
+          <Route path="published" element={<PublishedDocument />} />
+          <Route path="published/:contentHash" element={<PublishedDocDetail />} />
           <Route
             path="detail"
             element={

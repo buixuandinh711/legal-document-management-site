@@ -52,6 +52,29 @@ interface DraftSignature {
   signerName: string;
 }
 
+interface PublishedDoc {
+  contentHash: string;
+  number: string;
+  name: string;
+  publisher: string;
+  publishedDate: number;
+}
+
+interface PublishedDocDetail {
+  contentHash: string;
+  number: string;
+  name: string;
+  docType: string;
+  publisher: string;
+  publishedDate: number;
+  resourceUri: string;
+}
+
+interface PublishedDocSig {
+  signerName: string;
+  positionName: string;
+}
+
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
@@ -287,7 +310,7 @@ export const apiSlice = createApi({
     }),
     privateKey: builder.query<
       OfficerPrivateKey,
-      { divisionOnchainId: string; positionIndex: number}
+      { divisionOnchainId: string; positionIndex: number }
     >({
       query: ({ divisionOnchainId, positionIndex }) => ({
         url: `/officer/key`,
@@ -309,6 +332,102 @@ export const apiSlice = createApi({
       },
       providesTags: ["User"],
     }),
+    publishedDocs: builder.query<
+      PublishedDoc[],
+      { divisionOnchainId: string; positionIndex: number }
+    >({
+      query: ({ divisionOnchainId, positionIndex }) => ({
+        url: "/published/list",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          division_onchain_id: divisionOnchainId,
+          position_index: positionIndex,
+        }),
+        credentials: "include",
+      }),
+      transformResponse: (
+        response: {
+          content_hash: string;
+          number: string;
+          name: string;
+          publisher: string;
+          published_date: number;
+        }[]
+      ) => {
+        return response.map((item) => ({
+          contentHash: item.content_hash,
+          number: item.number,
+          name: item.name,
+          publisher: item.publisher,
+          publishedDate: item.published_date,
+        }));
+      },
+      providesTags: ["User"],
+    }),
+    publishedDocDetail: builder.query<
+      PublishedDocDetail,
+      { divisionOnchainId: string; positionIndex: number; docContentHash: string }
+    >({
+      query: ({ divisionOnchainId, positionIndex, docContentHash }) => ({
+        url: `/published/detail/${docContentHash}`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          division_onchain_id: divisionOnchainId,
+          position_index: positionIndex,
+        }),
+        credentials: "include",
+      }),
+      transformResponse: (response: {
+        content_hash: string;
+        number: string;
+        name: string;
+        doc_type: string;
+        publisher: string;
+        published_date: number;
+        resource_uri: string;
+      }) => {
+        return {
+          contentHash: response.content_hash,
+          number: response.number,
+          name: response.name,
+          docType: response.doc_type,
+          publisher: response.publisher,
+          publishedDate: response.published_date,
+          resourceUri: response.resource_uri,
+        };
+      },
+      providesTags: ["User"],
+    }),
+    publishedDocSigs: builder.query<
+      PublishedDocSig[],
+      { divisionOnchainId: string; positionIndex: number; docContentHash: string }
+    >({
+      query: ({ divisionOnchainId, positionIndex, docContentHash }) => ({
+        url: `/published/signatures/${docContentHash}`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          division_onchain_id: divisionOnchainId,
+          position_index: positionIndex,
+        }),
+        credentials: "include",
+      }),
+      transformResponse: (response: { signer_name: string; position_name: string }[]) => {
+        return response.map((res) => ({
+          signerName: res.signer_name,
+          positionName: res.position_name,
+        }));
+      },
+      providesTags: ["User"],
+    }),
   }),
 });
 
@@ -322,4 +441,7 @@ export const {
   usePublishableDraftQuery,
   useDraftSignaturesQuery,
   usePrivateKeyQuery,
+  usePublishedDocsQuery,
+  usePublishedDocDetailQuery,
+  usePublishedDocSigsQuery,
 } = apiSlice;
