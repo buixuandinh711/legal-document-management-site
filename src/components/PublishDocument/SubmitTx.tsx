@@ -44,8 +44,9 @@ export default function SubmitTx({
           {
             number: draftDetail.documentNo,
             name: draftDetail.documentName,
+            docType: draftDetail.documentType,
             divisionId: workingPosition.divisionOnchainId,
-            publishedTimestamp: Math.round(Date.now() / 1000),
+            publishedTimestamp: Math.floor(Date.now() / 1000 / 86400) * 86400,
           },
           ethers.toUtf8Bytes("This is a document"),
           [],
