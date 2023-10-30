@@ -80,7 +80,7 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_API_HOST,
   }),
-  tagTypes: ["User", "Draft"],
+  tagTypes: ["User", "Draft", "Publishable"],
   endpoints: (builder) => ({
     user: builder.query<Officer, Record<string, never>>({
       query: () => ({
@@ -282,7 +282,7 @@ export const apiSlice = createApi({
           ...item,
         }));
       },
-      providesTags: ["User", "Draft"],
+      providesTags: ["User", "Draft", "Publishable"],
     }),
     draftSignatures: builder.query<
       DraftSignature[],
@@ -444,4 +444,5 @@ export const {
   usePublishedDocsQuery,
   usePublishedDocDetailQuery,
   usePublishedDocSigsQuery,
+  util: apiSliceUtil,
 } = apiSlice;

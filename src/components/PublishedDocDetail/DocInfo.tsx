@@ -1,5 +1,5 @@
-import { AttachFile } from "@mui/icons-material";
-import { Box, Chip, InputLabel, TextField } from "@mui/material";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Box, TextField } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { usePublishedDocDetailQuery } from "src/context/slices/apiSlice";
 import { useAppSelector } from "src/context/store";

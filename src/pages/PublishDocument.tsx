@@ -55,7 +55,7 @@ export default function PublishDocument() {
           </TextField>
           {selectedDraft !== "" && !isNaN(parseInt(selectedDraft)) && (
             <>
-              <Box sx={{ display: "flex", gap: 2, alignItems: "stretch", maxHeight: "450px" }}>
+              <Box sx={{ display: "flex", gap: 2, alignItems: "stretch" }}>
                 <PublishDraftDetail draftId={selectedDraft} />
                 <PublishSigner draftId={selectedDraft} />
               </Box>
@@ -78,7 +78,12 @@ export default function PublishDocument() {
                 key={selectedDraft}
                 draftId={selectedDraft}
                 open={openDialog}
-                handleClose={() => setOpenDialog(false)}
+                handleClose={(resetSelection: boolean) => {
+                  setOpenDialog(false);
+                  if (resetSelection) {
+                    setSelectedDraft("");
+                  }
+                }}
               />
             )}
           </>

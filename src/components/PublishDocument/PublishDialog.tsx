@@ -10,8 +10,8 @@ import {
   Stepper,
   TextField,
 } from "@mui/material";
-import { usePrivateKeyQuery } from "src/context/slices/apiSlice";
-import { useAppSelector } from "src/context/store";
+import { apiSlice, apiSliceUtil, usePrivateKeyQuery } from "src/context/slices/apiSlice";
+import { useAppDispatch, useAppSelector } from "src/context/store";
 import { gcm } from "@noble/ciphers/aes";
 import { hexToBytes, utf8ToBytes, bytesToUtf8 } from "@noble/ciphers/utils";
 import { ethers } from "ethers";
@@ -41,13 +41,14 @@ export default function PublishDialog({
 }: {
   draftId: string;
   open: boolean;
-  handleClose: () => void;
+  handleClose: (resetSelection: boolean) => void;
 }) {
   const workingPosition = useAppSelector((state) => state.position);
   const privateKeyQuery = usePrivateKeyQuery({
     divisionOnchainId: workingPosition.divisionOnchainId,
     positionIndex: workingPosition.positionIndex,
   });
+  const dispatch = useAppDispatch();
   const [step, setStep] = useState(0);
   const [privateKey, setPrivateKey] = useState<undefined | string>(undefined);
   const formik = useFormik({
@@ -89,7 +90,7 @@ export default function PublishDialog({
     <Dialog
       open={open}
       PaperProps={{ sx: { borderRadius: 2, width: "30vw", py: 1 } }}
-      onClose={handleClose}
+      onClose={() => handleClose(step >= 2)}
     >
       <form onSubmit={formik.handleSubmit}>
         <DialogTitle id="document-list-dialog" sx={{ fontWeight: 600 }}>
@@ -138,7 +139,8 @@ export default function PublishDialog({
                     privateKey={privateKey}
                     handleSuccessTx={() => {
                       setStep(3);
-                      // setPrivateKey(undefined);
+                      setPrivateKey(undefined);
+                      dispatch(apiSliceUtil.invalidateTags(["Publishable"]));
                     }}
                   />
                 );
@@ -149,7 +151,7 @@ export default function PublishDialog({
         </DialogContent>
         <DialogActions>
           {step == 0 && (
-            <Button variant="outlined" onClick={handleClose}>
+            <Button variant="outlined" onClick={() => handleClose(false)}>
               Cancel
             </Button>
           )}
@@ -158,7 +160,12 @@ export default function PublishDialog({
               Confirm
             </Button>
           ) : (
-            <Button type="submit" variant="contained" sx={{ mr: 2 }} onClick={handleClose}>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ mr: 2 }}
+              onClick={() => handleClose(true)}
+            >
               Close
             </Button>
           )}

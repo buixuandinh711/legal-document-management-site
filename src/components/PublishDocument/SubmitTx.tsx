@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useDraftDetailQuery } from "src/context/slices/apiSlice";
 import { useAppSelector } from "src/context/store";
 import { Legal_document_manager__factory } from "src/contracts";
+import { getAndCompressFile } from "src/utils/utils";
 
 const chainProvider: string = import.meta.env.VITE_CHAIN_PROVIDER;
 const contractAddress: string = import.meta.env.VITE_CONTRACT_ADDRESS;
@@ -38,6 +39,7 @@ export default function SubmitTx({
         const provider = new ethers.JsonRpcProvider(chainProvider);
         const wallet = new ethers.Wallet(privateKey, provider);
         const contract = Legal_document_manager__factory.connect(contractAddress, provider);
+        const compressedDoc = await getAndCompressFile(draftDetail.docUri);
         const publishTx = await contract.connect(wallet).publishDocument(
           workingPosition.divisionOnchainId,
           workingPosition.positionIndex,
@@ -48,7 +50,7 @@ export default function SubmitTx({
             divisionId: workingPosition.divisionOnchainId,
             publishedTimestamp: Math.floor(Date.now() / 1000 / 86400) * 86400,
           },
-          ethers.toUtf8Bytes("This is a document"),
+          compressedDoc,
           [],
           "0x"
         );
