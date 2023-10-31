@@ -1,5 +1,3 @@
-import * as React from "react";
-import { Theme, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
@@ -7,6 +5,10 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
+import { useAppSelector } from "src/context/store";
+import { SignerPositions, useSignerNotSignedQuery } from "src/context/slices/apiSlice";
+import { useState } from "react";
+import { ListSubheader } from "@mui/material";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -19,68 +21,80 @@ const MenuProps = {
   },
 };
 
-const names = [
-  "Oliver Hansen - Chairman of People Committee",
-  "Van Henry - Vice President of Operations",
-  "April Tucker - Chief Financial Officer",
-  "Ralph Hubbard - Chief Executive Officer",
-  "Omar Alexander - Chief Technology Officer",
-  "Carlos Abbott - Director of Marketing",
-  "Miriam Wagner - Chief Operating Officer",
-  "Bradley Wilkerson - Chief Information Officer",
-  "Virginia Andrews - Director of Human Resources",
-  "Kelly Snyder - President",
-];
+const getDisplayName = (signerPostions: SignerPositions[], value: string): string => {
+  const [signerAddress, positionIndex] = value.split("/");
+  const signer = signerPostions.find((s) => s.signerAddress === signerAddress);
+  if (signer === undefined) {
+    return "undefined";
+  }
+  const position = signer.positions.find((p) => p.positionIndex === parseInt(positionIndex));
+  if (position === undefined) {
+    return "undefined";
+  }
+  return signer.signerName + " - " + position.positionName;
+};
 
-function getStyles(name: string, personName: readonly string[], theme: Theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
+export default function SelectSigner({ draftId }: { draftId: number }) {
+  const workingPosition = useAppSelector((state) => state.position);
+  const signerNotSignedQuery = useSignerNotSignedQuery(
+    {
+      divisionOnchainId: workingPosition.divisionOnchainId,
+      positionIndex: workingPosition.positionIndex,
+      draftId: draftId,
+    },
+    { skip: workingPosition.divisionOnchainId === "" }
+  );
 
-export default function SelectSigner() {
-  const theme = useTheme();
-  const [personName, setPersonName] = React.useState<string[]>([]);
+  const [selectedSigners, setSelectedSigners] = useState<string[]>([]);
 
-  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+  if (!signerNotSignedQuery.isSuccess) return;
+
+  const signerNotSigned = signerNotSignedQuery.data;
+
+  const handleChange = (event: SelectChangeEvent<string[]>) => {
     const {
       target: { value },
     } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+    setSelectedSigners(typeof value === "string" ? value.split(",") : value);
   };
 
   return (
     <div>
       <FormControl sx={{ mt: 4, width: "100%" }}>
-        <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
+        <InputLabel id="demo-multiple-chip-label">Select signers</InputLabel>
         <Select
           labelId="demo-multiple-chip-label"
           id="demo-multiple-chip"
           multiple
-          value={personName}
+          value={selectedSigners}
           onChange={handleChange}
-          input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+          input={<OutlinedInput id="select-multiple-chip" label="Select signers" />}
           renderValue={(selected) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
               {selected.map((value) => (
-                <Chip key={value} label={value} />
+                <Chip key={value} label={getDisplayName(signerNotSigned, value)} />
               ))}
             </Box>
           )}
           MenuProps={MenuProps}
           sx={{ borderRadius: 4 }}
         >
-          {names.map((name) => (
-            <MenuItem key={name} value={name} style={getStyles(name, personName, theme)}>
-              {name}
-            </MenuItem>
-          ))}
+          {signerNotSigned.map((signer) => {
+            const items = [
+              <ListSubheader key={signer.signerAddress}>{signer.signerName}</ListSubheader>,
+            ];
+            items.push(
+              ...signer.positions.map((pos) => (
+                <MenuItem
+                  key={`${signer.signerAddress}/${pos.positionIndex}`}
+                  value={`${signer.signerAddress}/${pos.positionIndex}`}
+                >
+                  {pos.positionName}
+                </MenuItem>
+              ))
+            );
+            return items;
+          })}
         </Select>
       </FormControl>
     </div>

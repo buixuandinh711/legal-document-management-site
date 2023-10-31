@@ -76,6 +76,12 @@ interface PublishedDocSig {
   positionName: string;
 }
 
+export interface SignerPositions {
+  signerAddress: string;
+  signerName: string;
+  positions: { positionIndex: number; positionName: string }[];
+}
+
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
@@ -432,6 +438,40 @@ export const apiSlice = createApi({
       },
       providesTags: ["User"],
     }),
+    signerNotSigned: builder.query<
+      SignerPositions[],
+      { divisionOnchainId: string; positionIndex: number; draftId: number }
+    >({
+      query: ({ divisionOnchainId, positionIndex, draftId }) => ({
+        url: `/draft/not-signed/${draftId}`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          division_onchain_id: divisionOnchainId,
+          position_index: positionIndex,
+        }),
+        credentials: "include",
+      }),
+      transformResponse: (
+        response: {
+          signer_address: string;
+          signer_name: string;
+          positions: { position_index: number; position_name: string }[];
+        }[]
+      ) => {
+        return response.map((res) => ({
+          signerAddress: res.signer_address,
+          signerName: res.signer_name,
+          positions: res.positions.map((pos) => ({
+            positionIndex: pos.position_index,
+            positionName: pos.position_name,
+          })),
+        }));
+      },
+      providesTags: ["User"],
+    }),
   }),
 });
 
@@ -448,5 +488,6 @@ export const {
   usePublishedDocsQuery,
   usePublishedDocDetailQuery,
   usePublishedDocSigsQuery,
+  useSignerNotSignedQuery,
   util: apiSliceUtil,
 } = apiSlice;

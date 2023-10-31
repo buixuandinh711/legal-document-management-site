@@ -53,7 +53,7 @@ export default function RequestSignature() {
           {selectedDraft !== "" && !isNaN(parseInt(selectedDraft)) && (
             <>
               <PublishDraftDetail draftId={selectedDraft} />
-              <SelectSigner />
+              <SelectSigner draftId={parseInt(selectedDraft)} />
               <Box sx={{ mt: 4, display: "flex", justifyContent: "right", gap: 1 }}>
                 <Button variant="outlined" onClick={() => setSelectedDraft("")}>
                   Cancel
