@@ -6,6 +6,7 @@ import ListSubheader from "@mui/material/ListSubheader";
 import { Link } from "react-router-dom";
 import {
   AssignmentInd,
+  Draw,
   FactCheck,
   Grading,
   LibraryBooks,
@@ -62,6 +63,14 @@ export const secondaryListItems = (
           <AssignmentInd />
         </ListItemIcon>
         <ListItemText primary="Assign Task" />
+      </ListItemButton>
+    </Link>
+    <Link to="/req-sig" style={{ textDecoration: "none", color: "inherit" }}>
+      <ListItemButton>
+        <ListItemIcon>
+          <Draw />
+        </ListItemIcon>
+        <ListItemText primary="Request Signature" />
       </ListItemButton>
     </Link>
     <Link to="/publish" style={{ textDecoration: "none", color: "inherit" }}>

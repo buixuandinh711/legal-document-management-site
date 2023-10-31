@@ -54,16 +54,18 @@ export default function PublishSigner({ draftId }: { draftId: string }) {
           {signatures.length > 0 ? (
             signatures.map((sig) => {
               return (
-                <ListItem key={sig.id}>
+                <ListItem key={sig.signature}>
                   <ListItemIcon>
                     <AccountCircle fontSize="large" />
                   </ListItemIcon>
-                  <ListItemText primary={sig.signerName} secondary="Jan 9, 2014" />
+                  <ListItemText primary={sig.signerName} secondary={sig.positionName} />
                 </ListItem>
               );
             })
           ) : (
-            <Typography fontSize="1.2rem" fontWeight={600} sx={{px: 2, py: 1, opacity: 0.6}}>No signature attached</Typography>
+            <Typography fontSize="1.2rem" fontWeight={600} sx={{ px: 2, py: 1, opacity: 0.6 }}>
+              No signature attached
+            </Typography>
           )}
         </List>
       </Box>
