@@ -34,7 +34,15 @@ const getDisplayName = (signerPostions: SignerPositions[], value: string): strin
   return signer.signerName + " - " + position.positionName;
 };
 
-export default function SelectSigner({ draftId }: { draftId: number }) {
+export default function SelectSigner({
+  draftId,
+  selectedSigners,
+  setSelectedSigners,
+}: {
+  draftId: number;
+  selectedSigners: string[];
+  setSelectedSigners: React.Dispatch<React.SetStateAction<string[]>>;
+}) {
   const workingPosition = useAppSelector((state) => state.position);
   const signerNotSignedQuery = useSignerNotSignedQuery(
     {
@@ -44,8 +52,6 @@ export default function SelectSigner({ draftId }: { draftId: number }) {
     },
     { skip: workingPosition.divisionOnchainId === "" }
   );
-
-  const [selectedSigners, setSelectedSigners] = useState<string[]>([]);
 
   if (!signerNotSignedQuery.isSuccess) return;
 

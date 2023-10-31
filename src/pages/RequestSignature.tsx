@@ -15,6 +15,7 @@ export default function RequestSignature() {
     positionIndex: workingPosition.positionIndex,
   });
   const [selectedDraft, setSelectedDraft] = useState<string>("");
+  const [selectedSigners, setSelectedSigners] = useState<string[]>([]);
 
   if (publishableDraftQuery.isLoading) {
     return <ContentLoading />;
@@ -53,15 +54,26 @@ export default function RequestSignature() {
           {selectedDraft !== "" && !isNaN(parseInt(selectedDraft)) && (
             <>
               <PublishDraftDetail draftId={selectedDraft} />
-              <SelectSigner draftId={parseInt(selectedDraft)} />
-              <Box sx={{ mt: 4, display: "flex", justifyContent: "right", gap: 1 }}>
-                <Button variant="outlined" onClick={() => setSelectedDraft("")}>
-                  Cancel
-                </Button>
-                <Button variant="contained" onClick={() => {}}>
-                  Publish
-                </Button>
-              </Box>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  console.log(selectedSigners);
+                }}
+              >
+                <SelectSigner
+                  draftId={parseInt(selectedDraft)}
+                  selectedSigners={selectedSigners}
+                  setSelectedSigners={setSelectedSigners}
+                />
+                <Box sx={{ mt: 4, display: "flex", justifyContent: "right", gap: 1 }}>
+                  <Button variant="outlined" onClick={() => setSelectedDraft("")}>
+                    Cancel
+                  </Button>
+                  <Button variant="contained" type="submit">
+                    Publish
+                  </Button>
+                </Box>
+              </form>
             </>
           )}
         </Paper>
