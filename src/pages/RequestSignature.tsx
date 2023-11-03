@@ -3,19 +3,20 @@ import Paper from "@mui/material/Paper";
 import { useState } from "react";
 import PublishDraftDetail from "src/components/PublishDocument/PublishDraftDetail";
 import SelectSigner from "src/components/SelectSigner";
-import { usePublishableDraftQuery } from "src/context/slices/apiSlice";
+import { useCreateReviewTaskMutation, usePublishableDraftQuery } from "src/context/slices/apiSlice";
 import { useAppSelector } from "src/context/store";
 import ContentError from "src/pages/ContentError";
 import ContentLoading from "src/pages/ContentLoading";
 
 export default function RequestSignature() {
-  const workingPosition = useAppSelector((state) => state.position);
+  const { divisionOnchainId, positionIndex } = useAppSelector((state) => state.position);
   const publishableDraftQuery = usePublishableDraftQuery({
-    divisionOnchainId: workingPosition.divisionOnchainId,
-    positionIndex: workingPosition.positionIndex,
+    divisionOnchainId,
+    positionIndex,
   });
   const [selectedDraft, setSelectedDraft] = useState<string>("");
   const [selectedSigners, setSelectedSigners] = useState<string[]>([]);
+  const [createReviewTask] = useCreateReviewTaskMutation();
 
   if (publishableDraftQuery.isLoading) {
     return <ContentLoading />;
@@ -27,7 +28,7 @@ export default function RequestSignature() {
       <>
         <Paper sx={{ width: "100%", overflow: "hidden", borderRadius: 4, py: 2, px: 4 }}>
           <Typography variant="h6" id="tableTitle" component="div" fontWeight={600} fontSize={25}>
-            Publish Draft
+            Create Review Task
           </Typography>
           <TextField
             select
@@ -55,9 +56,28 @@ export default function RequestSignature() {
             <>
               <PublishDraftDetail draftId={selectedDraft} />
               <form
-                onSubmit={(e) => {
+                onSubmit={async (e) => {
                   e.preventDefault();
-                  console.log(selectedSigners);
+                  const extractedSigners = selectedSigners.map((s) => {
+                    const [signerAddress, positionIndex] = s.split("/");
+                    return {
+                      signerAddress,
+                      positionIndex: parseInt(positionIndex),
+                    };
+                  });
+                  const parsedDraftId = parseInt(selectedDraft);
+                  if (isNaN(parsedDraftId)) return;
+                  try {
+                    await createReviewTask({
+                      divisionOnchainId,
+                      positionIndex,
+                      draftId: parsedDraftId,
+                      assignees: extractedSigners,
+                    }).unwrap();
+                    console.log("Task created");
+                  } catch (error) {
+                    console.log(error);
+                  }
                 }}
               >
                 <SelectSigner

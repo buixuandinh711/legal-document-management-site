@@ -110,7 +110,7 @@ export const apiSlice = createApi({
       },
       providesTags: ["User"],
     }),
-    login: builder.mutation<Record<string, never>, { username: string; password: string }>({
+    login: builder.mutation<string, { username: string; password: string }>({
       query: (authInfo) => {
         return {
           url: "/login",
@@ -120,6 +120,7 @@ export const apiSlice = createApi({
           },
           body: JSON.stringify(authInfo),
           credentials: "include",
+          responseHandler: "text",
         };
       },
       invalidatesTags: ["User"],
@@ -145,12 +146,14 @@ export const apiSlice = createApi({
         documentType,
         documentContent,
       }) => {
+        const positionHeader = new Headers();
+        positionHeader.append("Division-Id", divisionOnchainId);
+        positionHeader.append("Position-Index", positionIndex.toString());
+
         const formData = new FormData();
         formData.append("doc", documentContent);
 
         const draftInfo = {
-          division_onchain_id: divisionOnchainId,
-          position_index: positionIndex,
           name: draftName,
           document_no: documentNo,
           document_name: documentName,
@@ -160,8 +163,9 @@ export const apiSlice = createApi({
         formData.append("info", reqDraftInfo);
 
         return {
-          url: "/draft/create",
+          url: "/drafts",
           method: "POST",
+          headers: positionHeader,
           body: formData,
           credentials: "include",
         };
@@ -179,15 +183,13 @@ export const apiSlice = createApi({
       { divisionOnchainId: string; positionIndex: number }
     >({
       query: ({ divisionOnchainId, positionIndex }) => ({
-        url: "/draft/list",
-        method: "POST",
+        url: "/drafts",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Division-Id": divisionOnchainId,
+          "Position-Index": positionIndex.toString(),
         },
-        body: JSON.stringify({
-          division_onchain_id: divisionOnchainId,
-          position_index: positionIndex,
-        }),
         credentials: "include",
       }),
       transformResponse: (
@@ -222,15 +224,13 @@ export const apiSlice = createApi({
       { divisionOnchainId: string; positionIndex: number; draftId: number }
     >({
       query: ({ divisionOnchainId, positionIndex, draftId }) => ({
-        url: `/draft/detail/${draftId}`,
-        method: "POST",
+        url: `/drafts/${draftId}`,
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Division-Id": divisionOnchainId,
+          "Position-Index": positionIndex.toString(),
         },
-        body: JSON.stringify({
-          division_onchain_id: divisionOnchainId,
-          position_index: positionIndex,
-        }),
         credentials: "include",
       }),
       transformResponse: (response: {
@@ -268,15 +268,13 @@ export const apiSlice = createApi({
       { divisionOnchainId: string; positionIndex: number }
     >({
       query: ({ divisionOnchainId, positionIndex }) => ({
-        url: "/draft/publishable",
-        method: "POST",
+        url: "/publishable-drafts",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Division-Id": divisionOnchainId,
+          "Position-Index": positionIndex.toString(),
         },
-        body: JSON.stringify({
-          division_onchain_id: divisionOnchainId,
-          position_index: positionIndex,
-        }),
         credentials: "include",
       }),
       transformResponse: (
@@ -296,15 +294,13 @@ export const apiSlice = createApi({
       { divisionOnchainId: string; positionIndex: number; draftId: number }
     >({
       query: ({ divisionOnchainId, positionIndex, draftId }) => ({
-        url: `/draft/signatures/${draftId}`,
-        method: "POST",
+        url: `/drafts/${draftId}/signatures`,
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Division-Id": divisionOnchainId,
+          "Position-Index": positionIndex.toString(),
         },
-        body: JSON.stringify({
-          division_onchain_id: divisionOnchainId,
-          position_index: positionIndex,
-        }),
         credentials: "include",
       }),
       transformResponse: (
@@ -324,14 +320,12 @@ export const apiSlice = createApi({
     >({
       query: ({ divisionOnchainId, positionIndex }) => ({
         url: `/officer/key`,
-        method: "POST",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Division-Id": divisionOnchainId,
+          "Position-Index": positionIndex.toString(),
         },
-        body: JSON.stringify({
-          division_onchain_id: divisionOnchainId,
-          position_index: positionIndex,
-        }),
         credentials: "include",
       }),
       transformResponse: (response: { onchain_address: string; private_key: string }) => {
@@ -347,15 +341,13 @@ export const apiSlice = createApi({
       { divisionOnchainId: string; positionIndex: number }
     >({
       query: ({ divisionOnchainId, positionIndex }) => ({
-        url: "/published/list",
-        method: "POST",
+        url: "/publisheds",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Division-Id": divisionOnchainId,
+          "Position-Index": positionIndex.toString(),
         },
-        body: JSON.stringify({
-          division_onchain_id: divisionOnchainId,
-          position_index: positionIndex,
-        }),
         credentials: "include",
       }),
       transformResponse: (
@@ -382,15 +374,13 @@ export const apiSlice = createApi({
       { divisionOnchainId: string; positionIndex: number; docContentHash: string }
     >({
       query: ({ divisionOnchainId, positionIndex, docContentHash }) => ({
-        url: `/published/detail/${docContentHash}`,
-        method: "POST",
+        url: `/publisheds/${docContentHash}`,
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Division-Id": divisionOnchainId,
+          "Position-Index": positionIndex.toString(),
         },
-        body: JSON.stringify({
-          division_onchain_id: divisionOnchainId,
-          position_index: positionIndex,
-        }),
         credentials: "include",
       }),
       transformResponse: (response: {
@@ -419,15 +409,13 @@ export const apiSlice = createApi({
       { divisionOnchainId: string; positionIndex: number; docContentHash: string }
     >({
       query: ({ divisionOnchainId, positionIndex, docContentHash }) => ({
-        url: `/published/signatures/${docContentHash}`,
-        method: "POST",
+        url: `/publisheds/signatures/${docContentHash}`,
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Division-Id": divisionOnchainId,
+          "Position-Index": positionIndex.toString(),
         },
-        body: JSON.stringify({
-          division_onchain_id: divisionOnchainId,
-          position_index: positionIndex,
-        }),
         credentials: "include",
       }),
       transformResponse: (response: { signer_name: string; position_name: string }[]) => {
@@ -443,15 +431,13 @@ export const apiSlice = createApi({
       { divisionOnchainId: string; positionIndex: number; draftId: number }
     >({
       query: ({ divisionOnchainId, positionIndex, draftId }) => ({
-        url: `/draft/not-signed/${draftId}`,
-        method: "POST",
+        url: `/drafts/${draftId}/not-signed`,
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Division-Id": divisionOnchainId,
+          "Position-Index": positionIndex.toString(),
         },
-        body: JSON.stringify({
-          division_onchain_id: divisionOnchainId,
-          position_index: positionIndex,
-        }),
         credentials: "include",
       }),
       transformResponse: (
@@ -472,10 +458,44 @@ export const apiSlice = createApi({
       },
       providesTags: ["User"],
     }),
+    createReviewTask: builder.mutation<
+      string,
+      {
+        divisionOnchainId: string;
+        positionIndex: number;
+        draftId: number;
+        assignees: { signerAddress: string; positionIndex: number }[];
+      }
+    >({
+      query: ({ divisionOnchainId, positionIndex, draftId, assignees }) => {
+        const taskInfo = {
+          draft_id: draftId,
+          assignees: assignees.map((a) => ({
+            signer_address: a.signerAddress,
+            position_index: a.positionIndex,
+          })),
+        };
+
+        return {
+          url: "/review-tasks",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Division-Id": divisionOnchainId,
+            "Position-Index": positionIndex.toString(),
+          },
+          body: JSON.stringify(taskInfo),
+          credentials: "include",
+          responseHandler: "text",
+        };
+      },
+      invalidatesTags: ["Draft"],
+    }),
   }),
 });
 
 export const {
+  util: apiSliceUtil,
   useUserQuery,
   useLoginMutation,
   useCreateDraftMutation,
@@ -489,5 +509,5 @@ export const {
   usePublishedDocDetailQuery,
   usePublishedDocSigsQuery,
   useSignerNotSignedQuery,
-  util: apiSliceUtil,
+  useCreateReviewTaskMutation,
 } = apiSlice;
