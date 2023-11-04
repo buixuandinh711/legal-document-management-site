@@ -7,21 +7,16 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Add,
-  RemoveCircle as InProgressIcon,
-  CheckCircle as SignedIcon,
-  Cancel as RejectedIcon,
-} from "@mui/icons-material";
-import { ReviewTaskStatus, useAssignedReviewTasksQuery } from "src/context/slices/apiSlice";
+import { useAssignedReviewTasksQuery } from "src/context/slices/apiSlice";
 import { useAppSelector } from "src/context/store";
 import { convertSecsToDateTime } from "src/utils/utils";
 import ContentLoading from "src/pages/ContentLoading";
 import ContentError from "src/pages/ContentError";
+import DisplayedReviewTaskStatus from "src/components/DisplayedReviewTaskStatus";
 
 export default function AssignedReviewTasks() {
   const [page, setPage] = useState(0);
@@ -54,17 +49,6 @@ export default function AssignedReviewTasks() {
           >
             Assigned Review Tasks
           </Typography>
-          <Button
-            variant="contained"
-            startIcon={<Add />}
-            size="small"
-            sx={{ "& .MuiButton-startIcon": { mr: 0 } }}
-            onClick={() => {
-              navigate("/manage-reviews/create");
-            }}
-          >
-            New
-          </Button>
         </Box>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
@@ -117,12 +101,17 @@ export default function AssignedReviewTasks() {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   return (
-                    <TableRow hover key={row.id} sx={{ cursor: "pointer" }}>
+                    <TableRow
+                      hover
+                      key={row.id}
+                      sx={{ cursor: "pointer" }}
+                      onClick={() => navigate(`/review-tasks/${row.id}`)}
+                    >
                       <TableCell align="left">{convertSecsToDateTime(row.assignedAt)}</TableCell>
                       <TableCell align="left">{row.draftName}</TableCell>
                       <TableCell align="left">{`${row.assigner} - ${row.assignerPosition}`}</TableCell>
                       <TableCell align="left">
-                        <DisplayedStatus status={row.status} />
+                        <DisplayedReviewTaskStatus status={row.status} />
                       </TableCell>
                     </TableRow>
                   );
@@ -149,43 +138,4 @@ export default function AssignedReviewTasks() {
   }
 
   return <ContentError />;
-}
-
-const statusTextStyles = {
-  fontWeight: 600,
-  fontSize: "0.9rem",
-  color: grey[700],
-};
-
-function DisplayedStatus({ status }: { status: ReviewTaskStatus }) {
-  return (
-    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-      {(() => {
-        if (status === ReviewTaskStatus.InProgress) {
-          return (
-            <>
-              <InProgressIcon fontSize="small" color="primary" />
-              <Typography {...statusTextStyles}>In-Progress</Typography>
-            </>
-          );
-        }
-        if (status === ReviewTaskStatus.Signed) {
-          return (
-            <>
-              <SignedIcon fontSize="small" color="success" />
-              <Typography {...statusTextStyles}>Signed</Typography>
-            </>
-          );
-        }
-        if (status === ReviewTaskStatus.Rejected) {
-          return (
-            <>
-              <RejectedIcon fontSize="small" color="error" />
-              <Typography {...statusTextStyles}>Rejected</Typography>
-            </>
-          );
-        }
-      })()}
-    </Box>
-  );
 }

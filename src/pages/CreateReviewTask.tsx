@@ -2,9 +2,13 @@ import { Box, Button, MenuItem, TextField, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PublishDraftDetail from "src/components/PublishDocument/PublishDraftDetail";
+import DraftDetailBox from "src/components/DraftDetailBox";
 import SelectSigner from "src/components/SelectSigner";
-import { useCreateReviewTaskMutation, usePublishableDraftQuery } from "src/context/slices/apiSlice";
+import {
+  useCreateReviewTaskMutation,
+  useDraftDetailQuery,
+  usePublishableDraftQuery,
+} from "src/context/slices/apiSlice";
 import { openSnackbar } from "src/context/slices/snackbarSlide";
 import { useAppDispatch, useAppSelector } from "src/context/store";
 import ContentError from "src/pages/ContentError";
@@ -12,15 +16,31 @@ import ContentLoading from "src/pages/ContentLoading";
 
 export default function CreateReviewTask() {
   const { divisionOnchainId, positionIndex } = useAppSelector((state) => state.position);
-  const publishableDraftQuery = usePublishableDraftQuery({
-    divisionOnchainId,
-    positionIndex,
-  });
+  const publishableDraftQuery = usePublishableDraftQuery(
+    {
+      divisionOnchainId,
+      positionIndex,
+    },
+    {
+      skip: divisionOnchainId === "",
+    }
+  );
   const [selectedDraft, setSelectedDraft] = useState<string>("");
   const [selectedSigners, setSelectedSigners] = useState<string[]>([]);
   const [createReviewTask] = useCreateReviewTaskMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const parsedDraftId = parseInt(selectedDraft);
+  const draftDetailQuery = useDraftDetailQuery(
+    {
+      divisionOnchainId,
+      positionIndex,
+      draftId: parsedDraftId,
+    },
+    {
+      skip: isNaN(parsedDraftId),
+    }
+  );
 
   if (publishableDraftQuery.isLoading) {
     return <ContentLoading />;
@@ -56,9 +76,24 @@ export default function CreateReviewTask() {
               </MenuItem>
             ))}
           </TextField>
-          {selectedDraft !== "" && !isNaN(parseInt(selectedDraft)) && (
-            <>
-              <PublishDraftDetail draftId={selectedDraft} />
+        </Paper>
+        {selectedDraft !== "" && !isNaN(parseInt(selectedDraft)) && (
+          <>
+            <Paper sx={{ width: "100%", overflow: "hidden", borderRadius: 4, p: 4, my: 4 }}>
+              {draftDetailQuery.isSuccess && (
+                <DraftDetailBox
+                  id={draftDetailQuery.data.id}
+                  name={draftDetailQuery.data.name}
+                  documentNo={draftDetailQuery.data.documentNo}
+                  documentName={draftDetailQuery.data.documentName}
+                  documentType={draftDetailQuery.data.documentType}
+                  fileName={draftDetailQuery.data.fileName}
+                  updatedAt={draftDetailQuery.data.updatedAt}
+                  docUri={draftDetailQuery.data.docUri}
+                  drafterUsername={draftDetailQuery.data.drafterUsername}
+                  drafterName={draftDetailQuery.data.drafterName}
+                />
+              )}
               <form
                 onSubmit={async (e) => {
                   e.preventDefault();
@@ -100,9 +135,9 @@ export default function CreateReviewTask() {
                   </Button>
                 </Box>
               </form>
-            </>
-          )}
-        </Paper>
+            </Paper>
+          </>
+        )}
       </>
     );
   }

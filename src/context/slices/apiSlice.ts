@@ -106,6 +106,16 @@ export interface AssignedReviewTaskItem {
   status: ReviewTaskStatus;
 }
 
+export interface AssignedReviewTaskDetail {
+  id: number;
+  draftId: number;
+  draftName: string;
+  assigner: string;
+  assignerPosition: string;
+  assignedAt: number;
+  status: ReviewTaskStatus;
+}
+
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
@@ -589,6 +599,43 @@ export const apiSlice = createApi({
       },
       providesTags: ["User", "Review Task"],
     }),
+    assignedReviewTaskDetail: builder.query<
+      AssignedReviewTaskDetail,
+      { divisionOnchainId: string; positionIndex: number; taskId: number }
+    >({
+      query: ({ divisionOnchainId, positionIndex, taskId }) => ({
+        url: `/assigned-review-tasks/${taskId}`,
+        method: "GET",
+        headers: {
+          "Division-Id": divisionOnchainId,
+          "Position-Index": positionIndex.toString(),
+        },
+        credentials: "include",
+      }),
+      transformResponse: (response: {
+        id: number;
+        draft_id: number;
+        draft_name: string;
+        assigner: string;
+        assignerPosition: string;
+        status: number;
+        assigned_at: {
+          nanos_since_epoch: number;
+          secs_since_epoch: number;
+        };
+      }) => {
+        return {
+          id: response.id,
+          draftId: response.draft_id,
+          draftName: response.draft_name,
+          assigner: response.assigner,
+          assignerPosition: response.assignerPosition,
+          status: response.status as ReviewTaskStatus,
+          assignedAt: response.assigned_at.secs_since_epoch,
+        };
+      },
+      providesTags: ["User", "Review Task"],
+    }),
   }),
 });
 
@@ -610,4 +657,5 @@ export const {
   useCreateReviewTaskMutation,
   useCreatedReviewTasksQuery,
   useAssignedReviewTasksQuery,
+  useAssignedReviewTaskDetailQuery,
 } = apiSlice;

@@ -1,23 +1,53 @@
 import { Box, Button, MenuItem, TextField, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { useState } from "react";
+import DocumentContexBox from "src/components/DocumentContexBox";
+import DocumentSignerBox from "src/components/DocumentSignerBox";
+import DraftDetailBox from "src/components/DraftDetailBox";
 import PublishDialog from "src/components/PublishDocument/PublishDialog";
-import PublishDraftContent from "src/components/PublishDocument/PublishDraftContent";
-import PublishDraftDetail from "src/components/PublishDocument/PublishDraftDetail";
-import PublishSigner from "src/components/PublishDocument/PublishSigner";
-import { usePublishableDraftQuery } from "src/context/slices/apiSlice";
+import {
+  useDraftDetailQuery,
+  useDraftSignaturesQuery,
+  usePublishableDraftQuery,
+} from "src/context/slices/apiSlice";
 import { useAppSelector } from "src/context/store";
 import ContentError from "src/pages/ContentError";
 import ContentLoading from "src/pages/ContentLoading";
 
 export default function PublishDocument() {
-  const workingPosition = useAppSelector((state) => state.position);
-  const publishableDraftQuery = usePublishableDraftQuery({
-    divisionOnchainId: workingPosition.divisionOnchainId,
-    positionIndex: workingPosition.positionIndex,
-  });
+  const { divisionOnchainId, positionIndex } = useAppSelector((state) => state.position);
+  const publishableDraftQuery = usePublishableDraftQuery(
+    {
+      divisionOnchainId,
+      positionIndex,
+    },
+    {
+      skip: divisionOnchainId === "",
+    }
+  );
   const [selectedDraft, setSelectedDraft] = useState<string>("");
   const [openDialog, setOpenDialog] = useState(false);
+  const parsedDraftId = parseInt(selectedDraft);
+  const draftDetailQuery = useDraftDetailQuery(
+    {
+      divisionOnchainId,
+      positionIndex,
+      draftId: parsedDraftId,
+    },
+    {
+      skip: isNaN(parsedDraftId),
+    }
+  );
+  const draftSignaturesQuery = useDraftSignaturesQuery(
+    {
+      divisionOnchainId,
+      positionIndex,
+      draftId: parsedDraftId,
+    },
+    {
+      skip: isNaN(parsedDraftId),
+    }
+  );
 
   if (publishableDraftQuery.isLoading) {
     return <ContentLoading />;
@@ -53,11 +83,28 @@ export default function PublishDocument() {
               </MenuItem>
             ))}
           </TextField>
-          {selectedDraft !== "" && !isNaN(parseInt(selectedDraft)) && (
-            <>
+        </Paper>
+        {selectedDraft !== "" && !isNaN(parseInt(selectedDraft)) && (
+          <>
+            <Paper sx={{ width: "100%", overflow: "hidden", borderRadius: 4, py: 2, px: 4, my: 4 }}>
               <Box sx={{ display: "flex", gap: 2, alignItems: "stretch" }}>
-                <PublishDraftDetail draftId={selectedDraft} />
-                <PublishSigner draftId={selectedDraft} />
+                {draftDetailQuery.isSuccess && (
+                  <DraftDetailBox
+                    id={draftDetailQuery.data.id}
+                    name={draftDetailQuery.data.name}
+                    documentNo={draftDetailQuery.data.documentNo}
+                    documentName={draftDetailQuery.data.documentName}
+                    documentType={draftDetailQuery.data.documentType}
+                    fileName={draftDetailQuery.data.fileName}
+                    updatedAt={draftDetailQuery.data.updatedAt}
+                    docUri={draftDetailQuery.data.docUri}
+                    drafterUsername={draftDetailQuery.data.drafterUsername}
+                    drafterName={draftDetailQuery.data.drafterName}
+                  />
+                )}
+                {draftSignaturesQuery.isSuccess && (
+                  <DocumentSignerBox signers={draftSignaturesQuery.data} />
+                )}
               </Box>
               <Box sx={{ mt: 2, display: "flex", justifyContent: "right", gap: 1 }}>
                 <Button variant="outlined" onClick={() => setSelectedDraft("")}>
@@ -67,12 +114,10 @@ export default function PublishDocument() {
                   Publish
                 </Button>
               </Box>
-            </>
-          )}
-        </Paper>
-        {selectedDraft !== "" && !isNaN(parseInt(selectedDraft)) && (
-          <>
-            <PublishDraftContent draftId={selectedDraft} />
+            </Paper>
+            {draftDetailQuery.isSuccess && (
+              <DocumentContexBox documentUri={draftDetailQuery.data.docUri} />
+            )}
             {openDialog && (
               <PublishDialog
                 key={selectedDraft}
