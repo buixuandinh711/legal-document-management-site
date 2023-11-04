@@ -82,6 +82,20 @@ export interface SignerPositions {
   positions: { positionIndex: number; positionName: string }[];
 }
 
+export enum ReviewTaskStatus {
+  InProgress,
+  Signed,
+  Rejected,
+}
+
+export interface CreatedReviewTaskItem {
+  id: number;
+  draftName: string;
+  assignee: string;
+  createdAt: number;
+  status: ReviewTaskStatus;
+}
+
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
@@ -491,6 +505,41 @@ export const apiSlice = createApi({
       },
       invalidatesTags: ["Draft"],
     }),
+    createdReviewTasks: builder.query<
+      CreatedReviewTaskItem[],
+      { divisionOnchainId: string; positionIndex: number }
+    >({
+      query: ({ divisionOnchainId, positionIndex }) => ({
+        url: "/created-review-tasks",
+        method: "GET",
+        headers: {
+          "Division-Id": divisionOnchainId,
+          "Position-Index": positionIndex.toString(),
+        },
+        credentials: "include",
+      }),
+      transformResponse: (
+        response: {
+          id: number;
+          draft_name: string;
+          assignee: string;
+          status: number;
+          created_at: {
+            nanos_since_epoch: number;
+            secs_since_epoch: number;
+          };
+        }[]
+      ) => {
+        return response.map((item) => ({
+          id: item.id,
+          draftName: item.draft_name,
+          assignee: item.assignee,
+          status: item.status as ReviewTaskStatus,
+          createdAt: item.created_at.secs_since_epoch,
+        }));
+      },
+      providesTags: ["User", "Draft"],
+    }),
   }),
 });
 
@@ -510,4 +559,5 @@ export const {
   usePublishedDocSigsQuery,
   useSignerNotSignedQuery,
   useCreateReviewTaskMutation,
+  useCreatedReviewTasksQuery,
 } = apiSlice;

@@ -65,12 +65,12 @@ export const secondaryListItems = (
         <ListItemText primary="Assign Task" />
       </ListItemButton>
     </Link>
-    <Link to="/req-sig" style={{ textDecoration: "none", color: "inherit" }}>
+    <Link to="/manage-reviews" style={{ textDecoration: "none", color: "inherit" }}>
       <ListItemButton>
         <ListItemIcon>
           <Draw />
         </ListItemIcon>
-        <ListItemText primary="Request Signature" />
+        <ListItemText primary="Review Tasks" />
       </ListItemButton>
     </Link>
     <Link to="/publish" style={{ textDecoration: "none", color: "inherit" }}>

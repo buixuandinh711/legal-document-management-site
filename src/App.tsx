@@ -11,7 +11,8 @@ import CreateDraft from "src/pages/CreateDraft";
 import PublishDocument from "src/pages/PublishDocument";
 import PublishedDocument from "src/pages/PublishedDocument";
 import PublishedDocDetail from "src/pages/PublishedDocDetail";
-import RequestSignature from "src/pages/RequestSignature";
+import CreateReviewTask from "src/pages/CreateReviewTask";
+import ManageReviewTasks from "src/pages/ManageReviewTasks";
 
 export default function App() {
   return (
@@ -27,7 +28,8 @@ export default function App() {
           <Route path="publish" element={<PublishDocument />} />
           <Route path="published" element={<PublishedDocument />} />
           <Route path="published/:contentHash" element={<PublishedDocDetail />} />
-          <Route path="req-sig" element={<RequestSignature />} />
+          <Route path="manage-reviews" element={<ManageReviewTasks />} />
+          <Route path="manage-reviews/create" element={<CreateReviewTask />} />
           <Route
             path="detail"
             element={

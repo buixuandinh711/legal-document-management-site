@@ -8,7 +8,7 @@ import { useAppSelector } from "src/context/store";
 import ContentError from "src/pages/ContentError";
 import ContentLoading from "src/pages/ContentLoading";
 
-export default function RequestSignature() {
+export default function CreateReviewTask() {
   const { divisionOnchainId, positionIndex } = useAppSelector((state) => state.position);
   const publishableDraftQuery = usePublishableDraftQuery({
     divisionOnchainId,
