@@ -33,7 +33,6 @@ export default function PublishSigner({ draftId }: { draftId: string }) {
       <Box
         sx={{
           flexBasis: "30%",
-          mt: 2,
           border: "1px solid",
           borderColor: grey[400],
           borderRadius: 4,

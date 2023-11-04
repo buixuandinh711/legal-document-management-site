@@ -25,12 +25,12 @@ export const mainListItems = (
         <ListItemText primary="Drafting Task" />
       </ListItemButton>
     </Link>
-    <Link to="/reviewing" style={{ textDecoration: "none", color: "inherit" }}>
+    <Link to="/review-tasks" style={{ textDecoration: "none", color: "inherit" }}>
       <ListItemButton>
         <ListItemIcon>
           <Grading />
         </ListItemIcon>
-        <ListItemText primary="Reviewing Task" />
+        <ListItemText primary="Review Task" />
       </ListItemButton>
     </Link>
     <Link to="/draft" style={{ textDecoration: "none", color: "inherit" }}>
@@ -70,7 +70,7 @@ export const secondaryListItems = (
         <ListItemIcon>
           <Draw />
         </ListItemIcon>
-        <ListItemText primary="Review Tasks" />
+        <ListItemText primary="Request Review" />
       </ListItemButton>
     </Link>
     <Link to="/publish" style={{ textDecoration: "none", color: "inherit" }}>

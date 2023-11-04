@@ -1,10 +1,12 @@
 import { Box, Button, MenuItem, TextField, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PublishDraftDetail from "src/components/PublishDocument/PublishDraftDetail";
 import SelectSigner from "src/components/SelectSigner";
 import { useCreateReviewTaskMutation, usePublishableDraftQuery } from "src/context/slices/apiSlice";
-import { useAppSelector } from "src/context/store";
+import { openSnackbar } from "src/context/slices/snackbarSlide";
+import { useAppDispatch, useAppSelector } from "src/context/store";
 import ContentError from "src/pages/ContentError";
 import ContentLoading from "src/pages/ContentLoading";
 
@@ -17,6 +19,8 @@ export default function CreateReviewTask() {
   const [selectedDraft, setSelectedDraft] = useState<string>("");
   const [selectedSigners, setSelectedSigners] = useState<string[]>([]);
   const [createReviewTask] = useCreateReviewTaskMutation();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   if (publishableDraftQuery.isLoading) {
     return <ContentLoading />;
@@ -40,7 +44,7 @@ export default function CreateReviewTask() {
               setSelectedDraft(value.target.value);
             }}
             sx={{
-              mt: 2,
+              my: 2,
               "& .MuiOutlinedInput-root": {
                 borderRadius: 4,
               },
@@ -74,7 +78,9 @@ export default function CreateReviewTask() {
                       draftId: parsedDraftId,
                       assignees: extractedSigners,
                     }).unwrap();
-                    console.log("Task created");
+                    dispatch(openSnackbar({ type: "success", message: "Review task created" }));
+                    navigate("/manage-reviews");
+                    console.log("Review task created");
                   } catch (error) {
                     console.log(error);
                   }
@@ -90,7 +96,7 @@ export default function CreateReviewTask() {
                     Cancel
                   </Button>
                   <Button variant="contained" type="submit">
-                    Publish
+                    Create
                   </Button>
                 </Box>
               </form>

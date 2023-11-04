@@ -92,7 +92,17 @@ export interface CreatedReviewTaskItem {
   id: number;
   draftName: string;
   assignee: string;
+  assigneePosition: string;
   createdAt: number;
+  status: ReviewTaskStatus;
+}
+
+export interface AssignedReviewTaskItem {
+  id: number;
+  draftName: string;
+  assigner: string;
+  assignerPosition: string;
+  assignedAt: number;
   status: ReviewTaskStatus;
 }
 
@@ -101,7 +111,7 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_API_HOST,
   }),
-  tagTypes: ["User", "Draft", "Publishable"],
+  tagTypes: ["User", "Draft", "Publishable", "Draft Signer", "Review Task"],
   endpoints: (builder) => ({
     user: builder.query<Officer, Record<string, never>>({
       query: () => ({
@@ -470,7 +480,7 @@ export const apiSlice = createApi({
           })),
         }));
       },
-      providesTags: ["User"],
+      providesTags: ["User", "Draft Signer"],
     }),
     createReviewTask: builder.mutation<
       string,
@@ -503,7 +513,7 @@ export const apiSlice = createApi({
           responseHandler: "text",
         };
       },
-      invalidatesTags: ["Draft"],
+      invalidatesTags: ["Draft", "Draft Signer", "Review Task"],
     }),
     createdReviewTasks: builder.query<
       CreatedReviewTaskItem[],
@@ -523,6 +533,7 @@ export const apiSlice = createApi({
           id: number;
           draft_name: string;
           assignee: string;
+          assignee_position: string;
           status: number;
           created_at: {
             nanos_since_epoch: number;
@@ -534,11 +545,49 @@ export const apiSlice = createApi({
           id: item.id,
           draftName: item.draft_name,
           assignee: item.assignee,
+          assigneePosition: item.assignee_position,
           status: item.status as ReviewTaskStatus,
           createdAt: item.created_at.secs_since_epoch,
         }));
       },
-      providesTags: ["User", "Draft"],
+      providesTags: ["User", "Review Task"],
+    }),
+    assignedReviewTasks: builder.query<
+      AssignedReviewTaskItem[],
+      { divisionOnchainId: string; positionIndex: number }
+    >({
+      query: ({ divisionOnchainId, positionIndex }) => ({
+        url: "/assigned-review-tasks",
+        method: "GET",
+        headers: {
+          "Division-Id": divisionOnchainId,
+          "Position-Index": positionIndex.toString(),
+        },
+        credentials: "include",
+      }),
+      transformResponse: (
+        response: {
+          id: number;
+          draft_name: string;
+          assigner: string;
+          assignerPosition: string;
+          status: number;
+          assigned_at: {
+            nanos_since_epoch: number;
+            secs_since_epoch: number;
+          };
+        }[]
+      ) => {
+        return response.map((item) => ({
+          id: item.id,
+          draftName: item.draft_name,
+          assigner: item.assigner,
+          assignerPosition: item.assignerPosition,
+          status: item.status as ReviewTaskStatus,
+          assignedAt: item.assigned_at.secs_since_epoch,
+        }));
+      },
+      providesTags: ["User", "Review Task"],
     }),
   }),
 });
@@ -560,4 +609,5 @@ export const {
   useSignerNotSignedQuery,
   useCreateReviewTaskMutation,
   useCreatedReviewTasksQuery,
+  useAssignedReviewTasksQuery,
 } = apiSlice;

@@ -41,7 +41,7 @@ export default function PublishDocument() {
               setSelectedDraft(value.target.value);
             }}
             sx={{
-              mt: 2,
+              my: 2,
               "& .MuiOutlinedInput-root": {
                 borderRadius: 4,
               },

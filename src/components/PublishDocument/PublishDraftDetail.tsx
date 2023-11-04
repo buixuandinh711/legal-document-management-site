@@ -29,7 +29,6 @@ export default function PublishDraftDetail({ draftId }: { draftId: string }) {
     return (
       <Box
         sx={{
-          mt: 4,
           px: 2,
           border: "1px solid",
           borderColor: grey[400],

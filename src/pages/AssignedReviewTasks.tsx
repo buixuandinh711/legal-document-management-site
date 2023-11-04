@@ -17,34 +17,30 @@ import {
   CheckCircle as SignedIcon,
   Cancel as RejectedIcon,
 } from "@mui/icons-material";
-import {
-  ReviewTaskStatus,
-  useCreatedReviewTasksQuery,
-  useDraftsListQuery,
-} from "src/context/slices/apiSlice";
+import { ReviewTaskStatus, useAssignedReviewTasksQuery } from "src/context/slices/apiSlice";
 import { useAppSelector } from "src/context/store";
 import { convertSecsToDateTime } from "src/utils/utils";
 import ContentLoading from "src/pages/ContentLoading";
 import ContentError from "src/pages/ContentError";
 
-export default function ManageReviewTasks() {
+export default function AssignedReviewTasks() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const { divisionOnchainId, positionIndex } = useAppSelector((state) => state.position);
-  const createdReviewTasksQuery = useCreatedReviewTasksQuery(
+  const assignedReviewTasksQuery = useAssignedReviewTasksQuery(
     { divisionOnchainId, positionIndex },
     { skip: divisionOnchainId === "" }
   );
 
   const navigate = useNavigate();
 
-  if (createdReviewTasksQuery.isLoading) {
+  if (assignedReviewTasksQuery.isLoading) {
     return <ContentLoading />;
   }
 
-  if (createdReviewTasksQuery.isSuccess) {
-    const createdReviewTasks = createdReviewTasksQuery.data;
+  if (assignedReviewTasksQuery.isSuccess) {
+    const assignedReviewTasks = assignedReviewTasksQuery.data;
     return (
       <Paper sx={{ width: "100%", overflow: "hidden", borderRadius: 4, p: 2 }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -82,7 +78,7 @@ export default function ManageReviewTasks() {
                     color: grey[600],
                   }}
                 >
-                  Created At
+                  Assigned At
                 </TableCell>
                 <TableCell
                   align="left"
@@ -102,7 +98,7 @@ export default function ManageReviewTasks() {
                     color: grey[600],
                   }}
                 >
-                  Assignee
+                  Assigner
                 </TableCell>
                 <TableCell
                   align="left"
@@ -117,14 +113,14 @@ export default function ManageReviewTasks() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {createdReviewTasksQuery.data
+              {assignedReviewTasks
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   return (
                     <TableRow hover key={row.id} sx={{ cursor: "pointer" }}>
-                      <TableCell align="left">{convertSecsToDateTime(row.createdAt)}</TableCell>
+                      <TableCell align="left">{convertSecsToDateTime(row.assignedAt)}</TableCell>
                       <TableCell align="left">{row.draftName}</TableCell>
-                      <TableCell align="left">{`${row.assignee} - ${row.assigneePosition}`}</TableCell>
+                      <TableCell align="left">{`${row.assigner} - ${row.assignerPosition}`}</TableCell>
                       <TableCell align="left">
                         <DisplayedStatus status={row.status} />
                       </TableCell>
@@ -137,7 +133,7 @@ export default function ManageReviewTasks() {
         <TablePagination
           rowsPerPageOptions={[1, 5, 10, 15]}
           component="div"
-          count={createdReviewTasksQuery.data.length}
+          count={assignedReviewTasksQuery.data.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={(_event: unknown, newPage: number) => {
