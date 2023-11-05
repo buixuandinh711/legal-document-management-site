@@ -36,14 +36,18 @@ const validationSchema = yup.object({
 
 const stepLabels = ["Sign Document", "Uploading", "Done"];
 
-export default function PublishDialog({
+export default function SubmitTxDialog({
   open,
   handleClose,
   submitTx,
+  successMsg,
+  errorMsg,
 }: {
   open: boolean;
   handleClose: (resetSelection: boolean) => void;
   submitTx: (privateKey: string) => Promise<boolean>;
+  successMsg?: string;
+  errorMsg?: string;
 }) {
   const { divisionOnchainId, positionIndex } = useAppSelector((state) => state.position);
   const privateKeyQuery = usePrivateKeyQuery(
@@ -82,9 +86,19 @@ export default function PublishDialog({
           throw new Error("Failed to submit tx");
         }
         setStep(3);
-        dispatch(openSnackbar({ type: "success", message: "Transaction submitted" }));
+        dispatch(
+          openSnackbar({
+            type: "success",
+            message: successMsg !== undefined ? successMsg : "Operation succeeded",
+          })
+        );
       } catch (error: unknown) {
-        dispatch(openSnackbar({ type: "error", message: (error as Error).message }));
+        dispatch(
+          openSnackbar({
+            type: "error",
+            message: errorMsg !== undefined ? errorMsg : "Operation failed",
+          })
+        );
         console.log(error);
       }
     },

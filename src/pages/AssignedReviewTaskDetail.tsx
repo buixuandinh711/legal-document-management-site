@@ -1,11 +1,17 @@
 import { Box, Button, InputLabel, TextField, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { grey } from "@mui/material/colors";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
+import SignDocumentDialog from "src/components/AssignedReviewTaskDetail/SignDocumentDialog";
 import DisplayedReviewTaskStatus from "src/components/DisplayedReviewTaskStatus";
 import DocumentContexBox from "src/components/DocumentContexBox";
 import DraftDetailBox from "src/components/DraftDetailBox";
-import { useAssignedReviewTaskDetailQuery, useDraftDetailQuery } from "src/context/slices/apiSlice";
+import {
+  ReviewTaskStatus,
+  useAssignedReviewTaskDetailQuery,
+  useDraftDetailQuery,
+} from "src/context/slices/apiSlice";
 import { useAppSelector } from "src/context/store";
 import ContentError from "src/pages/ContentError";
 import ContentLoading from "src/pages/ContentLoading";
@@ -37,6 +43,12 @@ export default function AssignedReviewTaskDetail() {
       skip: !taskDetailQuery.isSuccess,
     }
   );
+
+  const [openSignDialog, setOpenSignDialog] = useState(false);
+
+  if (taskId === undefined || isNaN(parseInt(taskId!))) {
+    return <ContentError />;
+  }
 
   if (taskDetailQuery.isLoading) {
     return <ContentLoading />;
@@ -91,7 +103,11 @@ export default function AssignedReviewTaskDetail() {
             </Box>
           </Box>
           <Box sx={{ mt: 2, display: "flex", justifyContent: "right", gap: 1 }}>
-            <Button variant="contained">Sign Draft</Button>
+            {taskDetail.status === ReviewTaskStatus.InProgress && (
+              <Button variant="contained" onClick={() => setOpenSignDialog(true)}>
+                Sign Draft
+              </Button>
+            )}
           </Box>
         </Paper>
         <>
@@ -115,6 +131,16 @@ export default function AssignedReviewTaskDetail() {
             <DocumentContexBox documentUri={draftDetailQuery.data.docUri} />
           )}
         </>
+        {draftDetailQuery.isSuccess && openSignDialog && (
+          <SignDocumentDialog
+            open={openSignDialog}
+            handleClose={() => {
+              setOpenSignDialog(false);
+            }}
+            draftDetail={draftDetailQuery.data}
+            taskId={parseInt(taskId)}
+          />
+        )}
       </>
     );
   }

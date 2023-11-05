@@ -49,5 +49,6 @@ export type DocumentInfo = {
   number: string;
   name: string;
   divisionId: string;
+  docType: string;
   publishedTimestamp: BigNumberish;
 };

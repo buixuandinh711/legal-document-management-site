@@ -35,7 +35,9 @@ export default function AssignedReviewTasks() {
   }
 
   if (assignedReviewTasksQuery.isSuccess) {
-    const assignedReviewTasks = assignedReviewTasksQuery.data;
+    const assignedReviewTasks = [...assignedReviewTasksQuery.data].sort(
+      (task1, task2) => task2.assignedAt - task1.assignedAt
+    );
     return (
       <Paper sx={{ width: "100%", overflow: "hidden", borderRadius: 4, p: 2 }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -122,7 +124,7 @@ export default function AssignedReviewTasks() {
         <TablePagination
           rowsPerPageOptions={[1, 5, 10, 15]}
           component="div"
-          count={assignedReviewTasksQuery.data.length}
+          count={assignedReviewTasks.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={(_event: unknown, newPage: number) => {

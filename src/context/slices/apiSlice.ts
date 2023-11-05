@@ -636,6 +636,31 @@ export const apiSlice = createApi({
       },
       providesTags: ["User", "Review Task"],
     }),
+    updateReviewTaskSigned: builder.mutation<
+      string,
+      {
+        divisionOnchainId: string;
+        positionIndex: number;
+        taskId: number;
+        signature: string;
+      }
+    >({
+      query: ({ divisionOnchainId, positionIndex, taskId, signature }) => {
+        return {
+          url: `/review-tasks/sign/${taskId}`,
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Division-Id": divisionOnchainId,
+            "Position-Index": positionIndex.toString(),
+          },
+          body: JSON.stringify({ signature }),
+          credentials: "include",
+          responseHandler: "text",
+        };
+      },
+      invalidatesTags: ["Draft", "Draft Signer", "Review Task"],
+    }),
   }),
 });
 
@@ -658,4 +683,5 @@ export const {
   useCreatedReviewTasksQuery,
   useAssignedReviewTasksQuery,
   useAssignedReviewTaskDetailQuery,
+  useUpdateReviewTaskSignedMutation,
 } = apiSlice;

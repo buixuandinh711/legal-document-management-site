@@ -4,7 +4,7 @@ import { useState } from "react";
 import DocumentContexBox from "src/components/DocumentContexBox";
 import DocumentSignerBox from "src/components/DocumentSignerBox";
 import DraftDetailBox from "src/components/DraftDetailBox";
-import PublishDialog from "src/components/PublishDocument/PublishDialog";
+import PublishDocDialog from "src/components/PublishDocument/PublishDocDialog";
 import {
   useDraftDetailQuery,
   useDraftSignaturesQuery,
@@ -118,10 +118,9 @@ export default function PublishDocument() {
             {draftDetailQuery.isSuccess && (
               <DocumentContexBox documentUri={draftDetailQuery.data.docUri} />
             )}
-            {openDialog && (
-              <PublishDialog
+            {draftDetailQuery.isSuccess && openDialog && (
+              <PublishDocDialog
                 key={selectedDraft}
-                draftId={selectedDraft}
                 open={openDialog}
                 handleClose={(resetSelection: boolean) => {
                   setOpenDialog(false);
@@ -129,6 +128,7 @@ export default function PublishDocument() {
                     setSelectedDraft("");
                   }
                 }}
+                draftDetail={draftDetailQuery.data}
               />
             )}
           </>
