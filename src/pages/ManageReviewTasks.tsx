@@ -17,11 +17,7 @@ import {
   CheckCircle as SignedIcon,
   Cancel as RejectedIcon,
 } from "@mui/icons-material";
-import {
-  ReviewTaskStatus,
-  useCreatedReviewTasksQuery,
-  useDraftsListQuery,
-} from "src/context/slices/apiSlice";
+import { ReviewTaskStatus, useCreatedReviewTasksQuery } from "src/context/slices/apiSlice";
 import { useAppSelector } from "src/context/store";
 import { convertSecsToDateTime } from "src/utils/utils";
 import ContentLoading from "src/pages/ContentLoading";
@@ -44,7 +40,9 @@ export default function ManageReviewTasks() {
   }
 
   if (createdReviewTasksQuery.isSuccess) {
-    const createdReviewTasks = createdReviewTasksQuery.data;
+    const createdReviewTasks = [...createdReviewTasksQuery.data].sort(
+      (task1, task2) => task2.createdAt - task1.createdAt
+    );
     return (
       <Paper sx={{ width: "100%", overflow: "hidden", borderRadius: 4, p: 2 }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -117,7 +115,7 @@ export default function ManageReviewTasks() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {createdReviewTasksQuery.data
+              {createdReviewTasks
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   return (
@@ -137,7 +135,7 @@ export default function ManageReviewTasks() {
         <TablePagination
           rowsPerPageOptions={[1, 5, 10, 15]}
           component="div"
-          count={createdReviewTasksQuery.data.length}
+          count={createdReviewTasks.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={(_event: unknown, newPage: number) => {

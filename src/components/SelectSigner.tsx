@@ -7,7 +7,6 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
 import { useAppSelector } from "src/context/store";
 import { SignerPositions, useSignerNotSignedQuery } from "src/context/slices/apiSlice";
-import { useState } from "react";
 import { ListSubheader } from "@mui/material";
 
 const ITEM_HEIGHT = 48;

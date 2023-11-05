@@ -12,7 +12,6 @@ import {
   LibraryBooks,
   NoteAlt,
   Publish,
-  Task,
 } from "@mui/icons-material";
 
 export const mainListItems = (

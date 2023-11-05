@@ -39,6 +39,7 @@ export const signDocument = async (
     ethers.toBeHex(signersPosition.positionIndex, 32),
     ethers.toUtf8Bytes(documentInfo.number),
     ethers.toUtf8Bytes(documentInfo.name),
+    ethers.toUtf8Bytes(documentInfo.docType),
     ethers.toUtf8Bytes(documentInfo.divisionId),
     ethers.toBeHex(documentInfo.publishedTimestamp, 32),
     documentContentHash,
@@ -64,4 +65,17 @@ export const getAndCompressFile = async (url: string): Promise<Uint8Array> => {
   } catch (error) {
     throw new Error(`Error fetching data: ${(error as Error).message}`);
   }
+};
+
+export const compareAddress = (addr1: string, addr2: string) => {
+  const bigintAddr1 = BigInt(addr1);
+  const bigintAddr2 = BigInt(addr2);
+
+  if (bigintAddr1 < bigintAddr2) {
+    return -1;
+  }
+  if (bigintAddr1 > bigintAddr2) {
+    return 1;
+  }
+  return 0;
 };

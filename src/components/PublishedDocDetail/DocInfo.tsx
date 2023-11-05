@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Box, TextField } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { convertSecsToDate } from "src/utils/utils";

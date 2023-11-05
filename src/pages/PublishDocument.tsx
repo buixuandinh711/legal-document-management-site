@@ -13,6 +13,7 @@ import {
 import { useAppSelector } from "src/context/store";
 import ContentError from "src/pages/ContentError";
 import ContentLoading from "src/pages/ContentLoading";
+import { compareAddress } from "src/utils/utils";
 
 export default function PublishDocument() {
   const { divisionOnchainId, positionIndex } = useAppSelector((state) => state.position);
@@ -118,17 +119,20 @@ export default function PublishDocument() {
             {draftDetailQuery.isSuccess && (
               <DocumentContexBox documentUri={draftDetailQuery.data.docUri} />
             )}
-            {draftDetailQuery.isSuccess && openDialog && (
+            {draftDetailQuery.isSuccess && draftSignaturesQuery.isSuccess && openDialog && (
               <PublishDocDialog
                 key={selectedDraft}
                 open={openDialog}
+                draftDetail={draftDetailQuery.data}
+                draftSignatures={[...draftSignaturesQuery.data].sort((sig1, sig2) =>
+                  compareAddress(sig1.signerAddress, sig2.signerAddress)
+                )}
                 handleClose={(resetSelection: boolean) => {
                   setOpenDialog(false);
                   if (resetSelection) {
                     setSelectedDraft("");
                   }
                 }}
-                draftDetail={draftDetailQuery.data}
               />
             )}
           </>

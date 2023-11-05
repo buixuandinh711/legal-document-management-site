@@ -51,6 +51,9 @@ interface DraftSignature {
   signerName: string;
   positionName: string;
   signature: string;
+  signerAddress: string;
+  divisionId: string;
+  positionIndex: number;
 }
 
 interface PublishedDoc {
@@ -338,12 +341,22 @@ export const apiSlice = createApi({
         credentials: "include",
       }),
       transformResponse: (
-        response: { signer_name: string; position_name: string; signature: string }[]
+        response: {
+          signer_name: string;
+          position_name: string;
+          signature: string;
+          signer_address: string;
+          division_id: string;
+          position_index: number;
+        }[]
       ) => {
         return response.map((res) => ({
           signerName: res.signer_name,
           positionName: res.position_name,
           signature: res.signature,
+          signerAddress: res.signer_address,
+          divisionId: res.division_id,
+          positionIndex: res.position_index,
         }));
       },
       providesTags: ["User"],

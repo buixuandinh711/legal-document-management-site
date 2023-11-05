@@ -1,6 +1,6 @@
 import { Add, Remove } from "@mui/icons-material";
-import { Box, IconButton, TextField, Typography } from "@mui/material";
-import React, { ChangeEvent } from "react";
+import { Box, IconButton, TextField } from "@mui/material";
+import React from "react";
 
 interface CounterProps {
   number: number;
