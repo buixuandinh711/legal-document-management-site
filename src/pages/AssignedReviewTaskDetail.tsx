@@ -69,7 +69,7 @@ export default function AssignedReviewTaskDetail() {
             />
             <TextField
               label="Assigner"
-              value={taskDetail.assigner}
+              value={`${taskDetail.assigner} - ${taskDetail.assignerPosition}`}
               fullWidth
               variant="standard"
               InputProps={{ readOnly: true }}

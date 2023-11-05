@@ -29,7 +29,7 @@ interface PublishableDraft {
   name: string;
 }
 
-interface OfficerPrivateKey {
+export interface OfficerPrivateKey {
   onchainAddress: string;
   privateKey: string;
 }
@@ -580,7 +580,7 @@ export const apiSlice = createApi({
           id: number;
           draft_name: string;
           assigner: string;
-          assignerPosition: string;
+          assigner_position: string;
           status: number;
           assigned_at: {
             nanos_since_epoch: number;
@@ -592,7 +592,7 @@ export const apiSlice = createApi({
           id: item.id,
           draftName: item.draft_name,
           assigner: item.assigner,
-          assignerPosition: item.assignerPosition,
+          assignerPosition: item.assigner_position,
           status: item.status as ReviewTaskStatus,
           assignedAt: item.assigned_at.secs_since_epoch,
         }));
@@ -617,7 +617,7 @@ export const apiSlice = createApi({
         draft_id: number;
         draft_name: string;
         assigner: string;
-        assignerPosition: string;
+        assigner_position: string;
         status: number;
         assigned_at: {
           nanos_since_epoch: number;
@@ -629,7 +629,7 @@ export const apiSlice = createApi({
           draftId: response.draft_id,
           draftName: response.draft_name,
           assigner: response.assigner,
-          assignerPosition: response.assignerPosition,
+          assignerPosition: response.assigner_position,
           status: response.status as ReviewTaskStatus,
           assignedAt: response.assigned_at.secs_since_epoch,
         };
