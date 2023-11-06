@@ -69,7 +69,7 @@ export const secondaryListItems = (
         <ListItemIcon>
           <Draw />
         </ListItemIcon>
-        <ListItemText primary="Request Review" />
+        <ListItemText primary="Assign Review" />
       </ListItemButton>
     </Link>
     <Link to="/publish" style={{ textDecoration: "none", color: "inherit" }}>
