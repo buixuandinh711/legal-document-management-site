@@ -56,20 +56,20 @@ export const secondaryListItems = (
     <ListSubheader component="div" inset>
       Management
     </ListSubheader>
-    <Link to="/manage-task" style={{ textDecoration: "none", color: "inherit" }}>
+    <Link to="/assign-drafting" style={{ textDecoration: "none", color: "inherit" }}>
       <ListItemButton>
         <ListItemIcon>
           <AssignmentInd />
         </ListItemIcon>
-        <ListItemText primary="Assign Task" />
+        <ListItemText primary="Assign Drafting" />
       </ListItemButton>
     </Link>
-    <Link to="/manage-reviews" style={{ textDecoration: "none", color: "inherit" }}>
+    <Link to="/assign-reviewing" style={{ textDecoration: "none", color: "inherit" }}>
       <ListItemButton>
         <ListItemIcon>
           <Draw />
         </ListItemIcon>
-        <ListItemText primary="Assign Review" />
+        <ListItemText primary="Assign Reviewing" />
       </ListItemButton>
     </Link>
     <Link to="/publish" style={{ textDecoration: "none", color: "inherit" }}>

@@ -6,8 +6,9 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
 import { useAppSelector } from "src/context/store";
-import { SignerPositions, useSignerNotSignedQuery } from "src/context/slices/apiSlice";
+import { useSignerNotSignedQuery } from "src/context/slices/apiSlice";
 import { ListSubheader } from "@mui/material";
+import { getDisplayName } from "src/utils/utils";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -18,19 +19,6 @@ const MenuProps = {
       width: 250,
     },
   },
-};
-
-const getDisplayName = (signerPostions: SignerPositions[], value: string): string => {
-  const [signerAddress, positionIndex] = value.split("/");
-  const signer = signerPostions.find((s) => s.signerAddress === signerAddress);
-  if (signer === undefined) {
-    return "undefined";
-  }
-  const position = signer.positions.find((p) => p.positionIndex === parseInt(positionIndex));
-  if (position === undefined) {
-    return "undefined";
-  }
-  return signer.signerName + " - " + position.positionName;
 };
 
 export default function SelectSigner({

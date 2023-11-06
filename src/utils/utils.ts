@@ -1,4 +1,5 @@
 import { BytesLike, Wallet, ethers } from "ethers";
+import { SignerPositions } from "src/context/slices/apiSlice";
 import { DocumentInfo, OfficerPosition } from "src/utils/types";
 import * as flate from "wasm-flate";
 
@@ -78,4 +79,17 @@ export const compareAddress = (addr1: string, addr2: string) => {
     return 1;
   }
   return 0;
+};
+
+export const getDisplayName = (signerPostions: SignerPositions[], value: string): string => {
+  const [signerAddress, positionIndex] = value.split("/");
+  const signer = signerPostions.find((s) => s.signerAddress === signerAddress);
+  if (signer === undefined) {
+    return "undefined";
+  }
+  const position = signer.positions.find((p) => p.positionIndex === parseInt(positionIndex));
+  if (position === undefined) {
+    return "undefined";
+  }
+  return signer.signerName + " - " + position.positionName;
 };

@@ -15,6 +15,8 @@ import CreateReviewTask from "src/pages/CreateReviewTask";
 import ManageReviewTasks from "src/pages/ManageReviewTasks";
 import AssignedReviewTasks from "src/pages/AssignedReviewTasks";
 import AssignedReviewTaskDetail from "src/pages/AssignedReviewTaskDetail";
+import AssignDrafting from "src/pages/AssignDrafting";
+import CreateDraftingTask from "src/pages/CreateDraftingTask";
 
 export default function App() {
   return (
@@ -30,10 +32,12 @@ export default function App() {
           <Route path="publish" element={<PublishDocument />} />
           <Route path="published" element={<PublishedDocument />} />
           <Route path="published/:contentHash" element={<PublishedDocDetail />} />
-          <Route path="manage-reviews" element={<ManageReviewTasks />} />
-          <Route path="manage-reviews/create" element={<CreateReviewTask />} />
+          <Route path="assign-reviewing" element={<ManageReviewTasks />} />
+          <Route path="assign-reviewing/create" element={<CreateReviewTask />} />
           <Route path="review-tasks" element={<AssignedReviewTasks />} />
           <Route path="review-tasks/:id" element={<AssignedReviewTaskDetail />} />
+          <Route path="assign-drafting" element={<AssignDrafting />} />
+          <Route path="assign-drafting/create" element={<CreateDraftingTask />} />
           <Route
             path="detail"
             element={

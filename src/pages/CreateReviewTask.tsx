@@ -114,7 +114,7 @@ export default function CreateReviewTask() {
                       assignees: extractedSigners,
                     }).unwrap();
                     dispatch(openSnackbar({ type: "success", message: "Review task created" }));
-                    navigate("/manage-reviews");
+                    navigate("/assign-reviewing");
                     console.log("Review task created");
                   } catch (error) {
                     console.log(error);

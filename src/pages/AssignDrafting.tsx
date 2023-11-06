@@ -23,7 +23,7 @@ import { convertSecsToDateTime } from "src/utils/utils";
 import ContentLoading from "src/pages/ContentLoading";
 import ContentError from "src/pages/ContentError";
 
-export default function ManageReviewTasks() {
+export default function AssignDrafting() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -54,7 +54,7 @@ export default function ManageReviewTasks() {
             fontWeight={600}
             fontSize={25}
           >
-            Assigned Review Tasks
+            Created Draft Tasks
           </Typography>
           <Button
             variant="contained"
@@ -62,7 +62,7 @@ export default function ManageReviewTasks() {
             size="small"
             sx={{ "& .MuiButton-startIcon": { mr: 0 } }}
             onClick={() => {
-              navigate("/assign-reviewing/create");
+              navigate("/assign-drafting/create");
             }}
           >
             New
@@ -90,7 +90,7 @@ export default function ManageReviewTasks() {
                     color: grey[600],
                   }}
                 >
-                  Draft Name
+                  Name
                 </TableCell>
                 <TableCell
                   align="left"

@@ -124,7 +124,7 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_API_HOST,
   }),
-  tagTypes: ["User", "Draft", "Publishable", "Draft Signer", "Review Task"],
+  tagTypes: ["User", "Draft", "Publishable", "Draft Signer", "Review Task", "Draft Task"],
   endpoints: (builder) => ({
     user: builder.query<Officer, Record<string, never>>({
       query: () => ({
@@ -674,6 +674,75 @@ export const apiSlice = createApi({
       },
       invalidatesTags: ["Draft", "Draft Signer", "Review Task"],
     }),
+    divisionDrafters: builder.query<
+      SignerPositions[],
+      { divisionOnchainId: string; positionIndex: number }
+    >({
+      query: ({ divisionOnchainId, positionIndex }) => ({
+        url: `/draft-tasks/drafters`,
+        method: "GET",
+        headers: {
+          "Division-Id": divisionOnchainId,
+          "Position-Index": positionIndex.toString(),
+        },
+        credentials: "include",
+      }),
+      transformResponse: (
+        response: {
+          signer_address: string;
+          signer_name: string;
+          positions: { position_index: number; position_name: string }[];
+        }[]
+      ) => {
+        return response.map((res) => ({
+          signerAddress: res.signer_address,
+          signerName: res.signer_name,
+          positions: res.positions.map((pos) => ({
+            positionIndex: pos.position_index,
+            positionName: pos.position_name,
+          })),
+        }));
+      },
+      providesTags: ["User"],
+    }),
+    createDraftTask: builder.mutation<
+      string,
+      {
+        divisionOnchainId: string;
+        positionIndex: number;
+        taskName: string;
+        drafterAddress: string;
+        drafterPositionIndex: number;
+      }
+    >({
+      query: ({
+        divisionOnchainId,
+        positionIndex,
+        taskName,
+        drafterAddress,
+        drafterPositionIndex,
+      }) => {
+        const taskInfo = {
+          task_name: taskName,
+          drafter_address: drafterAddress,
+          drafter_position_index: drafterPositionIndex,
+        };
+
+        return {
+          url: "/draft-tasks",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Division-Id": divisionOnchainId,
+            "Position-Index": positionIndex.toString(),
+          },
+          body: JSON.stringify(taskInfo),
+          credentials: "include",
+          responseHandler: "text",
+        };
+      },
+      invalidatesTags: ["Draft Task"],
+    }),
   }),
 });
 
@@ -697,4 +766,6 @@ export const {
   useAssignedReviewTasksQuery,
   useAssignedReviewTaskDetailQuery,
   useUpdateReviewTaskSignedMutation,
+  useDivisionDraftersQuery,
+  useCreateDraftTaskMutation,
 } = apiSlice;
