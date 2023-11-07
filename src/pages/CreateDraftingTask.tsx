@@ -21,6 +21,7 @@ import ContentError from "src/pages/ContentError";
 import { getDisplayName } from "src/utils/utils";
 import { useDispatch } from "react-redux";
 import { openSnackbar } from "src/context/slices/snackbarSlide";
+import { createSearchParams, useNavigate } from "react-router-dom";
 
 interface CreateTaskFromValues {
   taskName: string;
@@ -43,6 +44,7 @@ export default function CreateDraftingTask() {
   );
   const [createDraftTask] = useCreateDraftTaskMutation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -59,7 +61,7 @@ export default function CreateDraftingTask() {
       const drafterPositionIndex = parseInt(rawPositionIndex);
 
       try {
-        await createDraftTask({
+        const createdTaskId = await createDraftTask({
           divisionOnchainId,
           positionIndex,
           taskName: values.taskName,
@@ -67,7 +69,12 @@ export default function CreateDraftingTask() {
           drafterPositionIndex,
         }).unwrap();
         dispatch(openSnackbar({ type: "success", message: "Draft created" }));
-        // navigate(`/draft/${draftId}`);
+        navigate({
+          pathname: "/assign-drafting",
+          search: createSearchParams({
+            new: createdTaskId,
+          }).toString(),
+        });
       } catch (error) {
         console.log(error);
       }

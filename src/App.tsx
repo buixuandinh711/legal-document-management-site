@@ -1,6 +1,5 @@
 import { Typography } from "@mui/material";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import DraftTask from "src/pages/DraftTask";
 import TaskDetail from "src/pages/TaskDetail";
 import ManageDraft from "src/pages/ManageDraft";
 import DocumentDetail from "src/pages/DraftDetail";
@@ -17,6 +16,7 @@ import AssignedReviewTasks from "src/pages/AssignedReviewTasks";
 import AssignedReviewTaskDetail from "src/pages/AssignedReviewTaskDetail";
 import AssignDrafting from "src/pages/AssignDrafting";
 import CreateDraftingTask from "src/pages/CreateDraftingTask";
+import DraftingTask from "src/pages/DraftingTask";
 
 export default function App() {
   return (
@@ -25,7 +25,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Layout />}>
           <Route path="" element={<Typography variant="h1">Root</Typography>} />
-          <Route path="drafting" element={<DraftTask />} />
+          <Route path="drafting-tasks" element={<DraftingTask />} />
           <Route path="draft" element={<ManageDraft />} />
           <Route path="draft/create" element={<CreateDraft />} />
           <Route path="draft/:id" element={<DocumentDetail />} />

@@ -7,43 +7,36 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { Box, Button, Typography } from "@mui/material";
-import { cyan, grey } from "@mui/material/colors";
+import { Box, Typography } from "@mui/material";
+import { grey } from "@mui/material/colors";
 import { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import {
-  Add,
-} from "@mui/icons-material";
-import {
-  useCreatedDraftingTasksQuery,
-} from "src/context/slices/apiSlice";
+import { useNavigate } from "react-router-dom";
+import { useAssignedDraftingTasksQuery } from "src/context/slices/apiSlice";
 import { useAppSelector } from "src/context/store";
 import { convertSecsToDateTime } from "src/utils/utils";
 import ContentLoading from "src/pages/ContentLoading";
 import ContentError from "src/pages/ContentError";
 import DisplayedDraftingTaskStatus from "src/components/DisplayedDraftingTaskStatus";
 
-export default function AssignDrafting() {
+export default function DraftingTask() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const { divisionOnchainId, positionIndex } = useAppSelector((state) => state.position);
-  const createdDraftingTasksQuery = useCreatedDraftingTasksQuery(
+  const assignedDraftingTasksQuery = useAssignedDraftingTasksQuery(
     { divisionOnchainId, positionIndex },
     { skip: divisionOnchainId === "" }
   );
 
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const newTaskId = searchParams.get("new");
 
-  if (createdDraftingTasksQuery.isLoading) {
+  if (assignedDraftingTasksQuery.isLoading) {
     return <ContentLoading />;
   }
 
-  if (createdDraftingTasksQuery.isSuccess) {
-    const createdDraftingTasks = [...createdDraftingTasksQuery.data].sort(
-      (task1, task2) => task2.createdAt - task1.createdAt
+  if (assignedDraftingTasksQuery.isSuccess) {
+    const assignedDraftingTasks = [...assignedDraftingTasksQuery.data].sort(
+      (task1, task2) => task2.assignedAt - task1.assignedAt
     );
 
     return (
@@ -57,19 +50,8 @@ export default function AssignDrafting() {
             fontWeight={600}
             fontSize={25}
           >
-            Created Draft Tasks
+            Your Drafting Tasks
           </Typography>
-          <Button
-            variant="contained"
-            startIcon={<Add />}
-            size="small"
-            sx={{ "& .MuiButton-startIcon": { mr: 0 } }}
-            onClick={() => {
-              navigate("/assign-drafting/create");
-            }}
-          >
-            New
-          </Button>
         </Box>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
@@ -83,7 +65,7 @@ export default function AssignDrafting() {
                     color: grey[600],
                   }}
                 >
-                  Created At
+                  Assigned At
                 </TableCell>
                 <TableCell
                   align="left"
@@ -118,7 +100,7 @@ export default function AssignDrafting() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {createdDraftingTasks
+              {assignedDraftingTasks
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   return (
@@ -127,16 +109,11 @@ export default function AssignDrafting() {
                       key={row.id}
                       sx={{
                         cursor: "pointer",
-                        ...(row.id.toString() === newTaskId
-                          ? {
-                              backgroundColor: cyan[50],
-                            }
-                          : {}),
                       }}
                     >
-                      <TableCell align="left">{convertSecsToDateTime(row.createdAt)}</TableCell>
+                      <TableCell align="left">{convertSecsToDateTime(row.assignedAt)}</TableCell>
                       <TableCell align="left">{row.name}</TableCell>
-                      <TableCell align="left">{`${row.assignee} - ${row.assigneePosition}`}</TableCell>
+                      <TableCell align="left">{`${row.assigner} - ${row.assignerPosition}`}</TableCell>
                       <TableCell align="left">
                         <DisplayedDraftingTaskStatus
                           status={row.draftId !== null ? "Done" : "In-Progress"}
@@ -151,7 +128,7 @@ export default function AssignDrafting() {
         <TablePagination
           rowsPerPageOptions={[1, 5, 10, 15]}
           component="div"
-          count={createdDraftingTasks.length}
+          count={assignedDraftingTasks.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={(_event: unknown, newPage: number) => {

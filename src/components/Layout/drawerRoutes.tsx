@@ -16,7 +16,7 @@ import {
 
 export const mainListItems = (
   <React.Fragment>
-    <Link to="/drafting" style={{ textDecoration: "none", color: "inherit" }}>
+    <Link to="/drafting-tasks" style={{ textDecoration: "none", color: "inherit" }}>
       <ListItemButton>
         <ListItemIcon>
           <NoteAlt />

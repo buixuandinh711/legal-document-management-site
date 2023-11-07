@@ -119,12 +119,38 @@ export interface AssignedReviewTaskDetail {
   status: ReviewTaskStatus;
 }
 
+interface CreatdDraftingTask {
+  id: number;
+  name: string;
+  assignee: string;
+  assigneePosition: string;
+  createdAt: number;
+  draftId: number | null;
+}
+
+interface AssignedDraftingTask {
+  id: number;
+  name: string;
+  assigner: string;
+  assignerPosition: string;
+  assignedAt: number;
+  draftId: number | null;
+}
+
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_API_HOST,
   }),
-  tagTypes: ["User", "Draft", "Publishable", "Draft Signer", "Review Task", "Draft Task"],
+  tagTypes: [
+    "User",
+    "Draft",
+    "Publishable",
+    "Draft Signer",
+    "Review Task",
+    "Created Draft Task",
+    "Assigned Draft Task",
+  ],
   endpoints: (builder) => ({
     user: builder.query<Officer, Record<string, never>>({
       query: () => ({
@@ -741,7 +767,81 @@ export const apiSlice = createApi({
           responseHandler: "text",
         };
       },
-      invalidatesTags: ["Draft Task"],
+      invalidatesTags: ["Created Draft Task"],
+    }),
+    createdDraftingTasks: builder.query<
+      CreatdDraftingTask[],
+      { divisionOnchainId: string; positionIndex: number }
+    >({
+      query: ({ divisionOnchainId, positionIndex }) => ({
+        url: "/draft-tasks/created",
+        method: "GET",
+        headers: {
+          "Division-Id": divisionOnchainId,
+          "Position-Index": positionIndex.toString(),
+        },
+        credentials: "include",
+      }),
+      transformResponse: (
+        response: {
+          id: number;
+          name: string;
+          assignee: string;
+          assignee_position: string;
+          created_at: {
+            nanos_since_epoch: number;
+            secs_since_epoch: number;
+          };
+          draft_id: number | null;
+        }[]
+      ) => {
+        return response.map((item) => ({
+          id: item.id,
+          name: item.name,
+          assignee: item.assignee,
+          assigneePosition: item.assignee_position,
+          createdAt: item.created_at.secs_since_epoch,
+          draftId: item.draft_id,
+        }));
+      },
+      providesTags: ["User", "Created Draft Task"],
+    }),
+    assignedDraftingTasks: builder.query<
+      AssignedDraftingTask[],
+      { divisionOnchainId: string; positionIndex: number }
+    >({
+      query: ({ divisionOnchainId, positionIndex }) => ({
+        url: "/draft-tasks/assigned",
+        method: "GET",
+        headers: {
+          "Division-Id": divisionOnchainId,
+          "Position-Index": positionIndex.toString(),
+        },
+        credentials: "include",
+      }),
+      transformResponse: (
+        response: {
+          id: number;
+          name: string;
+          assigner: string;
+          assigner_position: string;
+          assigned_at: {
+            nanos_since_epoch: number;
+            secs_since_epoch: number;
+          };
+          draft_id: number | null;
+        }[]
+      ) => {
+        return response.map((item) => ({
+          id: item.id,
+          name: item.name,
+          assigner: item.assigner,
+          assignerPosition: item.assigner_position,
+          assignedAt: item.assigned_at.secs_since_epoch,
+          draftId: item.draft_id,
+        }));
+      },
+      providesTags: ["User", "Assigned Draft Task"],
     }),
   }),
 });
@@ -768,4 +868,6 @@ export const {
   useUpdateReviewTaskSignedMutation,
   useDivisionDraftersQuery,
   useCreateDraftTaskMutation,
+  useCreatedDraftingTasksQuery,
+  useAssignedDraftingTasksQuery,
 } = apiSlice;
