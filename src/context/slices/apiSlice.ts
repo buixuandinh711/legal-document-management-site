@@ -137,6 +137,15 @@ interface AssignedDraftingTask {
   draftId: number | null;
 }
 
+interface AssignedDraftingTaskDetail {
+  id: number;
+  name: string;
+  assigner: string;
+  assignerPosition: string;
+  assignedAt: number;
+  draftId: number | null;
+}
+
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
@@ -843,6 +852,65 @@ export const apiSlice = createApi({
       },
       providesTags: ["User", "Assigned Draft Task"],
     }),
+    assignedDraftingTaskDetail: builder.query<
+      AssignedDraftingTaskDetail,
+      { divisionOnchainId: string; positionIndex: number; taskId: number }
+    >({
+      query: ({ divisionOnchainId, positionIndex, taskId }) => ({
+        url: `/draft-tasks/assigned/${taskId}`,
+        method: "GET",
+        headers: {
+          "Division-Id": divisionOnchainId,
+          "Position-Index": positionIndex.toString(),
+        },
+        credentials: "include",
+      }),
+      transformResponse: (response: {
+        id: number;
+        name: string;
+        assigner: string;
+        assigner_position: string;
+        assigned_at: {
+          nanos_since_epoch: number;
+          secs_since_epoch: number;
+        };
+        draft_id: number | null;
+      }) => ({
+        id: response.id,
+        name: response.name,
+        assigner: response.assigner,
+        assignerPosition: response.assigner_position,
+        assignedAt: response.assigned_at.secs_since_epoch,
+        draftId: response.draft_id,
+      }),
+      providesTags: ["User", "Assigned Draft Task"],
+    }),
+    submitDraftTask: builder.mutation<
+      string,
+      {
+        divisionOnchainId: string;
+        positionIndex: number;
+        taskId: number;
+        draftId: number;
+        signature: string;
+      }
+    >({
+      query: ({ divisionOnchainId, positionIndex, taskId, draftId, signature }) => {
+        return {
+          url: `/draft-tasks/submit/${taskId}`,
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Division-Id": divisionOnchainId,
+            "Position-Index": positionIndex.toString(),
+          },
+          body: JSON.stringify({ draft_id: draftId, signature }),
+          credentials: "include",
+          responseHandler: "text",
+        };
+      },
+      invalidatesTags: ["Draft", "Assigned Draft Task"],
+    }),
   }),
 });
 
@@ -870,4 +938,6 @@ export const {
   useCreateDraftTaskMutation,
   useCreatedDraftingTasksQuery,
   useAssignedDraftingTasksQuery,
+  useAssignedDraftingTaskDetailQuery,
+  useSubmitDraftTaskMutation,
 } = apiSlice;

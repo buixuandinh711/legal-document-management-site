@@ -27,6 +27,7 @@ const pathInfo: { pattern: RegExp; name: string }[] = [
   { pattern: /^\/assign-drafting$/, name: "Assign Drafting" },
   { pattern: /^\/assign-drafting\/create$/, name: "New Task" },
   { pattern: /^\/drafting-tasks$/, name: "Drafting Task" },
+  { pattern: /^\/drafting-tasks\/[^/]+$/, name: "Task Detail" },
 ];
 
 const getPathInfo = (path: string): string => {

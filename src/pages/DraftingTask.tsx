@@ -110,7 +110,7 @@ export default function DraftingTask() {
                       sx={{
                         cursor: "pointer",
                       }}
-                      onClick={() => navigate(`/drafting-tasks/${row.id}d`)}
+                      onClick={() => navigate(`/drafting-tasks/${row.id}`)}
                     >
                       <TableCell align="left">{convertSecsToDateTime(row.assignedAt)}</TableCell>
                       <TableCell align="left">{row.name}</TableCell>

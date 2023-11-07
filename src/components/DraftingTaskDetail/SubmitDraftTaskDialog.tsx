@@ -1,10 +1,14 @@
 import { ethers } from "ethers";
 import SubmitTxDialog from "src/components/SubmitTxDialog";
-import { useUpdateReviewTaskSignedMutation } from "src/context/slices/apiSlice";
+import {
+  useSubmitDraftTaskMutation,
+  useUpdateReviewTaskSignedMutation,
+} from "src/context/slices/apiSlice";
 import { useAppSelector } from "src/context/store";
 import { getAndCompressFile, signDocument } from "src/utils/utils";
 
-export interface PublishDraftDetailProps {
+export interface SubmittedDraftDetailProps {
+  id: number;
   name: string;
   documentNo: string;
   documentName: string;
@@ -16,26 +20,26 @@ export interface PublishDraftDetailProps {
   docUri: string;
 }
 
-export default function SignDocumentDialog({
+export default function SubmitDraftTaskDialog({
   open,
   handleClose,
   taskId,
   draftDetail,
 }: {
   open: boolean;
-  handleClose: (resetSelection: boolean) => void;
+  handleClose: () => void;
   taskId: number;
-  draftDetail: PublishDraftDetailProps;
+  draftDetail: SubmittedDraftDetailProps;
 }) {
   const { divisionOnchainId, positionIndex } = useAppSelector((state) => state.position);
-  const [updateReviewTaskSigned] = useUpdateReviewTaskSignedMutation();
+  const [submitDraftTask] = useSubmitDraftTaskMutation();
 
   return (
     <SubmitTxDialog
       open={open}
       handleClose={handleClose}
-      successMsg="Document signed"
-      errorMsg="Failed to sign document"
+      successMsg="Draft submitted"
+      errorMsg="Failed to submit draft"
       submitTx={async (privateKey: string): Promise<boolean> => {
         const wallet = new ethers.Wallet(privateKey);
         const compressedDoc = await getAndCompressFile(draftDetail.docUri);
@@ -53,7 +57,13 @@ export default function SignDocumentDialog({
         );
 
         try {
-          await updateReviewTaskSigned({ divisionOnchainId, positionIndex, taskId, signature }).unwrap();
+          await submitDraftTask({
+            divisionOnchainId,
+            positionIndex,
+            taskId,
+            draftId: draftDetail.id,
+            signature,
+          }).unwrap();
         } catch (error) {
           return false;
         }

@@ -26,7 +26,7 @@ export default function DisplayedDraftingTaskStatus({ status }: { status: Drafti
           return (
             <>
               <DoneIcon fontSize="small" color="success" />
-              <Typography {...statusTextStyles}>Signed</Typography>
+              <Typography {...statusTextStyles}>Submitted</Typography>
             </>
           );
         }
