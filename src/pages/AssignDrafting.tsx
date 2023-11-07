@@ -11,12 +11,8 @@ import { Box, Button, Typography } from "@mui/material";
 import { cyan, grey } from "@mui/material/colors";
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import {
-  Add,
-} from "@mui/icons-material";
-import {
-  useCreatedDraftingTasksQuery,
-} from "src/context/slices/apiSlice";
+import { Add } from "@mui/icons-material";
+import { useCreatedDraftingTasksQuery } from "src/context/slices/apiSlice";
 import { useAppSelector } from "src/context/store";
 import { convertSecsToDateTime } from "src/utils/utils";
 import ContentLoading from "src/pages/ContentLoading";

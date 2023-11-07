@@ -17,6 +17,7 @@ import AssignedReviewTaskDetail from "src/pages/AssignedReviewTaskDetail";
 import AssignDrafting from "src/pages/AssignDrafting";
 import CreateDraftingTask from "src/pages/CreateDraftingTask";
 import DraftingTask from "src/pages/DraftingTask";
+import AssignedDraftingTaskDetail from "src/pages/AssignedDraftingTaskDetail";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route path="" element={<Typography variant="h1">Root</Typography>} />
           <Route path="drafting-tasks" element={<DraftingTask />} />
+          <Route path="drafting-tasks/:id" element={<AssignedDraftingTaskDetail />} />
           <Route path="draft" element={<ManageDraft />} />
           <Route path="draft/create" element={<CreateDraft />} />
           <Route path="draft/:id" element={<DocumentDetail />} />
