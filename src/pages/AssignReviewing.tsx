@@ -23,7 +23,7 @@ import { convertSecsToDateTime } from "src/utils/utils";
 import ContentLoading from "src/pages/ContentLoading";
 import ContentError from "src/pages/ContentError";
 
-export default function ManageReviewTasks() {
+export default function AssignReviewing() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -132,6 +132,15 @@ export default function ManageReviewTasks() {
             </TableBody>
           </Table>
         </TableContainer>
+        {createdReviewTasks.length === 0 && (
+          <Typography
+            fontSize="1.5rem"
+            fontWeight={600}
+            sx={{ pt: 2, opacity: 0.6, textAlign: "center" }}
+          >
+            There is no created task
+          </Typography>
+        )}
         <TablePagination
           rowsPerPageOptions={[1, 5, 10, 15]}
           component="div"

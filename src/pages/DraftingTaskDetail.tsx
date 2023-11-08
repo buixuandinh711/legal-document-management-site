@@ -3,7 +3,6 @@ import Paper from "@mui/material/Paper";
 import { grey } from "@mui/material/colors";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import SignDocumentDialog from "src/components/AssignedReviewTaskDetail/SignDocumentDialog";
 import DisplayedDraftingTaskStatus from "src/components/DisplayedDraftingTaskStatus";
 import DocumentContexBox from "src/components/DocumentContexBox";
 import DraftDetailBox from "src/components/DraftDetailBox";

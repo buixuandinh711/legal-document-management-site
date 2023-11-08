@@ -1,9 +1,6 @@
 import { ethers } from "ethers";
 import SubmitTxDialog from "src/components/SubmitTxDialog";
-import {
-  useSubmitDraftTaskMutation,
-  useUpdateReviewTaskSignedMutation,
-} from "src/context/slices/apiSlice";
+import { useSubmitDraftTaskMutation } from "src/context/slices/apiSlice";
 import { useAppSelector } from "src/context/store";
 import { getAndCompressFile, signDocument } from "src/utils/utils";
 

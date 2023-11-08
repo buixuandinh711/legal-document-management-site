@@ -125,6 +125,15 @@ export default function DraftingTask() {
                 })}
             </TableBody>
           </Table>
+          {assignedDraftingTasks.length === 0 && (
+            <Typography
+              fontSize="1.5rem"
+              fontWeight={600}
+              sx={{ pt: 2, opacity: 0.6, textAlign: "center" }}
+            >
+              There is no assigned task
+            </Typography>
+          )}
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={[1, 5, 10, 15]}

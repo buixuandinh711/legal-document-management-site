@@ -7,36 +7,38 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Add } from "@mui/icons-material";
-import { useDraftsListQuery } from "src/context/slices/apiSlice";
+import { useAssignedReviewTasksQuery } from "src/context/slices/apiSlice";
 import { useAppSelector } from "src/context/store";
 import { convertSecsToDateTime } from "src/utils/utils";
 import ContentLoading from "src/pages/ContentLoading";
 import ContentError from "src/pages/ContentError";
+import DisplayedReviewTaskStatus from "src/components/DisplayedReviewTaskStatus";
 
-export default function ManageDraft() {
+export default function ReviewingTasks() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const workingPosition = useAppSelector((state) => state.position);
-  const draftsListQuery = useDraftsListQuery(workingPosition);
+  const { divisionOnchainId, positionIndex } = useAppSelector((state) => state.position);
+  const assignedReviewTasksQuery = useAssignedReviewTasksQuery(
+    { divisionOnchainId, positionIndex },
+    { skip: divisionOnchainId === "" }
+  );
 
   const navigate = useNavigate();
 
-  if (draftsListQuery.isLoading) {
+  if (assignedReviewTasksQuery.isLoading) {
     return <ContentLoading />;
   }
 
-  if (draftsListQuery.isError) {
-    return <ContentError />;
-  }
-
-  return (
-    draftsListQuery.isSuccess && (
+  if (assignedReviewTasksQuery.isSuccess) {
+    const assignedReviewTasks = [...assignedReviewTasksQuery.data].sort(
+      (task1, task2) => task2.assignedAt - task1.assignedAt
+    );
+    return (
       <Paper sx={{ width: "100%", overflow: "hidden", borderRadius: 4, p: 2 }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <Typography
@@ -47,19 +49,8 @@ export default function ManageDraft() {
             fontWeight={600}
             fontSize={25}
           >
-            Your Drafts
+            Assigned Review Tasks
           </Typography>
-          <Button
-            variant="contained"
-            startIcon={<Add />}
-            size="small"
-            sx={{ "& .MuiButton-startIcon": { mr: 0 } }}
-            onClick={() => {
-              navigate("/draft/create");
-            }}
-          >
-            New
-          </Button>
         </Box>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
@@ -68,74 +59,81 @@ export default function ManageDraft() {
                 <TableCell
                   align="left"
                   sx={{
-                    minWidth: "150px",
+                    width: "15%",
                     fontWeight: 600,
                     color: grey[600],
                   }}
                 >
-                  Name
+                  Assigned At
                 </TableCell>
                 <TableCell
                   align="left"
                   sx={{
-                    minWidth: "150px",
+                    width: "35%",
                     fontWeight: 600,
                     color: grey[600],
                   }}
                 >
-                  Drafter
+                  Draft Name
                 </TableCell>
                 <TableCell
                   align="left"
                   sx={{
-                    minWidth: "350px",
+                    width: "35%",
                     fontWeight: 600,
                     color: grey[600],
                   }}
                 >
-                  Document
+                  Assigner
                 </TableCell>
                 <TableCell
                   align="left"
                   sx={{
-                    minWidth: "200px",
+                    width: "15%",
                     fontWeight: 600,
                     color: grey[600],
                   }}
                 >
-                  Last Updated
+                  Status
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {draftsListQuery.data
+              {assignedReviewTasks
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   return (
                     <TableRow
                       hover
                       key={row.id}
-                      onClick={() => {
-                        navigate(`/draft/${row.id}`);
-                      }}
                       sx={{ cursor: "pointer" }}
+                      onClick={() => navigate(`/reviewing-tasks/${row.id}`)}
                     >
-                      <TableCell align="left">{row.name}</TableCell>
-                      <TableCell align="left">{row.drafterName}</TableCell>
-                      <TableCell align="left">{row.documentName}</TableCell>
+                      <TableCell align="left">{convertSecsToDateTime(row.assignedAt)}</TableCell>
+                      <TableCell align="left">{row.draftName}</TableCell>
+                      <TableCell align="left">{`${row.assigner} - ${row.assignerPosition}`}</TableCell>
                       <TableCell align="left">
-                        {convertSecsToDateTime(row.updatedAt.secsSinceEpoch)}
+                        <DisplayedReviewTaskStatus status={row.status} />
                       </TableCell>
                     </TableRow>
                   );
                 })}
             </TableBody>
           </Table>
+          {assignedReviewTasks.length === 0 && (
+            <Typography
+              fontSize="1.5rem"
+              fontWeight={600}
+              sx={{ pt: 2, opacity: 0.6, textAlign: "center" }}
+            >
+              There is no assigned task
+            </Typography>
+          )}
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={[1, 5, 10, 15]}
           component="div"
-          count={draftsListQuery.data.length}
+          count={assignedReviewTasks.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={(_event: unknown, newPage: number) => {
@@ -147,6 +145,8 @@ export default function ManageDraft() {
           }}
         />
       </Paper>
-    )
-  );
+    );
+  }
+
+  return <ContentError />;
 }

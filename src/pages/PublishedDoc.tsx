@@ -17,7 +17,7 @@ import { usePublishedDocsQuery } from "src/context/slices/apiSlice";
 import ContentLoading from "src/pages/ContentLoading";
 import ContentError from "src/pages/ContentError";
 
-export default function PublishedDocument() {
+export default function PublishedDoc() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -123,6 +123,15 @@ export default function PublishedDocument() {
               </TableBody>
             </Table>
           </TableContainer>
+          {publishedDocs.length === 0 && (
+            <Typography
+              fontSize="1.5rem"
+              fontWeight={600}
+              sx={{ pt: 2, opacity: 0.6, textAlign: "center" }}
+            >
+              There is no published document
+            </Typography>
+          )}
           <TablePagination
             rowsPerPageOptions={[5, 10, 15]}
             component="div"

@@ -1,5 +1,5 @@
 import { TextSnippet } from "@mui/icons-material";
-import { Box, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import MergedLink from "src/components/MergedLink";
 
 export default function Logo() {

@@ -8,15 +8,14 @@ import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import { Divider, List, Paper } from "@mui/material";
 import { mainListItems, secondaryListItems } from "src/components/Layout/drawerRoutes";
-import BasicBreadcrumbs from "src/components/Breadcrumb";
+import BasicBreadcrumbs from "src/components/Layout/Breadcrumb";
 import { Navigate, Outlet } from "react-router-dom";
 import { PositioRole, useUserQuery } from "src/context/slices/apiSlice";
 import SelectPosition from "src/components/Layout/SelectPosition";
 import FullPageLoading from "src/pages/FullPageLoading";
 import AppbarUser from "src/components/Layout/AppbarUser";
-import Snackbar from "src/components/Snackbar";
+import Snackbar from "src/components/Layout/Snackbar";
 import { useAppSelector } from "src/context/store";
-import { blue } from "@mui/material/colors";
 import Logo from "src/components/Layout/Logo";
 
 const defaultTheme = createTheme();

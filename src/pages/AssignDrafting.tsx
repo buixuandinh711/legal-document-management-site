@@ -144,6 +144,15 @@ export default function AssignDrafting() {
             </TableBody>
           </Table>
         </TableContainer>
+        {createdDraftingTasks.length === 0 && (
+          <Typography
+            fontSize="1.5rem"
+            fontWeight={600}
+            sx={{ pt: 2, opacity: 0.6, textAlign: "center" }}
+          >
+            There is no created task
+          </Typography>
+        )}
         <TablePagination
           rowsPerPageOptions={[1, 5, 10, 15]}
           component="div"

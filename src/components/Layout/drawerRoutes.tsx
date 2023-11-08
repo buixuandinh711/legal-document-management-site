@@ -36,7 +36,7 @@ export const mainListItems = (
         <ListItemIcon>
           <LibraryBooks />
         </ListItemIcon>
-        <ListItemText primary="Your Drafts" />
+        <ListItemText primary="Your Draft" />
       </ListItemButton>
     </Link>
     <Link to="/published" style={{ textDecoration: "none", color: "inherit" }}>
@@ -44,7 +44,7 @@ export const mainListItems = (
         <ListItemIcon>
           <FactCheck />
         </ListItemIcon>
-        <ListItemText primary="Published Docs" />
+        <ListItemText primary="Published Doc" />
       </ListItemButton>
     </Link>
   </>
