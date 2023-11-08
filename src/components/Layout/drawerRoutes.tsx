@@ -1,4 +1,3 @@
-import * as React from "react";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -15,7 +14,7 @@ import {
 } from "@mui/icons-material";
 
 export const mainListItems = (
-  <React.Fragment>
+  <>
     <Link to="/drafting-tasks" style={{ textDecoration: "none", color: "inherit" }}>
       <ListItemButton>
         <ListItemIcon>
@@ -24,12 +23,12 @@ export const mainListItems = (
         <ListItemText primary="Drafting Task" />
       </ListItemButton>
     </Link>
-    <Link to="/review-tasks" style={{ textDecoration: "none", color: "inherit" }}>
+    <Link to="/reviewing-tasks" style={{ textDecoration: "none", color: "inherit" }}>
       <ListItemButton>
         <ListItemIcon>
           <Grading />
         </ListItemIcon>
-        <ListItemText primary="Review Task" />
+        <ListItemText primary="Reviewing Task" />
       </ListItemButton>
     </Link>
     <Link to="/draft" style={{ textDecoration: "none", color: "inherit" }}>
@@ -48,11 +47,11 @@ export const mainListItems = (
         <ListItemText primary="Published Docs" />
       </ListItemButton>
     </Link>
-  </React.Fragment>
+  </>
 );
 
 export const secondaryListItems = (
-  <React.Fragment>
+  <>
     <ListSubheader component="div" inset>
       Management
     </ListSubheader>
@@ -80,5 +79,5 @@ export const secondaryListItems = (
         <ListItemText primary="Publish Document" />
       </ListItemButton>
     </Link>
-  </React.Fragment>
+  </>
 );

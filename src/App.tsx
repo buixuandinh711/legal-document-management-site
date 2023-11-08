@@ -35,8 +35,8 @@ export default function App() {
           <Route path="published/:contentHash" element={<PublishedDocDetail />} />
           <Route path="assign-reviewing" element={<ManageReviewTasks />} />
           <Route path="assign-reviewing/create" element={<CreateReviewTask />} />
-          <Route path="review-tasks" element={<AssignedReviewTasks />} />
-          <Route path="review-tasks/:id" element={<AssignedReviewTaskDetail />} />
+          <Route path="reviewing-tasks" element={<AssignedReviewTasks />} />
+          <Route path="reviewing-tasks/:id" element={<AssignedReviewTaskDetail />} />
           <Route path="assign-drafting" element={<AssignDrafting />} />
           <Route path="assign-drafting/create" element={<CreateDraftingTask />} />
         </Route>

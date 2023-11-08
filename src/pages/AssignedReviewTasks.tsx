@@ -107,7 +107,7 @@ export default function AssignedReviewTasks() {
                       hover
                       key={row.id}
                       sx={{ cursor: "pointer" }}
-                      onClick={() => navigate(`/review-tasks/${row.id}`)}
+                      onClick={() => navigate(`/reviewing-tasks/${row.id}`)}
                     >
                       <TableCell align="left">{convertSecsToDateTime(row.assignedAt)}</TableCell>
                       <TableCell align="left">{row.draftName}</TableCell>

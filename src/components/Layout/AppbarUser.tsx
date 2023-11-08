@@ -1,9 +1,14 @@
 import { IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { useState } from "react";
+import { useLogoutMutation } from "src/context/slices/apiSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function AppbarUser({ officerName }: { officerName: string }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const [logout] = useLogoutMutation();
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -41,8 +46,14 @@ export default function AppbarUser({ officerName }: { officerName: string }) {
           Profile
         </MenuItem>
         <MenuItem
-          onClick={() => {
+          onClick={async () => {
             setAnchorEl(null);
+            try {
+              await logout({}).unwrap();
+              navigate("/login");
+            } catch (error) {
+              console.log(error);
+            }
           }}
         >
           Log out

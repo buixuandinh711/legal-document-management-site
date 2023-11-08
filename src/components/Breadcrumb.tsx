@@ -14,8 +14,8 @@ const extractPaths = (arr: string[]): string[] => {
 
 const pathInfo: { pattern: RegExp; name: string }[] = [
   { pattern: /^$/, name: "Home" },
-  { pattern: /^\/review-tasks$/, name: "Review Task" },
-  { pattern: /^\/review-tasks\/[^/]+$/, name: "Task Detail" },
+  { pattern: /^\/reviewing-tasks$/, name: "Review Task" },
+  { pattern: /^\/reviewing-tasks\/[^/]+$/, name: "Task Detail" },
   { pattern: /^\/draft$/, name: "Your Draft" },
   { pattern: /^\/draft\/create$/, name: "Create Draft" },
   { pattern: /^\/draft\/[^/]+$/, name: "Draft Detail" },
@@ -43,6 +43,10 @@ export default function BasicBreadcrumbs() {
   let pathname = location.pathname;
   pathname = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
   const paths = extractPaths(pathname.split("/"));
+
+  if (paths.length === 1) {
+    return <></>;
+  }
 
   return (
     <Box sx={{ p: 3, mb: 4 }}>

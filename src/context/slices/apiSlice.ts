@@ -1,15 +1,23 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Officer } from "src/utils/types";
 
-interface GetUserResponse {
-  officer_name: string;
-  positions: {
-    division_onchain_id: string;
-    division_name: string;
-    position_index: number;
-    position_name: string;
-    position_role: number;
-  }[];
+export enum PositioRole {
+  Revoked,
+  DivisionAdmin,
+  Manager,
+  Staff,
+}
+
+interface Position {
+  divisionOnchainId: string;
+  divisionName: string;
+  positionIndex: number;
+  positionName: string;
+  positionRole: PositioRole;
+}
+
+interface Officer {
+  officerName: string;
+  positions: Position[];
 }
 
 interface DraftsListItem {
@@ -167,7 +175,16 @@ export const apiSlice = createApi({
         method: "GET",
         credentials: "include",
       }),
-      transformResponse: (serverResponse: GetUserResponse) => {
+      transformResponse: (serverResponse: {
+        officer_name: string;
+        positions: {
+          division_onchain_id: string;
+          division_name: string;
+          position_index: number;
+          position_name: string;
+          position_role: number;
+        }[];
+      }) => {
         const officer: Officer = {
           officerName: serverResponse.officer_name,
           positions: serverResponse.positions.map((serverPosition) => ({
@@ -191,6 +208,17 @@ export const apiSlice = createApi({
             "Content-Type": "application/json",
           },
           body: JSON.stringify(authInfo),
+          credentials: "include",
+          responseHandler: "text",
+        };
+      },
+      invalidatesTags: ["User"],
+    }),
+    logout: builder.mutation<string, Record<string, never>>({
+      query: () => {
+        return {
+          url: "/logout",
+          method: "POST",
           credentials: "include",
           responseHandler: "text",
         };
@@ -559,7 +587,7 @@ export const apiSlice = createApi({
         };
 
         return {
-          url: "/review-tasks",
+          url: "/reviewing-tasks",
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -695,7 +723,7 @@ export const apiSlice = createApi({
     >({
       query: ({ divisionOnchainId, positionIndex, taskId, signature }) => {
         return {
-          url: `/review-tasks/sign/${taskId}`,
+          url: `/reviewing-tasks/sign/${taskId}`,
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -918,6 +946,7 @@ export const {
   util: apiSliceUtil,
   useUserQuery,
   useLoginMutation,
+  useLogoutMutation,
   useCreateDraftMutation,
   useDocTypesQuery,
   useDraftsListQuery,

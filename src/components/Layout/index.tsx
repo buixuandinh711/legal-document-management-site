@@ -10,33 +10,20 @@ import { Divider, List, Paper } from "@mui/material";
 import { mainListItems, secondaryListItems } from "src/components/Layout/drawerRoutes";
 import BasicBreadcrumbs from "src/components/Breadcrumb";
 import { Navigate, Outlet } from "react-router-dom";
-import { useUserQuery } from "src/context/slices/apiSlice";
+import { PositioRole, useUserQuery } from "src/context/slices/apiSlice";
 import SelectPosition from "src/components/Layout/SelectPosition";
 import FullPageLoading from "src/pages/FullPageLoading";
 import AppbarUser from "src/components/Layout/AppbarUser";
 import Snackbar from "src/components/Snackbar";
+import { useAppSelector } from "src/context/store";
+import { blue } from "@mui/material/colors";
+import Logo from "src/components/Layout/Logo";
 
 const defaultTheme = createTheme();
 
 export default function Layout() {
   const userQuery = useUserQuery({});
-
-  // const userQuery = {
-  //   isSuccess: true,
-  //   isLoading: false,
-  //   data: {
-  //     officerName: "Dinh Xuan Bui",
-  //     positions: [
-  //       {
-  //         divisionOnchainId: "H1",
-  //         divisionName: "UBND Ha Noi",
-  //         positionIndex: 0,
-  //         positionName: "Chu tich UBND",
-  //         positionRole: 1,
-  //       },
-  //     ],
-  //   },
-  // };
+  const { positionRole } = useAppSelector((state) => state.position);
 
   if (userQuery.isLoading) {
     return <FullPageLoading />;
@@ -83,14 +70,16 @@ export default function Layout() {
           }}
         >
           <Toolbar>
-            <Typography variant="h5" component="div" sx={{}}>
-              LegalDocs
-            </Typography>
+            <Logo />
           </Toolbar>
           <Box sx={{ overflow: "auto" }}>
             <List>{mainListItems}</List>
-            <Divider />
-            <List>{secondaryListItems}</List>
+            {positionRole === PositioRole.Manager && (
+              <>
+                <Divider />
+                <List>{secondaryListItems}</List>
+              </>
+            )}
           </Box>
         </Paper>
         <Snackbar />
