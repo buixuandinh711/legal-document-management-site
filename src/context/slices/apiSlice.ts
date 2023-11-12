@@ -587,7 +587,7 @@ export const apiSlice = createApi({
         };
 
         return {
-          url: "/reviewing-tasks",
+          url: "/review-tasks",
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -723,7 +723,7 @@ export const apiSlice = createApi({
     >({
       query: ({ divisionOnchainId, positionIndex, taskId, signature }) => {
         return {
-          url: `/reviewing-tasks/sign/${taskId}`,
+          url: `/review-tasks/sign/${taskId}`,
           method: "POST",
           headers: {
             "Content-Type": "application/json",
