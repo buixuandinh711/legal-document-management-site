@@ -466,7 +466,10 @@ export const apiSlice = createApi({
           number: string;
           name: string;
           publisher: string;
-          published_date: number;
+          published_date: {
+            nanos_since_epoch: number;
+            secs_since_epoch: number;
+          };
         }[]
       ) => {
         return response.map((item) => ({
@@ -474,7 +477,7 @@ export const apiSlice = createApi({
           number: item.number,
           name: item.name,
           publisher: item.publisher,
-          publishedDate: item.published_date,
+          publishedDate: item.published_date.secs_since_epoch,
         }));
       },
       providesTags: ["User"],
@@ -499,7 +502,10 @@ export const apiSlice = createApi({
         name: string;
         doc_type: string;
         publisher: string;
-        published_date: number;
+        published_date: {
+          nanos_since_epoch: number;
+          secs_since_epoch: number;
+        };
         resource_uri: string;
       }) => {
         return {
@@ -508,7 +514,7 @@ export const apiSlice = createApi({
           name: response.name,
           docType: response.doc_type,
           publisher: response.publisher,
-          publishedDate: response.published_date,
+          publishedDate: response.published_date.secs_since_epoch,
           resourceUri: response.resource_uri,
         };
       },
