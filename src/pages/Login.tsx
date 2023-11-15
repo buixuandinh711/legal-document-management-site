@@ -21,18 +21,18 @@ interface LoginFormValues {
 const validationSchema = yup.object({
   username: yup
     .string()
-    .min(6, "Username should be in range 6-30 characters")
-    .max(30, "Username should be in range 6-30 characters")
+    .min(4, "Username should be in range 4-30 characters")
+    .max(30, "Username should be in range 4-30 characters")
     .matches(
-      /^[a-zA-Z0-9_]{6,30}$/,
+      /^[a-zA-Z0-9_]{4,30}$/,
       "Username should contain only letters, numbers, and underscores"
     )
     .required("Username is required"),
   password: yup
     .string()
-    .min(6, "Password should be of minimum 6 characters length")
+    .min(4, "Password should be of minimum 6 characters length")
     .matches(
-      /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,}$/,
+      /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{4,}$/,
       "Password should contain at least one letter and one digit"
     )
     .required("Password is required"),

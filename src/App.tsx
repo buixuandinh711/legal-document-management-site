@@ -24,7 +24,7 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Layout />}>
-          <Route path="" element={<Typography variant="h1">Root</Typography>} />
+          <Route path="" element={<Typography variant="h1"></Typography>} />
           <Route path="drafting-tasks" element={<DraftingTask />} />
           <Route path="drafting-tasks/:id" element={<DraftingTaskDetail />} />
           <Route path="draft" element={<YourDraft />} />

@@ -26,9 +26,9 @@ import LoadingButton from "@mui/lab/LoadingButton";
 const validationSchema = yup.object({
   password: yup
     .string()
-    .min(6, "Password should be of minimum 6 characters length")
+    .min(4, "Password should be of minimum 4 characters length")
     .matches(
-      /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,}$/,
+      /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{4,}$/,
       "Password should contain at least one letter and one digit"
     )
     .required("Password is required"),
