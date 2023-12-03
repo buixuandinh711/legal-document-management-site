@@ -43,7 +43,7 @@ export default function AppbarUser({ officerName }: { officerName: string }) {
             setAnchorEl(null);
           }}
         >
-          Profile
+          Tài khoản
         </MenuItem>
         <MenuItem
           onClick={async () => {
@@ -56,7 +56,7 @@ export default function AppbarUser({ officerName }: { officerName: string }) {
             }
           }}
         >
-          Log out
+          Đăng xuất
         </MenuItem>
       </Menu>
     </div>

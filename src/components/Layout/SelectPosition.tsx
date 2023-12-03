@@ -1,10 +1,10 @@
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { Position } from "src/utils/types";
 import { useAppDispatch, useAppSelector } from "src/context/store";
 import { switchPosition } from "src/context/slices/positionSlice";
 import { useEffect } from "react";
+import { Position } from "src/context/slices/apiSlice";
 
 export default function SelectPosition({ positions }: { positions: Position[] }) {
   const workingPosition = useAppSelector((state) => state.position);

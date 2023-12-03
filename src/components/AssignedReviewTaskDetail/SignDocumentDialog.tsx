@@ -34,8 +34,8 @@ export default function SignDocumentDialog({
     <SubmitTxDialog
       open={open}
       handleClose={handleClose}
-      successMsg="Document signed"
-      errorMsg="Failed to sign document"
+      successMsg="Văn bản đã được ký"
+      errorMsg="Ký văn bản thất bại"
       submitTx={async (privateKey: string): Promise<boolean> => {
         const wallet = new ethers.Wallet(privateKey);
         const compressedDoc = await getAndCompressFile(draftDetail.docUri);

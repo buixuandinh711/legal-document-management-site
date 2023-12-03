@@ -7,7 +7,7 @@ export enum PositioRole {
   Staff,
 }
 
-interface Position {
+export interface Position {
   divisionOnchainId: string;
   divisionName: string;
   positionIndex: number;

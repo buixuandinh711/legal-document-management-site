@@ -20,7 +20,7 @@ export const mainListItems = (
         <ListItemIcon>
           <NoteAlt />
         </ListItemIcon>
-        <ListItemText primary="Drafting Task" />
+        <ListItemText primary="Soạn thảo" />
       </ListItemButton>
     </Link>
     <Link to="/reviewing-tasks" style={{ textDecoration: "none", color: "inherit" }}>
@@ -28,7 +28,7 @@ export const mainListItems = (
         <ListItemIcon>
           <Grading />
         </ListItemIcon>
-        <ListItemText primary="Reviewing Task" />
+        <ListItemText primary="Phê duyệt" />
       </ListItemButton>
     </Link>
     <Link to="/draft" style={{ textDecoration: "none", color: "inherit" }}>
@@ -36,7 +36,7 @@ export const mainListItems = (
         <ListItemIcon>
           <LibraryBooks />
         </ListItemIcon>
-        <ListItemText primary="Your Draft" />
+        <ListItemText primary="Bản thảo" />
       </ListItemButton>
     </Link>
     <Link to="/published" style={{ textDecoration: "none", color: "inherit" }}>
@@ -44,7 +44,7 @@ export const mainListItems = (
         <ListItemIcon>
           <FactCheck />
         </ListItemIcon>
-        <ListItemText primary="Published Doc" />
+        <ListItemText primary="Đã ban hành" />
       </ListItemButton>
     </Link>
   </>
@@ -53,14 +53,14 @@ export const mainListItems = (
 export const secondaryListItems = (
   <>
     <ListSubheader component="div" inset>
-      Management
+      Quản lý
     </ListSubheader>
     <Link to="/assign-drafting" style={{ textDecoration: "none", color: "inherit" }}>
       <ListItemButton>
         <ListItemIcon>
           <AssignmentInd />
         </ListItemIcon>
-        <ListItemText primary="Assign Drafting" />
+        <ListItemText primary="Quản lý soạn thảo" />
       </ListItemButton>
     </Link>
     <Link to="/assign-reviewing" style={{ textDecoration: "none", color: "inherit" }}>
@@ -68,7 +68,7 @@ export const secondaryListItems = (
         <ListItemIcon>
           <Draw />
         </ListItemIcon>
-        <ListItemText primary="Assign Reviewing" />
+        <ListItemText primary="Quản lý phê duyệt" />
       </ListItemButton>
     </Link>
     <Link to="/publish" style={{ textDecoration: "none", color: "inherit" }}>
@@ -76,7 +76,7 @@ export const secondaryListItems = (
         <ListItemIcon>
           <Publish />
         </ListItemIcon>
-        <ListItemText primary="Publish Document" />
+        <ListItemText primary="Ban hành" />
       </ListItemButton>
     </Link>
   </>

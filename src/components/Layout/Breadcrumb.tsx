@@ -13,27 +13,27 @@ const extractPaths = (arr: string[]): string[] => {
 };
 
 const pathInfo: { pattern: RegExp; name: string }[] = [
-  { pattern: /^$/, name: "Home" },
-  { pattern: /^\/reviewing-tasks$/, name: "Review Task" },
-  { pattern: /^\/reviewing-tasks\/[^/]+$/, name: "Task Detail" },
-  { pattern: /^\/draft$/, name: "Your Draft" },
-  { pattern: /^\/draft\/create$/, name: "Create Draft" },
-  { pattern: /^\/draft\/[^/]+$/, name: "Draft Detail" },
-  { pattern: /^\/published$/, name: "Published Document" },
-  { pattern: /^\/published\/[^/]+$/, name: "Document Detail" },
-  { pattern: /^\/assign-reviewing$/, name: "Assign Reviewing" },
-  { pattern: /^\/assign-reviewing\/create$/, name: "New Task" },
-  { pattern: /^\/publish$/, name: "Publish Document" },
-  { pattern: /^\/assign-drafting$/, name: "Assign Drafting" },
-  { pattern: /^\/assign-drafting\/create$/, name: "New Task" },
-  { pattern: /^\/drafting-tasks$/, name: "Drafting Task" },
-  { pattern: /^\/drafting-tasks\/[^/]+$/, name: "Task Detail" },
+  { pattern: /^$/, name: "Trang chủ" },
+  { pattern: /^\/reviewing-tasks$/, name: "Phê duyệt" },
+  { pattern: /^\/reviewing-tasks\/[^/]+$/, name: "Chi tiết công việc" },
+  { pattern: /^\/draft$/, name: "Bản thảo" },
+  { pattern: /^\/draft\/create$/, name: "Tạo bản thảo" },
+  { pattern: /^\/draft\/[^/]+$/, name: "Chi tiết bản thảo" },
+  { pattern: /^\/published$/, name: "Đã ban hành" },
+  { pattern: /^\/published\/[^/]+$/, name: "Chi tiết văn bản" },
+  { pattern: /^\/assign-reviewing$/, name: "Quản lý phê duyệt" },
+  { pattern: /^\/assign-reviewing\/create$/, name: "Tạo công việc" },
+  { pattern: /^\/publish$/, name: "Ban hành" },
+  { pattern: /^\/assign-drafting$/, name: "Quản lý soạn thảo" },
+  { pattern: /^\/assign-drafting\/create$/, name: "Tạo công việc" },
+  { pattern: /^\/drafting-tasks$/, name: "Soạn thảo" },
+  { pattern: /^\/drafting-tasks\/[^/]+$/, name: "Chi tiết công việc" },
 ];
 
 const getPathInfo = (path: string): string => {
   const foundResult = pathInfo.find((p) => path.match(p.pattern));
   if (foundResult === undefined) {
-    return "Undefined";
+    return "Không xác định";
   }
   return foundResult.name;
 };

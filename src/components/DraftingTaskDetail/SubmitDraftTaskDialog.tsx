@@ -35,8 +35,8 @@ export default function SubmitDraftTaskDialog({
     <SubmitTxDialog
       open={open}
       handleClose={handleClose}
-      successMsg="Draft submitted"
-      errorMsg="Failed to submit draft"
+      successMsg="Bản thảo đã được nộp"
+      errorMsg="Nộp bản thảo thất bại"
       submitTx={async (privateKey: string): Promise<boolean> => {
         const wallet = new ethers.Wallet(privateKey);
         const compressedDoc = await getAndCompressFile(draftDetail.docUri);
