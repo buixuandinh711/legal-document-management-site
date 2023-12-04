@@ -29,8 +29,8 @@ interface CreateTaskFromValues {
 }
 
 const validationSchema = yup.object({
-  taskName: yup.string().required("Task name is required"),
-  drafter: yup.string().required("Drafter is required"),
+  taskName: yup.string().required("Tên công việc không được để trống"),
+  drafter: yup.string().required("Người soạn thảo không được để trống"),
 });
 
 export default function CreateDraftingTask() {
@@ -68,7 +68,7 @@ export default function CreateDraftingTask() {
           drafterAddress,
           drafterPositionIndex,
         }).unwrap();
-        dispatch(openSnackbar({ type: "success", message: "Draft created" }));
+        dispatch(openSnackbar({ type: "success", message: "Tạo công việc thành công" }));
         navigate({
           pathname: "/assign-drafting",
           search: createSearchParams({
@@ -76,6 +76,7 @@ export default function CreateDraftingTask() {
           }).toString(),
         });
       } catch (error) {
+        dispatch(openSnackbar({ type: "error", message: "Tạo công việc thất bại" }));
         console.log(error);
       }
     },
@@ -110,7 +111,7 @@ export default function CreateDraftingTask() {
             }}
           >
             <Typography variant="h6" id="tableTitle" component="div" fontWeight={600} fontSize={25}>
-              Create Drafting Task
+              Tạo công việc soạn thảo
             </Typography>
           </Box>
           <Box sx={{ mt: 2 }}>
@@ -120,7 +121,7 @@ export default function CreateDraftingTask() {
               variant="standard"
               sx={{ my: 2 }}
               required
-              label="Task Name"
+              label="Tên công việc"
               id="taskName"
               name="taskName"
               autoComplete="taskName"
@@ -136,7 +137,7 @@ export default function CreateDraftingTask() {
               sx={{ my: 4 }}
               error={formik.touched.drafter && Boolean(formik.errors.drafter)}
             >
-              <InputLabel id="select-drafter">Drafter</InputLabel>
+              <InputLabel id="select-drafter">Người soạn thảo</InputLabel>
               <Select
                 labelId="select-drafter"
                 id="drafter"
@@ -178,10 +179,10 @@ export default function CreateDraftingTask() {
               variant="outlined"
               sx={{ mr: 1, width: "120px" }}
               onClick={() => {
-                //   navigate(-1);
+                  navigate(-1);
               }}
             >
-              Cancel
+              Hủy
             </Button>
             <LoadingButton
               variant="contained"
@@ -190,7 +191,7 @@ export default function CreateDraftingTask() {
               endIcon={<Send />}
               sx={{ width: "120px" }}
             >
-              Create
+              Tạo
             </LoadingButton>
           </Box>
         </Paper>

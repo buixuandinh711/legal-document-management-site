@@ -55,10 +55,10 @@ export default function InputFileUpload({
               }
             }}
           >
-            Upload file
+            Tải lên
           </Button>
           <Typography variant="subtitle1"  sx={{ ml: 1 }}>
-            Max size: 10MB
+            Tối đa: 4MB
           </Typography>
         </Box>
       )}

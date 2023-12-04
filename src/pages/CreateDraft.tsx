@@ -18,9 +18,9 @@ interface CreateTaskFromValues {
 }
 
 const validationSchema = yup.object({
-  draftName: yup.string().required("Draft name is required"),
-  documentNo: yup.string().required("Document no. is required"),
-  documentName: yup.string().required("Docuemnt name is required"),
+  draftName: yup.string().required("Tên bản thảo không thể bỏ trống"),
+  documentNo: yup.string().required("Số hiệu văn bản không thể bỏ trống"),
+  documentName: yup.string().required("Tên văn bản không thể bỏ trống"),
 });
 
 export default function CreateDraft() {
@@ -58,9 +58,10 @@ export default function CreateDraft() {
           documentType: Number.parseInt(values.documentType),
           documentContent: values.documentContent,
         }).unwrap();
-        dispatch(openSnackbar({ type: "success", message: "Draft created" }));
+        dispatch(openSnackbar({ type: "success", message: "Tạo bản thảo thành công" }));
         navigate(`/draft/${draftId}`);
       } catch (error) {
+        dispatch(openSnackbar({ type: "error", message: "Tạo bản thảo thất bại" }));
         console.log(error);
       }
     },
@@ -88,7 +89,7 @@ export default function CreateDraft() {
           }}
         >
           <Typography variant="h6" id="tableTitle" component="div" fontWeight={600} fontSize={25}>
-            Create Draft
+            Tạo bản thảo
           </Typography>
         </Box>
         <Box sx={{ mt: 2 }}>
@@ -98,7 +99,7 @@ export default function CreateDraft() {
             variant="standard"
             sx={{ my: 2 }}
             required
-            label="Draft Name"
+            label="Tên bản thảo"
             id="draftName"
             name="draftName"
             autoComplete="draftName"
@@ -113,7 +114,7 @@ export default function CreateDraft() {
             variant="standard"
             sx={{ my: 2 }}
             required
-            label="Document No."
+            label="Số hiệu văn bản"
             id="documentNo"
             name="documentNo"
             autoComplete="documentNo"
@@ -130,7 +131,7 @@ export default function CreateDraft() {
             maxRows={3}
             sx={{ my: 2 }}
             required
-            label="Document Name"
+            label="Tên văn bản"
             id="documentName"
             name="documentName"
             autoComplete="documentName"
@@ -146,7 +147,7 @@ export default function CreateDraft() {
             sx={{ my: 2 }}
             select
             required
-            label="Document Type"
+            label="Loại văn bản"
             id="documentType"
             name="documentType"
             autoComplete="documentType"
@@ -164,7 +165,7 @@ export default function CreateDraft() {
               ))}
           </TextField>
           <Box sx={{ my: 2 }}>
-            <InputLabel sx={{ transform: "scale(0.75)", mb: 1 }}>Document Content</InputLabel>
+            <InputLabel sx={{ transform: "scale(0.75)", mb: 1 }}>Nội dung văn bản</InputLabel>
             <InputFileUpload
               file={formik.values.documentContent}
               removeFile={() => {
@@ -200,7 +201,7 @@ export default function CreateDraft() {
               navigate(-1);
             }}
           >
-            Cancel
+            Hủy
           </Button>
           <LoadingButton
             variant="contained"
@@ -209,7 +210,7 @@ export default function CreateDraft() {
             endIcon={<Send />}
             sx={{ width: "120px" }}
           >
-            Create
+            Tạo
           </LoadingButton>
         </Box>
       </Paper>

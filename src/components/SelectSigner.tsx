@@ -54,7 +54,7 @@ export default function SelectSigner({
   return (
     <div>
       <FormControl sx={{ mt: 4, width: "100%" }}>
-        <InputLabel id="demo-multiple-chip-label">Select signers</InputLabel>
+        <InputLabel id="demo-multiple-chip-label">Chọn người ký</InputLabel>
         <Select
           labelId="demo-multiple-chip-label"
           id="demo-multiple-chip"

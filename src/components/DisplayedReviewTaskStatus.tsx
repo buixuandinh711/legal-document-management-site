@@ -21,7 +21,7 @@ export default function DisplayedReviewTaskStatus({ status }: { status: ReviewTa
           return (
             <>
               <InProgressIcon fontSize="small" color="primary" />
-              <Typography {...statusTextStyles}>In-Progress</Typography>
+              <Typography {...statusTextStyles}>Đang thực hiện</Typography>
             </>
           );
         }
@@ -29,7 +29,7 @@ export default function DisplayedReviewTaskStatus({ status }: { status: ReviewTa
           return (
             <>
               <SignedIcon fontSize="small" color="success" />
-              <Typography {...statusTextStyles}>Signed</Typography>
+              <Typography {...statusTextStyles}>Đã ký</Typography>
             </>
           );
         }
@@ -37,7 +37,7 @@ export default function DisplayedReviewTaskStatus({ status }: { status: ReviewTa
           return (
             <>
               <RejectedIcon fontSize="small" color="error" />
-              <Typography {...statusTextStyles}>Rejected</Typography>
+              <Typography {...statusTextStyles}>Từ chối</Typography>
             </>
           );
         }

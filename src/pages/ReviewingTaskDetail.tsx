@@ -60,7 +60,7 @@ export default function AssignedReviewTaskDetail() {
       <>
         <Paper sx={{ width: "100%", overflow: "hidden", borderRadius: 4, py: 4, px: 4 }}>
           <Typography variant="h6" id="tableTitle" component="div" fontWeight={600} fontSize={25}>
-            Review Task
+            Chi tiết công việc
           </Typography>
           <Box
             sx={{
@@ -72,7 +72,7 @@ export default function AssignedReviewTaskDetail() {
             }}
           >
             <TextField
-              label="Draft Name"
+              label="Tên bản thảo"
               value={taskDetail.draftName}
               fullWidth
               variant="standard"
@@ -80,7 +80,7 @@ export default function AssignedReviewTaskDetail() {
               sx={{ my: 2 }}
             />
             <TextField
-              label="Assigner"
+              label="Người giao"
               value={`${taskDetail.assigner} - ${taskDetail.assignerPosition}`}
               fullWidth
               variant="standard"
@@ -90,7 +90,7 @@ export default function AssignedReviewTaskDetail() {
               sx={{ my: 2 }}
             />
             <TextField
-              label="Assigned at"
+              label="Thời điểm được giao"
               value={convertSecsToDateTime(taskDetail.assignedAt)}
               fullWidth
               variant="standard"
@@ -98,14 +98,14 @@ export default function AssignedReviewTaskDetail() {
               sx={{ my: 2 }}
             />
             <Box sx={{ my: 2 }}>
-              <InputLabel sx={{ transform: "scale(0.75)" }}>Status</InputLabel>
+              <InputLabel sx={{ transform: "scale(0.75)" }}>Trạng thái</InputLabel>
               <DisplayedReviewTaskStatus status={taskDetail.status} />
             </Box>
           </Box>
           <Box sx={{ mt: 2, display: "flex", justifyContent: "right", gap: 1 }}>
             {taskDetail.status === ReviewTaskStatus.InProgress && (
               <Button variant="contained" onClick={() => setOpenSignDialog(true)}>
-                Sign Draft
+                Phê duyệt
               </Button>
             )}
           </Box>

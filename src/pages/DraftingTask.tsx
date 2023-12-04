@@ -50,7 +50,7 @@ export default function DraftingTask() {
             fontWeight={600}
             fontSize={25}
           >
-            Your Drafting Tasks
+            Công việc soạn thảo
           </Typography>
         </Box>
         <TableContainer sx={{ maxHeight: 440 }}>
@@ -65,7 +65,7 @@ export default function DraftingTask() {
                     color: grey[600],
                   }}
                 >
-                  Assigned At
+                  Thời điểm được giao
                 </TableCell>
                 <TableCell
                   align="left"
@@ -75,7 +75,7 @@ export default function DraftingTask() {
                     color: grey[600],
                   }}
                 >
-                  Name
+                  Tên công việc
                 </TableCell>
                 <TableCell
                   align="left"
@@ -85,7 +85,7 @@ export default function DraftingTask() {
                     color: grey[600],
                   }}
                 >
-                  Assignee
+                  Người giao
                 </TableCell>
                 <TableCell
                   align="left"
@@ -95,7 +95,7 @@ export default function DraftingTask() {
                     color: grey[600],
                   }}
                 >
-                  Status
+                  Trạng thái
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -117,7 +117,7 @@ export default function DraftingTask() {
                       <TableCell align="left">{`${row.assigner} - ${row.assignerPosition}`}</TableCell>
                       <TableCell align="left">
                         <DisplayedDraftingTaskStatus
-                          status={row.draftId !== null ? "Done" : "In-Progress"}
+                          status={row.draftId !== null ? "Hoàn thành" : "Đang thực hiện"}
                         />
                       </TableCell>
                     </TableRow>
@@ -131,7 +131,7 @@ export default function DraftingTask() {
               fontWeight={600}
               sx={{ pt: 2, opacity: 0.6, textAlign: "center" }}
             >
-              There is no assigned task
+              Chưa có công việc nào được giao
             </Typography>
           )}
         </TableContainer>

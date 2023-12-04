@@ -49,7 +49,7 @@ export default function ReviewingTasks() {
             fontWeight={600}
             fontSize={25}
           >
-            Assigned Review Tasks
+            Công việc phê duyệt
           </Typography>
         </Box>
         <TableContainer sx={{ maxHeight: 440 }}>
@@ -64,7 +64,7 @@ export default function ReviewingTasks() {
                     color: grey[600],
                   }}
                 >
-                  Assigned At
+                  Thời điểm được giao
                 </TableCell>
                 <TableCell
                   align="left"
@@ -74,7 +74,7 @@ export default function ReviewingTasks() {
                     color: grey[600],
                   }}
                 >
-                  Draft Name
+                  Tên bản thảo
                 </TableCell>
                 <TableCell
                   align="left"
@@ -84,7 +84,7 @@ export default function ReviewingTasks() {
                     color: grey[600],
                   }}
                 >
-                  Assigner
+                  Người giao
                 </TableCell>
                 <TableCell
                   align="left"
@@ -94,7 +94,7 @@ export default function ReviewingTasks() {
                     color: grey[600],
                   }}
                 >
-                  Status
+                  Trạng thái
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -126,7 +126,7 @@ export default function ReviewingTasks() {
               fontWeight={600}
               sx={{ pt: 2, opacity: 0.6, textAlign: "center" }}
             >
-              There is no assigned task
+              Chưa có công việc nào được giao
             </Typography>
           )}
         </TableContainer>

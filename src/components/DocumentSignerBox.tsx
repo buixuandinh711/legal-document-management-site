@@ -27,7 +27,7 @@ export default function DocumentSignerBox({
         }}
         subheader={
           <ListSubheader component="div" sx={{ fontWeight: "700", borderRadius: 10 }}>
-            Document Signed By
+            Văn bản được ký bởi
           </ListSubheader>
         }
       >
@@ -44,7 +44,7 @@ export default function DocumentSignerBox({
           })
         ) : (
           <Typography fontSize="1.2rem" fontWeight={600} sx={{ px: 2, py: 1, opacity: 0.6 }}>
-            No signature attached
+            Không có chữ ký đính kèm
           </Typography>
         )}
       </List>

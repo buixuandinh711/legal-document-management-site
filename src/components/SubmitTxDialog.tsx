@@ -34,7 +34,7 @@ const validationSchema = yup.object({
     .required("Password is required"),
 });
 
-const stepLabels = ["Sign Document", "Uploading", "Done"];
+const stepLabels = ["Ký văn bản", "Đang thực hiện", "Hoàn thành"];
 
 export default function SubmitTxDialog({
   open,
@@ -77,7 +77,7 @@ export default function SubmitTxDialog({
         }
         const privateKey = extractPrivateKey(privateKeyQuery.data, values.password);
         if (privateKey === null) {
-          setErrors({ password: "Invalid password" });
+          setErrors({ password: "Mật khẩu không hợp lệ" });
           throw new Error("Failed to decrypt private key");
         }
         setStep(1);
@@ -89,14 +89,14 @@ export default function SubmitTxDialog({
         dispatch(
           openSnackbar({
             type: "success",
-            message: successMsg !== undefined ? successMsg : "Operation succeeded",
+            message: successMsg !== undefined ? successMsg : "Thành công",
           })
         );
       } catch (error: unknown) {
         dispatch(
           openSnackbar({
             type: "error",
-            message: errorMsg !== undefined ? errorMsg : "Operation failed",
+            message: errorMsg !== undefined ? errorMsg : "Thất bại",
           })
         );
         console.log(error);
@@ -133,7 +133,7 @@ export default function SubmitTxDialog({
       >
         <form onSubmit={formik.handleSubmit}>
           <DialogTitle id="document-list-dialog" sx={{ fontWeight: 600 }}>
-            Enter Your Password
+            Nhập mật khẩu của bạn
           </DialogTitle>
           <DialogContent>
             <Stepper activeStep={step} alternativeLabel sx={{ my: 4 }}>
@@ -181,12 +181,12 @@ export default function SubmitTxDialog({
           <DialogActions>
             {step == 0 && (
               <Button variant="outlined" onClick={() => handleClose(false)}>
-                Cancel
+                Hủy
               </Button>
             )}
             {(step == 0 || step == 1) && (
               <LoadingButton type="submit" loading={step === 1} variant="contained" sx={{ mr: 2 }}>
-                Confirm
+                Xác nhận
               </LoadingButton>
             )}
             {step == 3 && (
@@ -196,7 +196,7 @@ export default function SubmitTxDialog({
                 sx={{ mr: 2 }}
                 onClick={() => handleClose(true)}
               >
-                Close
+                Đóng
               </Button>
             )}
           </DialogActions>

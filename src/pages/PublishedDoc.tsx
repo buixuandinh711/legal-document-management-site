@@ -51,7 +51,7 @@ export default function PublishedDoc() {
               fontWeight={600}
               fontSize={25}
             >
-              Published Documents
+              Văn bản đã ban hành
             </Typography>
           </Box>
           <TableContainer sx={{ maxHeight: "440px" }}>
@@ -66,7 +66,7 @@ export default function PublishedDoc() {
                       color: grey[600],
                     }}
                   >
-                    No.
+                    Số hiệu
                   </TableCell>
                   <TableCell
                     align="left"
@@ -76,7 +76,7 @@ export default function PublishedDoc() {
                       color: grey[600],
                     }}
                   >
-                    Name
+                    Tên văn bản
                   </TableCell>
                   <TableCell
                     align="left"
@@ -86,7 +86,7 @@ export default function PublishedDoc() {
                       color: grey[600],
                     }}
                   >
-                    Publisher
+                    Người ban hành
                   </TableCell>
                   <TableCell
                     align="left"
@@ -96,7 +96,7 @@ export default function PublishedDoc() {
                       color: grey[600],
                     }}
                   >
-                    Published Date
+                    Ngày ban hành
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -129,7 +129,7 @@ export default function PublishedDoc() {
               fontWeight={600}
               sx={{ pt: 2, opacity: 0.6, textAlign: "center" }}
             >
-              There is no published document
+              Chưa có văn bản nào được ban hành
             </Typography>
           )}
           <TablePagination

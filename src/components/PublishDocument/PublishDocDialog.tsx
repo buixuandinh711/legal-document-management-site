@@ -43,8 +43,8 @@ export default function PublishDocDialog({
     <SubmitTxDialog
       open={open}
       handleClose={handleClose}
-      successMsg="Document published"
-      errorMsg="Failed to publish document"
+      successMsg="Văn bản đã được ban hành"
+      errorMsg="Ban hành văn bản thất bại"
       submitTx={async (privateKey: string): Promise<boolean> => {
         const provider = new ethers.JsonRpcProvider(chainProvider);
         const wallet = new ethers.Wallet(privateKey, provider);

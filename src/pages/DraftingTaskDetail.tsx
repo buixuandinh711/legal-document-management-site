@@ -68,7 +68,7 @@ export default function DraftingTaskDetail() {
       <>
         <Paper sx={{ width: "100%", overflow: "hidden", borderRadius: 4, py: 4, px: 4 }}>
           <Typography variant="h6" id="tableTitle" component="div" fontWeight={600} fontSize={25}>
-            Drafting Task
+            Chi tiết công việc
           </Typography>
           <Box
             sx={{
@@ -80,7 +80,7 @@ export default function DraftingTaskDetail() {
             }}
           >
             <TextField
-              label="Task Name"
+              label="Tên công việc"
               value={taskDetail.name}
               fullWidth
               variant="standard"
@@ -88,7 +88,7 @@ export default function DraftingTaskDetail() {
               sx={{ my: 2 }}
             />
             <TextField
-              label="Assigner"
+              label="Người giao"
               value={`${taskDetail.assigner} - ${taskDetail.assignerPosition}`}
               fullWidth
               variant="standard"
@@ -98,7 +98,7 @@ export default function DraftingTaskDetail() {
               sx={{ my: 2 }}
             />
             <TextField
-              label="Assigned at"
+              label="Thời điểm được giao"
               value={convertSecsToDateTime(taskDetail.assignedAt)}
               fullWidth
               variant="standard"
@@ -106,9 +106,9 @@ export default function DraftingTaskDetail() {
               sx={{ my: 2 }}
             />
             <Box sx={{ my: 2 }}>
-              <InputLabel sx={{ transform: "scale(0.75)" }}>Status</InputLabel>
+              <InputLabel sx={{ transform: "scale(0.75)" }}>Trạng thái</InputLabel>
               <DisplayedDraftingTaskStatus
-                status={taskDetail.draftId !== null ? "Done" : "In-Progress"}
+                status={taskDetail.draftId !== null ? "Hoàn thành" : "Đang thực hiện"}
               />
             </Box>
           </Box>
@@ -116,7 +116,7 @@ export default function DraftingTaskDetail() {
             <TextField
               select
               fullWidth
-              label="Draft"
+              label="Bản thảo"
               variant="outlined"
               value={selectedDraft}
               onChange={(value) => {
@@ -139,7 +139,7 @@ export default function DraftingTaskDetail() {
           {taskDetail.draftId === null && !isNaN(parsedDraftId) && (
             <Box sx={{ my: 2, display: "flex", justifyContent: "right", gap: 1 }}>
               <Button variant="contained" onClick={() => setOpenSubmitDialog(true)}>
-                Submit Draft
+                Nộp bản thảo
               </Button>
             </Box>
           )}

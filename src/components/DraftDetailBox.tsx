@@ -26,7 +26,7 @@ export default function DraftDetailBox(draftDetail: DraftDetailBoxProps) {
       }}
     >
       <TextField
-        label="Document No."
+        label="Số hiệu"
         value={draftDetail.documentNo}
         fullWidth
         variant="standard"
@@ -34,7 +34,7 @@ export default function DraftDetailBox(draftDetail: DraftDetailBoxProps) {
         sx={{ my: 2 }}
       />
       <TextField
-        label="Document Name"
+        label="Tên văn bản"
         value={draftDetail.documentName}
         fullWidth
         variant="standard"
@@ -44,7 +44,7 @@ export default function DraftDetailBox(draftDetail: DraftDetailBoxProps) {
         sx={{ my: 2 }}
       />
       <TextField
-        label="Document Type"
+        label="Loại văn bản"
         value={draftDetail.documentType}
         fullWidth
         variant="standard"
@@ -52,7 +52,7 @@ export default function DraftDetailBox(draftDetail: DraftDetailBoxProps) {
         sx={{ my: 2 }}
       />
       <TextField
-        label="Drafter"
+        label="Người soạn thảo"
         value={draftDetail.drafterName}
         fullWidth
         variant="standard"
@@ -62,7 +62,7 @@ export default function DraftDetailBox(draftDetail: DraftDetailBoxProps) {
         sx={{ my: 2 }}
       />
       <Box sx={{ my: 2 }}>
-        <InputLabel sx={{ transform: "scale(0.75)", mb: 1 }}>Document Content</InputLabel>
+        <InputLabel sx={{ transform: "scale(0.75)", mb: 1 }}>Nội dung</InputLabel>
         <Chip
           label={draftDetail.fileName}
           icon={<AttachFile />}

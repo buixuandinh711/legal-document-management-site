@@ -57,7 +57,7 @@ export default function TaskDetail() {
           }}
         >
           <Typography variant="h6" id="tableTitle" component="div" fontWeight={600} fontSize={25}>
-            Draft Detail
+            Chi tiết bản thảo
           </Typography>
           <Button
             variant="text"
@@ -65,6 +65,7 @@ export default function TaskDetail() {
             disabled={isEditing}
             sx={{
               textTransform: "none",
+              display: "none",
               borderRadius: 2,
               ...(isEditing
                 ? {
@@ -81,7 +82,7 @@ export default function TaskDetail() {
         {draftDetailQuery.isSuccess && (
           <Box sx={{ mt: 2 }}>
             <TextField
-              label="Name"
+              label="Tên bản thảo"
               value={draftDetailQuery.data.name}
               fullWidth
               variant="standard"
@@ -89,7 +90,7 @@ export default function TaskDetail() {
               sx={{ my: 2 }}
             />
             <TextField
-              label="Document No."
+              label="Số hiệu văn bản"
               value={draftDetailQuery.data.documentNo}
               fullWidth
               variant="standard"
@@ -97,7 +98,7 @@ export default function TaskDetail() {
               sx={{ my: 2 }}
             />
             <TextField
-              label="Document Name"
+              label="Tên văn bản"
               value={draftDetailQuery.data.documentName}
               fullWidth
               variant="standard"
@@ -108,7 +109,7 @@ export default function TaskDetail() {
             />
             {!isEditing ? (
               <TextField
-                label="Document Type"
+                label="Loại văn bản"
                 value={draftDetailQuery.data.documentType}
                 InputProps={{ readOnly: !isEditing }}
                 fullWidth
@@ -122,7 +123,7 @@ export default function TaskDetail() {
                 sx={{ my: 2 }}
                 select
                 required
-                label="Document Type"
+                label="Loại văn bản"
                 id="documentType"
                 name="documentType"
                 autoComplete="documentType"
@@ -132,7 +133,7 @@ export default function TaskDetail() {
               </TextField>
             )}
             <TextField
-              label="Drafter"
+              label="Người soạn thảo"
               value={draftDetailQuery.data.drafterName}
               fullWidth
               variant="standard"
@@ -143,7 +144,7 @@ export default function TaskDetail() {
               sx={{ my: 2 }}
             />
             <TextField
-              label="Last Updated"
+              label="Cập nhật lần cuối"
               value={convertSecsToDateTime(draftDetailQuery.data.updatedAt)}
               fullWidth
               variant="standard"
@@ -154,7 +155,7 @@ export default function TaskDetail() {
               sx={{ my: 2 }}
             />
             <Box sx={{ my: 2 }}>
-              <InputLabel sx={{ transform: "scale(0.75)", mb: 1 }}>Document Content</InputLabel>
+              <InputLabel sx={{ transform: "scale(0.75)", mb: 1 }}>Nội dung văn bản</InputLabel>
               <Chip
                 label={draftDetailQuery.data.fileName}
                 icon={<AttachFile />}
@@ -186,10 +187,10 @@ export default function TaskDetail() {
             sx={{ mr: 1, width: "120px" }}
             onClick={() => setEditing(false)}
           >
-            Cancel
+            Hủy
           </Button>
           <Button variant="contained" endIcon={<Send />} sx={{ width: "120px" }}>
-            Publish
+            Xác nhận
           </Button>
         </Box>
       </Paper>

@@ -42,7 +42,7 @@ export default function PublishedDocDetail() {
           fontSize={25}
           sx={{ mb: 2 }}
         >
-          Document Detail
+          Chi tiết văn bản
         </Typography>
         <>
           <Box sx={{ display: "flex", gap: 2, alignItems: "stretch", maxHeight: "650px" }}>

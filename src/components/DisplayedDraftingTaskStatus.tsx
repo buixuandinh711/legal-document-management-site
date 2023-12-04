@@ -8,25 +8,25 @@ const statusTextStyles = {
   color: grey[700],
 };
 
-type DraftingTaskStatus = "Done" | "In-Progress";
+type DraftingTaskStatus = "Hoàn thành" | "Đang thực hiện";
 
 export default function DisplayedDraftingTaskStatus({ status }: { status: DraftingTaskStatus }) {
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
       {(() => {
-        if (status === "In-Progress") {
+        if (status === "Đang thực hiện") {
           return (
             <>
               <InProgressIcon fontSize="small" color="primary" />
-              <Typography {...statusTextStyles}>In-Progress</Typography>
+              <Typography {...statusTextStyles}>Đang thực hiện</Typography>
             </>
           );
         }
-        if (status === "Done") {
+        if (status === "Hoàn thành") {
           return (
             <>
               <DoneIcon fontSize="small" color="success" />
-              <Typography {...statusTextStyles}>Submitted</Typography>
+              <Typography {...statusTextStyles}>Đã nộp</Typography>
             </>
           );
         }

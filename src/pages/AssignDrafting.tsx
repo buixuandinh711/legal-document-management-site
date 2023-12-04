@@ -53,7 +53,7 @@ export default function AssignDrafting() {
             fontWeight={600}
             fontSize={25}
           >
-            Created Draft Tasks
+            Công việc soạn thảo đã tạo
           </Typography>
           <Button
             variant="contained"
@@ -64,7 +64,7 @@ export default function AssignDrafting() {
               navigate("/assign-drafting/create");
             }}
           >
-            New
+            Mới
           </Button>
         </Box>
         <TableContainer sx={{ maxHeight: 440 }}>
@@ -79,7 +79,7 @@ export default function AssignDrafting() {
                     color: grey[600],
                   }}
                 >
-                  Created At
+                  Thời điểm tạo
                 </TableCell>
                 <TableCell
                   align="left"
@@ -89,7 +89,7 @@ export default function AssignDrafting() {
                     color: grey[600],
                   }}
                 >
-                  Name
+                  Tên công việc
                 </TableCell>
                 <TableCell
                   align="left"
@@ -99,7 +99,7 @@ export default function AssignDrafting() {
                     color: grey[600],
                   }}
                 >
-                  Assignee
+                  Người được giao
                 </TableCell>
                 <TableCell
                   align="left"
@@ -109,7 +109,7 @@ export default function AssignDrafting() {
                     color: grey[600],
                   }}
                 >
-                  Status
+                  Trạng thái
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -135,7 +135,7 @@ export default function AssignDrafting() {
                       <TableCell align="left">{`${row.assignee} - ${row.assigneePosition}`}</TableCell>
                       <TableCell align="left">
                         <DisplayedDraftingTaskStatus
-                          status={row.draftId !== null ? "Done" : "In-Progress"}
+                          status={row.draftId !== null ? "Hoàn thành" : "Đang thực hiện"}
                         />
                       </TableCell>
                     </TableRow>
@@ -150,7 +150,7 @@ export default function AssignDrafting() {
             fontWeight={600}
             sx={{ pt: 2, opacity: 0.6, textAlign: "center" }}
           >
-            There is no created task
+            Chưa có công việc nào được tạo
           </Typography>
         )}
         <TablePagination

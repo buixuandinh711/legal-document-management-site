@@ -46,7 +46,7 @@ export default function YourDraft() {
               fontWeight={600}
               fontSize={25}
             >
-              Your Drafts
+              Bản thảo
             </Typography>
             <Button
               variant="contained"
@@ -57,7 +57,7 @@ export default function YourDraft() {
                 navigate("/draft/create");
               }}
             >
-              New
+              Mới
             </Button>
           </Box>
           <TableContainer sx={{ maxHeight: 440 }}>
@@ -72,7 +72,7 @@ export default function YourDraft() {
                       color: grey[600],
                     }}
                   >
-                    Name
+                    Tên bản thảo
                   </TableCell>
                   <TableCell
                     align="left"
@@ -82,7 +82,7 @@ export default function YourDraft() {
                       color: grey[600],
                     }}
                   >
-                    Drafter
+                    Người soạn thảo
                   </TableCell>
                   <TableCell
                     align="left"
@@ -92,7 +92,7 @@ export default function YourDraft() {
                       color: grey[600],
                     }}
                   >
-                    Document
+                    Tên văn bản
                   </TableCell>
                   <TableCell
                     align="left"
@@ -102,7 +102,7 @@ export default function YourDraft() {
                       color: grey[600],
                     }}
                   >
-                    Last Updated
+                    Cập nhật lần cuối
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -136,7 +136,7 @@ export default function YourDraft() {
                 fontWeight={600}
                 sx={{ pt: 2, opacity: 0.6, textAlign: "center" }}
               >
-                There is no draft
+                Chưa có bản thào nào được tạo
               </Typography>
             )}
           </TableContainer>

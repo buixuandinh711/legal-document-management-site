@@ -21,21 +21,18 @@ interface LoginFormValues {
 const validationSchema = yup.object({
   username: yup
     .string()
-    .min(4, "Username should be in range 4-30 characters")
-    .max(30, "Username should be in range 4-30 characters")
-    .matches(
-      /^[a-zA-Z0-9_]{4,30}$/,
-      "Username should contain only letters, numbers, and underscores"
-    )
-    .required("Username is required"),
+    .min(4, "Tên người dùng phải từ 4-30 ký tự")
+    .max(30, "Tên người dùng phải từ 4-30 ký tự")
+    .matches(/^[a-zA-Z0-9_]{4,30}$/, "Tên người dùng chỉ được chứa chữ cái, số, và dấu gạch dưới")
+    .required("Yêu cầu nhập tên người dùng"),
   password: yup
     .string()
-    .min(4, "Password should be of minimum 6 characters length")
+    .min(4, "Mật khẩu phải có ít nhất 6 ký tự")
     .matches(
       /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{4,}$/,
-      "Password should contain at least one letter and one digit"
+      "Mật khẩu phải chứa ít nhất một chữ cái và một chữ số"
     )
-    .required("Password is required"),
+    .required("Yêu cầu nhập mật khẩu"),
 });
 
 export default function Login() {
@@ -77,7 +74,7 @@ export default function Login() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Đăng nhập
         </Typography>
         <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -85,7 +82,7 @@ export default function Login() {
             required
             fullWidth
             id="username"
-            label="Username"
+            label="Tên người dùng"
             name="username"
             autoComplete="username"
             autoFocus
@@ -100,7 +97,7 @@ export default function Login() {
             required
             fullWidth
             name="password"
-            label="Password"
+            label="Mật khẩu"
             type="password"
             id="password"
             autoComplete="current-password"
@@ -111,12 +108,12 @@ export default function Login() {
             helperText={formik.touched.password && formik.errors.password}
           />
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            Sign In
+            Đăng nhập
           </Button>
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
-                Forgot password?
+                Cần hỗ trợ?
               </Link>
             </Grid>
           </Grid>

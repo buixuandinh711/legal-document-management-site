@@ -60,12 +60,12 @@ export default function PublishDocument() {
       <>
         <Paper sx={{ width: "100%", overflow: "hidden", borderRadius: 4, py: 2, px: 4 }}>
           <Typography variant="h6" id="tableTitle" component="div" fontWeight={600} fontSize={25}>
-            Publish Draft
+            Ban hành văn bản
           </Typography>
           <TextField
             select
             fullWidth
-            label="Draft"
+            label="Bản thảo"
             variant="outlined"
             value={selectedDraft}
             onChange={(value) => {
@@ -80,7 +80,7 @@ export default function PublishDocument() {
           >
             {publishableDrafts.map((draft) => (
               <MenuItem key={draft.id} value={`${draft.id}`}>
-                {draft.name}
+                {draft.name.length < 100 ? draft.name : draft.name.slice(0, 100) + "..."}
               </MenuItem>
             ))}
           </TextField>
@@ -108,11 +108,19 @@ export default function PublishDocument() {
                 )}
               </Box>
               <Box sx={{ mt: 2, display: "flex", justifyContent: "right", gap: 1 }}>
-                <Button variant="outlined" onClick={() => setSelectedDraft("")}>
-                  Cancel
+                <Button
+                  variant="outlined"
+                  onClick={() => setSelectedDraft("")}
+                  sx={{ minWidth: 120 }}
+                >
+                  Hủy
                 </Button>
-                <Button variant="contained" onClick={() => setOpenDialog(true)}>
-                  Publish
+                <Button
+                  variant="contained"
+                  onClick={() => setOpenDialog(true)}
+                  sx={{ minWidth: 120 }}
+                >
+                  Ban hành
                 </Button>
               </Box>
             </Paper>

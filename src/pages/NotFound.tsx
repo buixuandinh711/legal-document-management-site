@@ -29,7 +29,7 @@ export default function NotFound() {
           fontSize: "2rem",
         }}
       >
-        Page Not Found
+        Không tìm thấy trang
       </Typography>
       <Link to="/" style={{ textDecoration: "none" }}>
         <Typography
@@ -40,7 +40,7 @@ export default function NotFound() {
             cursor: "pointer",
           }}
         >
-          Go to Homepage
+          Đi đến trang chủ
         </Typography>
       </Link>
     </Box>

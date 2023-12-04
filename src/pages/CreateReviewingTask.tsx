@@ -52,7 +52,7 @@ export default function CreateReviewingTask() {
       <>
         <Paper sx={{ width: "100%", overflow: "hidden", borderRadius: 4, py: 2, px: 4 }}>
           <Typography variant="h6" id="tableTitle" component="div" fontWeight={600} fontSize={25}>
-            Create Review Task
+            Tạo công việc phê duyệt
           </Typography>
           <TextField
             select
@@ -72,7 +72,7 @@ export default function CreateReviewingTask() {
           >
             {publishableDrafts.map((draft) => (
               <MenuItem key={draft.id} value={`${draft.id}`}>
-                {draft.name}
+                {draft.name.length < 100 ? draft.name : draft.name.slice(0, 100) + "..."}
               </MenuItem>
             ))}
           </TextField>
@@ -105,7 +105,7 @@ export default function CreateReviewingTask() {
                     };
                   });
                   const parsedDraftId = parseInt(selectedDraft);
-                  if (isNaN(parsedDraftId)) return;
+                  if (isNaN(parsedDraftId) || extractedSigners.length == 0) return;
                   try {
                     await createReviewTask({
                       divisionOnchainId,
@@ -113,10 +113,12 @@ export default function CreateReviewingTask() {
                       draftId: parsedDraftId,
                       assignees: extractedSigners,
                     }).unwrap();
-                    dispatch(openSnackbar({ type: "success", message: "Review task created" }));
+                    dispatch(
+                      openSnackbar({ type: "success", message: "Tạo công việc thành công" })
+                    );
                     navigate("/assign-reviewing");
-                    console.log("Review task created");
                   } catch (error) {
+                    dispatch(openSnackbar({ type: "success", message: "Tạo công việc thất bại" }));
                     console.log(error);
                   }
                 }}
@@ -127,11 +129,15 @@ export default function CreateReviewingTask() {
                   setSelectedSigners={setSelectedSigners}
                 />
                 <Box sx={{ mt: 4, display: "flex", justifyContent: "right", gap: 1 }}>
-                  <Button variant="outlined" onClick={() => setSelectedDraft("")}>
-                    Cancel
+                  <Button
+                    variant="outlined"
+                    onClick={() => setSelectedDraft("")}
+                    sx={{ minWidth: 120 }}
+                  >
+                    Hủy
                   </Button>
-                  <Button variant="contained" type="submit">
-                    Create
+                  <Button variant="contained" type="submit" sx={{ minWidth: 120 }}>
+                    Tạo
                   </Button>
                 </Box>
               </form>

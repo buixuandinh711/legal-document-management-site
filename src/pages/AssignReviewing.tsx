@@ -54,7 +54,7 @@ export default function AssignReviewing() {
             fontWeight={600}
             fontSize={25}
           >
-            Assigned Review Tasks
+            Công việc phê duyệt đã giao
           </Typography>
           <Button
             variant="contained"
@@ -65,7 +65,7 @@ export default function AssignReviewing() {
               navigate("/assign-reviewing/create");
             }}
           >
-            New
+            Mới
           </Button>
         </Box>
         <TableContainer sx={{ maxHeight: 440 }}>
@@ -80,7 +80,7 @@ export default function AssignReviewing() {
                     color: grey[600],
                   }}
                 >
-                  Created At
+                  Thời điểm tạo
                 </TableCell>
                 <TableCell
                   align="left"
@@ -90,27 +90,27 @@ export default function AssignReviewing() {
                     color: grey[600],
                   }}
                 >
-                  Draft Name
+                  Tên bản thảo
                 </TableCell>
                 <TableCell
                   align="left"
                   sx={{
-                    width: "35%",
+                    width: "30%",
                     fontWeight: 600,
                     color: grey[600],
                   }}
                 >
-                  Assignee
+                  Người được giao
                 </TableCell>
                 <TableCell
                   align="left"
                   sx={{
-                    width: "15%",
+                    width: "20%",
                     fontWeight: 600,
                     color: grey[600],
                   }}
                 >
-                  Status
+                  Trạng thái
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -138,7 +138,7 @@ export default function AssignReviewing() {
             fontWeight={600}
             sx={{ pt: 2, opacity: 0.6, textAlign: "center" }}
           >
-            There is no created task
+            Chưa có công việc nào được tạo
           </Typography>
         )}
         <TablePagination
@@ -176,7 +176,7 @@ function DisplayedStatus({ status }: { status: ReviewTaskStatus }) {
           return (
             <>
               <InProgressIcon fontSize="small" color="primary" />
-              <Typography {...statusTextStyles}>In-Progress</Typography>
+              <Typography {...statusTextStyles}>Đang thực hiện</Typography>
             </>
           );
         }
@@ -184,7 +184,7 @@ function DisplayedStatus({ status }: { status: ReviewTaskStatus }) {
           return (
             <>
               <SignedIcon fontSize="small" color="success" />
-              <Typography {...statusTextStyles}>Signed</Typography>
+              <Typography {...statusTextStyles}>Đã ký</Typography>
             </>
           );
         }
@@ -192,7 +192,7 @@ function DisplayedStatus({ status }: { status: ReviewTaskStatus }) {
           return (
             <>
               <RejectedIcon fontSize="small" color="error" />
-              <Typography {...statusTextStyles}>Rejected</Typography>
+              <Typography {...statusTextStyles}>Từ chối</Typography>
             </>
           );
         }

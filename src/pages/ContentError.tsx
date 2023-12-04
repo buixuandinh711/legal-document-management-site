@@ -4,8 +4,8 @@ export default function ContentError() {
   return (
     <Box>
       <Alert severity="error" sx={{borderRadius: 3}}>
-        <AlertTitle>Error</AlertTitle>
-        Failed to load content <strong>Please try again</strong>
+        <AlertTitle>Lỗi</AlertTitle>
+        Không thể tải nội dung <strong>Hãy thử lại sau</strong>
       </Alert>
     </Box>
   );
