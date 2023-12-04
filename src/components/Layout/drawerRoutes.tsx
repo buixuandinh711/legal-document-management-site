@@ -52,8 +52,8 @@ export const mainListItems = (
 
 export const secondaryListItems = (
   <>
-    <ListSubheader component="div" inset>
-      Quản lý
+    <ListSubheader component="div" sx={{fontWeight: "600"}}>
+      Dành cho quản lý
     </ListSubheader>
     <Link to="/assign-drafting" style={{ textDecoration: "none", color: "inherit" }}>
       <ListItemButton>

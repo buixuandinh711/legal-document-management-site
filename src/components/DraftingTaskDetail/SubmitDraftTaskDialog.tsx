@@ -12,7 +12,6 @@ export interface SubmittedDraftDetailProps {
   documentType: string;
   fileName: string;
   updatedAt: number;
-  drafterUsername: string;
   drafterName: string;
   docUri: string;
 }

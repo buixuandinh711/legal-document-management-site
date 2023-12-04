@@ -11,8 +11,8 @@ interface DraftDetailBoxProps {
   fileName: string;
   updatedAt: number;
   docUri: string;
-  drafterUsername: string;
   drafterName: string;
+  drafterPos: string;
 }
 
 export default function DraftDetailBox(draftDetail: DraftDetailBoxProps) {
@@ -53,7 +53,7 @@ export default function DraftDetailBox(draftDetail: DraftDetailBoxProps) {
       />
       <TextField
         label="Người soạn thảo"
-        value={draftDetail.drafterName}
+        value={`${draftDetail.drafterName} - ${draftDetail.drafterPos}`}
         fullWidth
         variant="standard"
         InputProps={{

@@ -23,13 +23,10 @@ interface Officer {
 interface DraftsListItem {
   id: number;
   name: string;
-  drafterUsername: string;
+  updatedAt: number;
   drafterName: string;
-  documentName: string;
-  updatedAt: {
-    nanosSinceEpoch: number;
-    secsSinceEpoch: number;
-  };
+  drafterPos: string;
+  status: number;
 }
 
 interface PublishableDraft {
@@ -51,8 +48,8 @@ interface DraftDetail {
   fileName: string;
   updatedAt: number;
   docUri: string;
-  drafterUsername: string;
   drafterName: string;
+  drafterPos: string;
 }
 
 interface DraftSignature {
@@ -296,25 +293,22 @@ export const apiSlice = createApi({
         response: {
           id: number;
           name: string;
-          drafter_username: string;
-          drafter_name: string;
-          document_name: string;
           updated_at: {
             nanos_since_epoch: number;
             secs_since_epoch: number;
           };
+          drafter_name: string;
+          drafter_pos: string;
+          status: number;
         }[]
       ) => {
         return response.map((item) => ({
           id: item.id,
           name: item.name,
-          drafterUsername: item.drafter_username,
+          updatedAt: item.updated_at.secs_since_epoch,
           drafterName: item.drafter_name,
-          documentName: item.document_name,
-          updatedAt: {
-            nanosSinceEpoch: item.updated_at.nanos_since_epoch,
-            secsSinceEpoch: item.updated_at.secs_since_epoch,
-          },
+          drafterPos: item.drafter_pos,
+          status: item.status,
         }));
       },
       providesTags: ["User", "Draft"],
@@ -345,9 +339,10 @@ export const apiSlice = createApi({
           secs_since_epoch: number;
         };
         doc_uri: string;
-        drafter_username: string;
         drafter_name: string;
+        drafter_pos: string;
       }) => {
+        console.log(response.drafter_pos)
         return {
           id: response.id,
           name: response.name,
@@ -357,8 +352,8 @@ export const apiSlice = createApi({
           fileName: response.file_name,
           updatedAt: response.updated_at.secs_since_epoch,
           docUri: response.doc_uri,
-          drafterUsername: response.drafter_username,
           drafterName: response.drafter_name,
+          drafterPos: response.drafter_pos,
         };
       },
       providesTags: ["User"],

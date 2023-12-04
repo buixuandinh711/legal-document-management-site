@@ -67,7 +67,7 @@ export default function YourDraft() {
                   <TableCell
                     align="left"
                     sx={{
-                      minWidth: "150px",
+                      width: "25%",
                       fontWeight: 600,
                       color: grey[600],
                     }}
@@ -77,7 +77,7 @@ export default function YourDraft() {
                   <TableCell
                     align="left"
                     sx={{
-                      minWidth: "150px",
+                      width: "25%",
                       fontWeight: 600,
                       color: grey[600],
                     }}
@@ -87,22 +87,22 @@ export default function YourDraft() {
                   <TableCell
                     align="left"
                     sx={{
-                      minWidth: "350px",
-                      fontWeight: 600,
-                      color: grey[600],
-                    }}
-                  >
-                    Tên văn bản
-                  </TableCell>
-                  <TableCell
-                    align="left"
-                    sx={{
-                      minWidth: "200px",
+                      width: "25%",
                       fontWeight: 600,
                       color: grey[600],
                     }}
                   >
                     Cập nhật lần cuối
+                  </TableCell>
+                  <TableCell
+                    align="left"
+                    sx={{
+                      width: "25%",
+                      fontWeight: 600,
+                      color: grey[600],
+                    }}
+                  >
+                    Trạng thái
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -120,10 +120,10 @@ export default function YourDraft() {
                         sx={{ cursor: "pointer" }}
                       >
                         <TableCell align="left">{row.name}</TableCell>
-                        <TableCell align="left">{row.drafterName}</TableCell>
-                        <TableCell align="left">{row.documentName}</TableCell>
+                        <TableCell align="left">{`${row.drafterName} - ${row.drafterPos}`}</TableCell>
+                        <TableCell align="left">{convertSecsToDateTime(row.updatedAt)}</TableCell>
                         <TableCell align="left">
-                          {convertSecsToDateTime(row.updatedAt.secsSinceEpoch)}
+                          {row.status == 1 ? "Đã ban hành" : "Chưa ban hành"}
                         </TableCell>
                       </TableRow>
                     );

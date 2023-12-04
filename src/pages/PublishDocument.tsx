@@ -99,8 +99,8 @@ export default function PublishDocument() {
                     fileName={draftDetailQuery.data.fileName}
                     updatedAt={draftDetailQuery.data.updatedAt}
                     docUri={draftDetailQuery.data.docUri}
-                    drafterUsername={draftDetailQuery.data.drafterUsername}
                     drafterName={draftDetailQuery.data.drafterName}
+                    drafterPos={draftDetailQuery.data.drafterPos}
                   />
                 )}
                 {draftSignaturesQuery.isSuccess && (
